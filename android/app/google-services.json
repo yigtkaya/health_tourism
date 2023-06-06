@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "725006118544",
+    "project_id": "health-tourism-cc878",
+    "storage_bucket": "health-tourism-cc878.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725006118544:android:9760f16b7bdebbebc7f215",
+        "android_client_info": {
+          "package_name": "com.health.health_tourism"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725006118544-4f6v85nhml5oj2a36eb0r12mn2vsev8q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.health.health_tourism",
+            "certificate_hash": "11bde8d169f2c0e1eb76998c14aba793264f1f01"
+          }
+        },
+        {
+          "client_id": "725006118544-tiho3u0omn9qe8kn1lqogtd301buca20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhtcDNzH9MqSVp4wXEXWLCBxksy-Z9B8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725006118544-tiho3u0omn9qe8kn1lqogtd301buca20.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
