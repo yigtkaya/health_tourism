@@ -1,9 +1,11 @@
 import 'package:health_tourism/core/services/auth_repo.dart';
 
-class FirebaseAuthService extends AuthRepository {
+import '../../product/models/user.dart';
 
+class FirebaseAuthService extends AuthRepository {
+/// TO DO: Implement FirebaseAuthException
   @override
-  currentUser() {
+  User currentUser() {
     // TODO: implement currentUser
     throw UnimplementedError();
   }
@@ -33,7 +35,7 @@ class FirebaseAuthService extends AuthRepository {
   }
 
   @override
-  Future<void> register(String email, String password) {
+  Future<void> signUp(String email, String password) {
     // TODO: implement register
     throw UnimplementedError();
   }
@@ -45,10 +47,8 @@ class FirebaseAuthService extends AuthRepository {
   }
 
   @override
-  Future<void> updatePersonalData(String firstname, String lastName, String birthday) {
+  Future<void> updateUserData(String firstname, String lastName, String birthday) {
     // TODO: implement updatePersonalData
     throw UnimplementedError();
   }
-
-
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:health_tourism/view/login/LoginView.dart';
+import 'package:health_tourism/view/splash/splash_view.dart';
 
 import 'core/services/firebase_auth_service.dart';
 import 'cubit/auth/auth_cubit.dart';
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: LoginView(),
+          home: const SplashView(),
         ),
       ),
     );
