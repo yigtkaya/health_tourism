@@ -173,7 +173,7 @@ class LoginView extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () => {
                               Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => SignUpView())
+                                MaterialPageRoute(builder: (context) => const SignUpView())
                               )
                             },
                             child: RichText(
