@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
+import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/view/sign_up/sign_up_view.dart';
 
 import '../../core/components/ht_text_field.dart';

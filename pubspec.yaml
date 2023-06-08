@@ -46,14 +46,17 @@ dependencies:
   #firebase
   firebase_auth:
   firebase_core:
+  firebase_messaging:
+  cloud_firestore:
+
   google_fonts:
   google_sign_in:
   email_validator:
+
   shared_preferences:
-  cloud_firestore:
-  firebase_messaging:
   flutter_local_notifications:
 
+  go_router:
 
 
 dev_dependencies:

@@ -1,26 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../core/services/auth_repo.dart';
+import 'package:health_tourism/core/services/firebase_auth_service.dart';
 import 'AuthState.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthRepository _authRepository;
+  final FirebaseAuthService _authRepository;
   final firebaseAuth = FirebaseAuth.instance;
 
   AuthCubit(this._authRepository) : super(const AuthInitial());
-
-  Future<void> checkFirstRun() async {
-    try {
-      final isFirstRun = await _authRepository.isFirstRun();
-      if (isFirstRun) {
-        emit(const FirstRun());
-      } else {
-        emit(const NotAuthenticated());
-      }
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
 
   Future<void> login(String email, String password) async {
     try {
