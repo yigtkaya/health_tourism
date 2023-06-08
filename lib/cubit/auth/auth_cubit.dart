@@ -25,7 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login(String email, String password) async {
     try {
       emit(const AuthLoading());
-      await _authRepository.login(email, password);
+      await _authRepository.signInWithEmailAndPassword(email: email, password: password);
       emit(Authenticated(firebaseAuth.currentUser!));
     } catch (e) {
       emit(AuthError(e.toString()));
@@ -35,7 +35,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signUp(String email, String password) async {
     try {
       emit(const AuthLoading());
-      await _authRepository.signUp(email, password);
+      await _authRepository.signUpWithEmailAndPassword(email: email, password: password);
       emit(Authenticated(firebaseAuth.currentUser!));
     } catch (e) {
       emit(AuthError(e.toString()));
@@ -55,7 +55,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> passwordResetSubmit(String email) async {
     try {
       emit(const AuthLoading());
-      await _authRepository.passwordResetSubmit(email);
+      await _authRepository.resetPassword(email: email);
       emit(const PasswordRequestSubmitted());
     } catch (e) {
       emit(AuthError(e.toString()));
