@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/view/login/LoginView.dart';
 
-import 'core/services/AuthService.dart';
+import 'core/services/firebase_auth_service.dart';
 import 'cubit/auth/auth_cubit.dart';
 
 void main() {
@@ -16,9 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => AuthService(),
-      child: BlocProvider(
-        create: (context) => AuthCubit(context.read<AuthService>()),
+      create: (context) => FirebaseAuthService(),
+      child: BlocProvider<AuthCubit>(
+        create: (context) => AuthCubit(FirebaseAuthService()),
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
