@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/view/sign_up/sign_up_view.dart';
 
 import '../../core/components/ht_text_field.dart';
@@ -57,13 +58,13 @@ class LoginView extends StatelessWidget {
                           alignment: Alignment.center,
                           child: HTText(
                             label: "Sign In",
-                            style: null,
+                            style: HTLabelStyle,
                             color: Colors.white,
                           )),
                       const VerticalSpace(
                         spaceAmount: 20,
                       ),
-                      const HTText(label: "Email", style: null),
+                      const HTText(label: "Email", style: HTLabelStyle),
                       HTTextField(
                         textController: emailController,
                         title: "Email",
@@ -75,7 +76,7 @@ class LoginView extends StatelessWidget {
                       const VerticalSpace(
                         spaceAmount: 20,
                       ),
-                      const HTText(label: "Password", style: null),
+                      const HTText(label: "Password", style: HTLabelStyle),
                       HTTextField(
                         textController: passwordController,
                         title: "Password",
@@ -92,7 +93,7 @@ class LoginView extends StatelessWidget {
                           ),
                           onPressed: () {},
                           child:
-                          const Text('Forgot Password ?', style: null),
+                          const Text('Forgot Password ?', style: HTLabelStyle),
                         ),
                       ),
                       const VerticalSpace(),
@@ -121,7 +122,7 @@ class LoginView extends StatelessWidget {
                       ),
                       const Align(
                           alignment: Alignment.center,
-                          child: HTText(label: "OR", style: null)),
+                          child: HTText(label: "OR", style: HTLabelStyle)),
                       const VerticalSpace(
                         spaceAmount: 30,
                       ),
@@ -159,7 +160,7 @@ class LoginView extends StatelessWidget {
                                   child: HTText(
                                     label: "Sign in with Google",
                                     color: ThemeManager.instance?.getCurrentTheme
-                                        .colorTheme.colors.abbey, style: null,
+                                        .colorTheme.colors.abbey, style: HTLabelStyle,
                                   ),
                                 )
                               ],

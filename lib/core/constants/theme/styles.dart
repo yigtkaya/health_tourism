@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
-const KTHintTextStyle = TextStyle(
+const HTHintTextStyle = TextStyle(
   color: Colors.white54,
   fontFamily: 'OpenSans',
 );
 
-const KTLabelStyle =  TextStyle(
+const HTLabelStyle =  TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSans',
 );
+const HTTitleStyle =  TextStyle(
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'OpenSansbold',
+);
 
-final KTBoxDecorationStyle = BoxDecoration(
+final HTBoxDecorationStyle = BoxDecoration(
   color: const Color(0xFF6CA8F1),
   borderRadius: BorderRadius.circular(10.0),
   boxShadow: const [

@@ -53,7 +53,7 @@ class SignUpView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Spacer(),
-                  Align(
+                  const Align(
                       alignment: Alignment.center,
                       child: HTText(
                         label: "Sign Up",
@@ -63,7 +63,7 @@ class SignUpView extends StatelessWidget {
                   const VerticalSpace(
                     spaceAmount: 20,
                   ),
-                  const HTText(label: "Email", style: KTLabelStyle),
+                  const HTText(label: "Email", style: HTLabelStyle),
                   HTTextField(
                     textController: emailController,
                     title: "Email",
@@ -75,7 +75,7 @@ class SignUpView extends StatelessWidget {
                   const VerticalSpace(
                     spaceAmount: 30,
                   ),
-                  const HTText(label: "Password", style: KTLabelStyle),
+                  const HTText(label: "Password", style: HTLabelStyle),
                   HTTextField(
                     textController: passwordController,
                     title: "Password",
@@ -87,7 +87,7 @@ class SignUpView extends StatelessWidget {
                   const VerticalSpace(
                     spaceAmount: 20,
                   ),
-                  const HTText(label: "Confirm Password", style: KTLabelStyle),
+                  const HTText(label: "Confirm Password", style: HTLabelStyle),
                   HTTextField(
                     textController: confirmPasswordController,
                     title: "Confirm Password",
@@ -123,7 +123,7 @@ class SignUpView extends StatelessWidget {
                   ),
                   const Align(
                       alignment: Alignment.center,
-                      child: HTText(label: "OR", style: KTLabelStyle)),
+                      child: HTText(label: "OR", style: HTLabelStyle)),
                   const VerticalSpace(
                     spaceAmount: 30,
                   ),
@@ -161,7 +161,7 @@ class SignUpView extends StatelessWidget {
                                 label: "Sign in with Google",
                                 color: ThemeManager.instance?.getCurrentTheme
                                     .colorTheme.colors.abbey,
-                                style: KTLabelStyle,
+                                style: HTLabelStyle,
                               ),
                             )
                           ],
@@ -183,8 +183,8 @@ class SignUpView extends StatelessWidget {
                             children: [
                               TextSpan(
                                   text: 'Already have account? ',
-                                  style: KTLabelStyle),
-                              TextSpan(text: 'Sign In', style: KTLabelStyle),
+                                  style: HTLabelStyle),
+                              TextSpan(text: 'Sign In', style: HTLabelStyle),
                             ],
                           ),
                         ),
