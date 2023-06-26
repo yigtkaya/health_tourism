@@ -18,7 +18,7 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    TextEditingController emailController = TextEditingController();
+      TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     final GlobalKey<FormState> addressFormKey = GlobalKey<FormState>();
 
@@ -34,15 +34,15 @@ class LoginView extends StatelessWidget {
                     colors: [
                       ColorConstants
                           .colorPlateList[
-                      7 % (ColorConstants.colorPlateList.length)]
+                      8 % (ColorConstants.colorPlateList.length)]
                           .startColor,
                       ColorConstants
                           .colorPlateList[
-                      7 % (ColorConstants.colorPlateList.length)]
+                      8 % (ColorConstants.colorPlateList.length)]
                           .endColor,
                     ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
                     stops: const [0.0, 1.2],
                     tileMode: TileMode.clamp),
               ),
@@ -65,7 +65,7 @@ class LoginView extends StatelessWidget {
                       const VerticalSpace(
                         spaceAmount: 20,
                       ),
-                      const HTText(label: "Email", style: HTLabelStyle),
+                      const HTText(label: "Email", style: HTSmallLabelStyle),
                       HTTextField(
                         textController: emailController,
                         title: "Email",
@@ -77,7 +77,7 @@ class LoginView extends StatelessWidget {
                       const VerticalSpace(
                         spaceAmount: 20,
                       ),
-                      const HTText(label: "Password", style: HTLabelStyle),
+                      const HTText(label: "Password", style: HTSmallLabelStyle),
                       HTTextField(
                         textController: passwordController,
                         title: "Password",
@@ -90,11 +90,11 @@ class LoginView extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           style: TextButton.styleFrom(
-                            foregroundColor: const Color(0xff364d64),
+                            foregroundColor: Colors.black,
                           ),
                           onPressed: () {},
                           child:
-                          const Text('Forgot Password ?', style: HTLabelStyle),
+                          const Text('Forgot Password ?', style: HTSmallLabelStyle),
                         ),
                       ),
                       const VerticalSpace(),
@@ -106,7 +106,7 @@ class LoginView extends StatelessWidget {
                                   foregroundColor: const Color(0xff364d64),
                                   backgroundColor: Colors.white,
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
+                                      vertical: 10, horizontal: 30),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   )),
@@ -119,11 +119,11 @@ class LoginView extends StatelessWidget {
                         ),
                       ),
                       const VerticalSpace(
-                        spaceAmount: 50,
+                        spaceAmount: 20,
                       ),
                       const Align(
                           alignment: Alignment.center,
-                          child: HTText(label: "OR", style: HTLabelStyle)),
+                          child: HTText(label: "OR", style: HTSmallLabelStyle)),
                       const VerticalSpace(
                         spaceAmount: 30,
                       ),
@@ -134,7 +134,7 @@ class LoginView extends StatelessWidget {
                                 foregroundColor: const Color(0xFF4989D7),
                                 backgroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
+                                    vertical: 8, horizontal: 20),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
                                 )),
@@ -151,7 +151,7 @@ class LoginView extends StatelessWidget {
                                     image: DecorationImage(
                                         image:
                                         AssetImage('assets/images/google.png'),
-                                        fit: BoxFit.cover),
+                                        fit: BoxFit.fitWidth),
                                     shape: BoxShape.circle,
                                   ),
                                 ),
@@ -161,7 +161,7 @@ class LoginView extends StatelessWidget {
                                   child: HTText(
                                     label: "Sign in with Google",
                                     color: ThemeManager.instance?.getCurrentTheme
-                                        .colorTheme.colors.abbey, style: HTLabelStyle,
+                                        .colorTheme.colors.abbey, style: HTSmallLabelStyle,
                                   ),
                                 )
                               ],
@@ -182,8 +182,18 @@ class LoginView extends StatelessWidget {
                               text: const TextSpan(
                                 children: [
                                   TextSpan(
-                                      text: 'Don\'t have an Account? ',),
-                                  TextSpan(text: 'Sign Up'),
+                                    text: 'Don\'t have an Account? ',
+                                    style: TextStyle(
+                                      color: Colors.black, // Specify the desired text color
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'Sign Up',
+                                    style: TextStyle(
+                                      color: Colors.blue, // Specify the desired text color
+                                      fontWeight: FontWeight.bold, // Optionally, add font weight
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),

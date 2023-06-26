@@ -29,12 +29,12 @@ class _HTTextFieldState extends State<HTTextField> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: const Color(0xff3a5979),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black12,
-                blurRadius: 6.0,
+                blurRadius: 2.0,
                 offset: Offset(0, 2),
               ),
             ],
@@ -45,7 +45,7 @@ class _HTTextFieldState extends State<HTTextField> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 obscureText: widget.title == "Email" ? false : true,
                 autocorrect: false,
                 enableSuggestions: false,
@@ -53,11 +53,11 @@ class _HTTextFieldState extends State<HTTextField> {
                     prefixIcon: widget.title == "Email"
                         ? const Icon(
                             Icons.email,
-                            color: Colors.white,
+                            color: Colors.black38,
                           )
                         : const Icon(
                             Icons.key,
-                            color: Colors.white,
+                            color: Colors.black38,
                           ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -67,9 +67,13 @@ class _HTTextFieldState extends State<HTTextField> {
                       ),
                     ),
                     filled: true,
-                    hintStyle: TextStyle(color: Colors.white),
-                    hintText: "Type in your text",
-                    fillColor: Colors.transparent.withOpacity(0.1)),
+                    hintStyle: const TextStyle(color: Colors.black26),
+                    hintText: widget.title == "Email"
+                        ? "E-mail"
+                        : widget.title == "Password"
+                            ? "*****"
+                            : "Type in your text",
+                    fillColor: Colors.transparent.withOpacity(0.05)),
                 controller: widget.textController),
           ),
         ),
