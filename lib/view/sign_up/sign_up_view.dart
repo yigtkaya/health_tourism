@@ -6,7 +6,7 @@ import '../../core/constants/theme/color/gradient_colors.dart';
 import '../../core/constants/theme/styles.dart';
 import '../../core/constants/theme/theme_manager.dart';
 import '../../core/constants/vertical_space.dart';
-import '../../core/ht_text.dart';
+import '../../core/components/ht_text.dart';
 import '../login/LoginView.dart';
 
 

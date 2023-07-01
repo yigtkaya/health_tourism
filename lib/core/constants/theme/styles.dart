@@ -16,8 +16,9 @@ const HTSmallLabelStyle = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSans',
-
+  fontSize: 14
 );
+
 const HTTitleStyle =  TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
