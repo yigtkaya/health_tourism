@@ -9,6 +9,14 @@ const HTLabelStyle =  TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSans',
+  fontSize: 20
+);
+
+const HTSmallLabelStyle = TextStyle(
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'OpenSans',
+
 );
 const HTTitleStyle =  TextStyle(
   color: Colors.white,

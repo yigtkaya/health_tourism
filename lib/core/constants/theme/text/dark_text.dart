@@ -1,3 +1,5 @@
+// ignore_for_file: override_on_non_overriding_member, duplicate_ignore
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'ITextTheme.dart';
@@ -27,16 +29,18 @@ class DarkText implements ITextTheme {
   @override
   TextStyle? headline1;
 
-  @override
   TextStyle? headline2;
 
   @override
+  // ignore: override_on_non_overriding_member
   TextStyle? headline3;
 
   @override
+  // ignore: override_on_non_overriding_member
   TextStyle? headline4;
 
   @override
+  // ignore: override_on_non_overriding_member
   TextStyle? headline5;
 
   @override
