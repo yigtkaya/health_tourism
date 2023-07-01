@@ -1,9 +1,12 @@
 
 
 // TODO: Implement Guard
+import 'dart:async';
+
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
 import 'package:health_tourism/view/login/LoginView.dart';
+import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 
 import '../../view/onboarding/onboarding_view.dart';
@@ -17,6 +20,7 @@ class RoutePath {
   static const String login = '/landing';
   static const String signIn = '/signIn';
   static const String signUp = '/signUp';
+  static const String root = '/root';
   static const String onBoarding = '/onBoarding';
 
 }
@@ -38,6 +42,11 @@ final GoRouter router = GoRouter(routes: [
         return const SplashView();
       }),
   GoRoute(
+      path: RoutePath.root,
+      builder: (context, state) {
+        return const RootView();
+      }),
+  GoRoute(
       path: RoutePath.login,
       builder: (context, state) {
         return  LoginView();
@@ -51,6 +60,12 @@ final GoRouter router = GoRouter(routes: [
 
 void goTo({required String path}) {
   router.go(path);
+}
+
+void goToWithWait({required String path}) {
+  Future.delayed(const Duration(seconds: 5), () {
+    router.go(path);
+  });
 }
 
 void goBack() {

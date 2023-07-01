@@ -9,6 +9,21 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit(this._authRepository) : super(const AuthInitial());
 
+  // check if user is logged in
+  Future<void> checkIfUserIsLoggedIn() async {
+    try {
+      emit(const AuthLoading());
+      final isUserLoggedIn = await _authRepository.isUserLoggedIn();
+      if (isUserLoggedIn) {
+        emit(Authenticated(firebaseAuth.currentUser!));
+      } else {
+        emit(const NotAuthenticated());
+      }
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
   Future<void> login(String email, String password) async {
     try {
       emit(const AuthLoading());
