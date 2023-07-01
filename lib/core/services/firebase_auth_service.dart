@@ -14,7 +14,7 @@ class FirebaseAuthService extends AuthRepository {
 
 
   @override
-  IUser currentUser() {
+  IUser getCurrentUser() {
     // create IUser object
     return IUser(uid: _firebaseAuth.currentUser!.uid, email: _firebaseAuth.currentUser!.email!);
   }
@@ -106,5 +106,11 @@ class FirebaseAuthService extends AuthRepository {
   Future<void> updateUserData(String firstname, String lastName, String birthday) async {
 
 
+  }
+
+  @override
+  Future<bool> isUserLoggedIn() {
+    // check if user is logged in or not
+    return Future.value(_firebaseAuth.currentUser != null);
   }
 }
