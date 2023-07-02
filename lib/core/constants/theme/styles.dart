@@ -1,26 +1,38 @@
 import 'package:flutter/material.dart';
 
-const HTHintTextStyle = TextStyle(
+const htHintTextStyle = TextStyle(
   color: Colors.white54,
+  letterSpacing: 1.3,
   fontFamily: 'OpenSans',
 );
 
-const HTLabelStyle =  TextStyle(
+const htLabelStyle =  TextStyle(
+  color: Colors.white,
+  fontWeight: FontWeight.normal,
+  fontFamily: 'OpenSans',
+  fontSize: 14
+);
+const htBoldLabelStyle =  TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSans',
-  fontSize: 20
+  fontSize: 16
 );
 
-const HTSmallLabelStyle = TextStyle(
+const htSmallLabelStyle = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSans',
   fontSize: 14
 );
 
-const HTTitleStyle =  TextStyle(
+const htTitleStyle =  TextStyle(
   color: Colors.white,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'OpenSansbold',
+);
+const htTitleStyle2 =  TextStyle(
+  color: Color(0xFFFE9879),
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSansbold',
 );

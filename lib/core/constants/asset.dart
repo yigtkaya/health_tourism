@@ -8,5 +8,6 @@ class AssetConstants {
 }
 
 class DTIcons {
-  final String transparentHalfWave = AssetConstants.toIcon("transparent_half_wave");
+  final String googleIcon = AssetConstants.toIcon("google_icon");
+  final String facebookIcon = AssetConstants.toIcon("facebook_icon");
 }

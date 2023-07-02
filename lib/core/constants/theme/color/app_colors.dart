@@ -24,5 +24,7 @@ class AppColors {
   final black = const Color(0xff000000);
   final darkPurple = const Color(0x401e183a);
   final lightPurple = const Color(0xff312b4f);
+  final pastelBlue = const Color(0xFFA3C7E7);
+  final pastelWhite = const Color(0xFFE5E5E5);
 
 }

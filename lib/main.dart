@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:health_tourism/view/login/LoginView.dart';
-import 'package:health_tourism/view/root/root_view.dart';
+import 'package:health_tourism/product/navigation/router.dart';
+
 
 
 Future<void> main() async {
@@ -19,12 +19,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  LoginView(),
     );
   }
 }

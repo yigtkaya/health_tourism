@@ -23,10 +23,10 @@ class RootView extends StatelessWidget {
               goTo(path: RoutePath.landing);
             } else if (state is NotAuthenticated) {
               // TO DO: Navigate to login page
-              goTo(path: RoutePath.login);
+              goTo(path: RoutePath.signIn);
             } else if (state is AuthError) {
               // TO DO: Show error message and navigate to login page
-              goTo(path: RoutePath.login);
+              goTo(path: RoutePath.signIn);
             } else if (state is FirstRun) {
               // TO DO: Navigate to onboarding page
               goTo(path: RoutePath.onBoarding);

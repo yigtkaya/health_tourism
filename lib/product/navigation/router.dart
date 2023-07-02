@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
+import 'package:health_tourism/view/login/LoginPage_codeRew.dart';
 import 'package:health_tourism/view/login/LoginView.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
@@ -15,17 +16,16 @@ import '../../view/sign_up/sign_up_view.dart';
 class RoutePath {
   RoutePath._();
 
-  static const String landing = '/';
+  static const String root = '/';
   static const String splash = '/splash';
-  static const String login = '/landing';
+  static const String landing = '/landing';
   static const String signIn = '/signIn';
-  static const String signUp = '/signUp';
-  static const String root = '/root';
+  static const String register = '/register';
   static const String onBoarding = '/onBoarding';
 
 }
 
-final GoRouter router = GoRouter(routes: [
+final GoRouter router = GoRouter(routes: <RouteBase>[
   GoRoute(
       path: RoutePath.landing,
       builder: (context, state) {
@@ -47,12 +47,12 @@ final GoRouter router = GoRouter(routes: [
         return const RootView();
       }),
   GoRoute(
-      path: RoutePath.login,
+      path: RoutePath.signIn,
       builder: (context, state) {
         return  LoginView();
       }),
   GoRoute(
-      path: RoutePath.signUp,
+      path: RoutePath.register,
       builder: (context, state) {
         return const SignUpView();
       }),

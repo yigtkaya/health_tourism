@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../core/components/ht_text_field.dart';
+import '../../core/components/ht_email_field.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../core/constants/theme/color/gradient_colors.dart';
 import '../../core/constants/theme/styles.dart';
@@ -63,11 +63,7 @@ class SignUpView extends StatelessWidget {
                   const VerticalSpace(
                     spaceAmount: 20,
                   ),
-                  const HTText(label: "Email", style: HTLabelStyle),
-                  HTTextField(
-                    textController: emailController,
-                    title: "Email",
-                  ),
+                  const HTText(label: "Email", style: htLabelStyle),
                   const HTText(
                       label: "error",
                       style: null,
@@ -75,11 +71,8 @@ class SignUpView extends StatelessWidget {
                   const VerticalSpace(
                     spaceAmount: 30,
                   ),
-                  const HTText(label: "Password", style: HTLabelStyle),
-                  HTTextField(
-                    textController: passwordController,
-                    title: "Password",
-                  ),
+                  const HTText(label: "Password", style: htLabelStyle),
+
                   const HTText(
                       label: "error",
                       style: null,
@@ -87,11 +80,7 @@ class SignUpView extends StatelessWidget {
                   const VerticalSpace(
                     spaceAmount: 20,
                   ),
-                  const HTText(label: "Confirm Password", style: HTLabelStyle),
-                  HTTextField(
-                    textController: confirmPasswordController,
-                    title: "Confirm Password",
-                  ),
+                  const HTText(label: "Confirm Password", style: htLabelStyle),
                   HTText(
                       label: "pwErrer",
                       style: null,
@@ -123,7 +112,7 @@ class SignUpView extends StatelessWidget {
                   ),
                   const Align(
                       alignment: Alignment.center,
-                      child: HTText(label: "OR", style: HTLabelStyle)),
+                      child: HTText(label: "OR", style: htLabelStyle)),
                   const VerticalSpace(
                     spaceAmount: 30,
                   ),
@@ -161,7 +150,7 @@ class SignUpView extends StatelessWidget {
                                 label: "Sign in with Google",
                                 color: ThemeManager.instance?.getCurrentTheme
                                     .colorTheme.colors.abbey,
-                                style: HTLabelStyle,
+                                style: htLabelStyle,
                               ),
                             )
                           ],
@@ -183,8 +172,8 @@ class SignUpView extends StatelessWidget {
                             children: [
                               TextSpan(
                                   text: 'Already have account? ',
-                                  style: HTLabelStyle),
-                              TextSpan(text: 'Sign In', style: HTLabelStyle),
+                                  style: htLabelStyle),
+                              TextSpan(text: 'Sign In', style: htLabelStyle),
                             ],
                           ),
                         ),
