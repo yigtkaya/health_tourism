@@ -21,10 +21,10 @@ class Authenticated extends AuthState {
   const Authenticated(this.user);
 
   @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
 
-    return o is Authenticated && o.user == user;
+    return other is Authenticated && other.user == user;
   }
 
   @override
@@ -40,10 +40,10 @@ class AuthError extends AuthState {
   const AuthError(this.message);
 
   @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
 
-    return o is AuthError && o.message == message;
+    return other is AuthError && other.message == message;
   }
 
   @override

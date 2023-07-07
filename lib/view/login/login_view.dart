@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_checkbox.dart';
 import 'package:health_tourism/core/components/ht_password_field.dart';
@@ -9,7 +8,6 @@ import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
-import 'package:health_tourism/view/sign_up/sign_up_view.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
@@ -74,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       signInButton(size),
                       const VerticalSpace(
-                        spaceAmount: DimenConstant.LARGE,
+                        spaceAmount: DimenConstant.VERY_LARGE,
                       ),
                       buildContinueText(),
                     ],
@@ -120,16 +118,21 @@ Widget loginTitle() {
 }
 
 Widget signInButton(Size size) {
-  return Container(
-    alignment: Alignment.center,
-    height: size.height / 13,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10.0),
-      color: const Color(0xFFEF8733),
-    ),
-    child: const Text(
-      'Sign in',
-      style: htBoldLabelStyle,
+  return GestureDetector(
+    onTap: () {
+
+    },
+    child: Container(
+      alignment: Alignment.center,
+      height: size.height / 13,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: const Color(0xFFEF8733),
+      ),
+      child: const Text(
+        'Sign in',
+        style: htBoldLabelStyle,
+      ),
     ),
   );
 }

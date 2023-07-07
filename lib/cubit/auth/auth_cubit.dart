@@ -4,10 +4,13 @@ import 'package:health_tourism/core/services/firebase_auth_service.dart';
 import 'AuthState.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final FirebaseAuthService _authRepository;
+  final FirebaseAuthService _authRepository = FirebaseAuthService();
   final firebaseAuth = FirebaseAuth.instance;
 
-  AuthCubit(this._authRepository) : super(const AuthInitial());
+  AuthCubit() : super(const AuthInitial());
+
+  @override
+  List<Object> get props => [];
 
   // check if user is logged in
   Future<void> checkIfUserIsLoggedIn() async {
