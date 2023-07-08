@@ -1,192 +1,267 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../../core/components/ht_email_field.dart';
-import '../../core/constants/horizontal_space.dart';
-import '../../core/constants/theme/color/gradient_colors.dart';
-import '../../core/constants/theme/styles.dart';
-import '../../core/constants/theme/theme_manager.dart';
-import '../../core/constants/vertical_space.dart';
-import '../../core/components/ht_text.dart';
-import '../login/LoginView.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:health_tourism/core/components/ht_checkbox.dart';
+import 'package:health_tourism/core/components/ht_password_field.dart';
+import 'package:health_tourism/core/components/ht_text.dart';
+import 'package:health_tourism/core/components/ht_email_field.dart';
+import 'package:health_tourism/core/constants/theme/styles.dart';
+import 'package:health_tourism/core/constants/vertical_space.dart';
+import '../../product/navigation/router.dart';
+import '../../core/components/ht_icon.dart';
+import '../../core/constants/asset.dart';
+import '../../core/constants/dimen.dart';
 
-
-class SignUpView extends StatelessWidget {
+class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
 
   @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
-    final GlobalKey<FormState> addressFormKey = GlobalKey<FormState>();
-
-
-    return SafeArea(
-        child: Scaffold(
-      backgroundColor: Colors.white,
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                ColorConstants
-                    .colorPlateList[7 % (ColorConstants.colorPlateList.length)]
-                    .startColor,
-                ColorConstants
-                    .colorPlateList[7 % (ColorConstants.colorPlateList.length)]
-                    .endColor,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: const [0.0, 1.2],
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Form(
-              key: addressFormKey,
+      backgroundColor: const Color(0xFF81A1C8),
+      body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(),
-                  const Align(
-                      alignment: Alignment.center,
+                  Expanded(
+                    flex: 3,
+                    child: loginTitle(),
+                  ),
+                  const Expanded(
+                      flex: 1,
                       child: HTText(
-                        label: "Sign Up",
-                        style: null,
-                        color: Colors.white,
+                          label: "Continue with email for sign up App",
+                          style: htLabelStyle)),
+                  // email address textField
+                  Expanded(
+                      flex: 4,
+                      child: Column(
+                        children: [
+                          HTEmailField(
+                              textController: emailController,
+                              hintText: "Enter your email address",
+                              iconName: Icons.mail_rounded),
+                          const VerticalSpace(),
+                          HTPasswordField(
+                              textController: passController,
+                              hintText: "Enter your password",
+                              iconName: Icons.lock),
+                          const VerticalSpace(),
+                        ],
                       )),
-                  const VerticalSpace(
-                    spaceAmount: 20,
-                  ),
-                  const HTText(label: "Email", style: htLabelStyle),
-                  const HTText(
-                      label: "error",
-                      style: null,
-                      color: Colors.red),
-                  const VerticalSpace(
-                    spaceAmount: 30,
-                  ),
-                  const HTText(label: "Password", style: htLabelStyle),
-
-                  const HTText(
-                      label: "error",
-                      style: null,
-                      color: Colors.red),
-                  const VerticalSpace(
-                    spaceAmount: 20,
-                  ),
-                  const HTText(label: "Confirm Password", style: htLabelStyle),
-                  HTText(
-                      label: "pwErrer",
-                      style: null,
-                      color: Colors.red),
-                  const VerticalSpace(
-                    spaceAmount: 50,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: const Color(0xFF4989D7),
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            )),
-                        onPressed: () {
-                        },
-                        child: HTText(
-                          label: "SIGN UP",
-                          color: Colors.blue,
-                          style: null,
-                        )),
-                  ),
-                  const VerticalSpace(
-                    spaceAmount: 50,
-                  ),
-                  const Align(
-                      alignment: Alignment.center,
-                      child: HTText(label: "OR", style: htLabelStyle)),
-                  const VerticalSpace(
-                    spaceAmount: 30,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: const Color(0xFF4989D7),
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            )),
-                        onPressed: () {
-                        },
-                        child: Row(
+                  Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: [
+                          signInButton(size),
+                          const VerticalSpace(
+                            spaceAmount: DimenConstant.VERY_LARGE,
+                          ),
+                          buildContinueText(),
+                        ],
+                      )),
+                  Expanded(
+                      flex: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              height: 35.0,
-                              width: 30.0,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/google.png'),
-                                    fit: BoxFit.cover),
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const HorizontalSpace(),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: HTText(
-                                label: "Sign in with Google",
-                                color: ThemeManager.instance?.getCurrentTheme
-                                    .colorTheme.colors.abbey,
-                                style: htLabelStyle,
-                              ),
-                            )
+                            signInGoogleFacebookButton(size),
+                            const Spacer(),
+                            buildFooter(context),
                           ],
-                        )),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: GestureDetector(
-                        onTap: () => {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => LoginView())
-                          )
-                        },
-                        child: RichText(
-                          text: const TextSpan(
-                            children: [
-                              TextSpan(
-                                  text: 'Already have account? ',
-                                  style: htLabelStyle),
-                              TextSpan(text: 'Sign In', style: htLabelStyle),
-                            ],
-                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      )),
                 ],
               ),
             ),
-          ),
+          )),
+    );
+  }
+}
+
+
+// ^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$
+
+Widget loginTitle() {
+  return Text.rich(
+    TextSpan(
+      style: GoogleFonts.inter(
+        fontSize: 24,
+        color: Colors.white,
+        letterSpacing: 1.8,
+      ),
+      children: const [
+        TextSpan(
+          text: 'SIGNUP',
+          style: htTitleStyle,
+        ),
+        TextSpan(text: 'PAGE', style: htTitleStyle2),
+      ],
+    ),
+  );
+}
+
+Widget signInButton(Size size) {
+  return GestureDetector(
+    onTap: () {
+
+    },
+    child: Container(
+      alignment: Alignment.center,
+      height: size.height / 13,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: const Color(0xFFEF8733),
+      ),
+      child: const Text(
+        'Sign up',
+        style: htBoldLabelStyle,
+      ),
+    ),
+  );
+}
+
+Widget buildContinueText() {
+  return const Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: <Widget>[
+      Expanded(
+          child: Divider(
+            color: Colors.white,
+          )),
+      Expanded(
+        child: Text(
+          'Or Continue with',
+          style: htLabelStyle,
+          textAlign: TextAlign.center,
         ),
       ),
-    ));
-  }
+      Expanded(
+          child: Divider(
+            color: Color(0xFFE5E5E5),
+          )),
+    ],
+  );
+}
 
+Widget signInGoogleFacebookButton(Size size) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: <Widget>[
+      //sign in google button
+      Container(
+        alignment: Alignment.center,
+        width: size.width / 3,
+        height: size.height / 16,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(
+            width: 1.0,
+            color: Colors.white,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //icon of google
+            HTIcon(
+              iconName: AssetConstants.icons.googleIcon,
+              width: 28,
+              height: 28,
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            //google txt
+            const Text(
+              'Google',
+              style: htLabelStyle,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(
+        width: 16,
+      ),
+
+      //sign in facebook button
+      Container(
+        alignment: Alignment.center,
+        width: size.width / 3,
+        height: size.height / 16,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(
+            width: 1.0,
+            color: Colors.white,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //facebook icon
+            HTIcon(
+              iconName: AssetConstants.icons.facebookIcon,
+              width: 28,
+              height: 28,
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            //facebook txt
+            const Text(
+              'Facebook',
+              textAlign: TextAlign.center,
+              style: htLabelStyle,
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Widget buildFooter(BuildContext context) {
+  return Text.rich(
+    TextSpan(
+      style: htLabelStyle,
+      children: [
+        TextSpan(
+          text: 'Already have account? ',
+          style: GoogleFonts.nunito(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        TextSpan(
+          text: 'Sign In',
+          recognizer: TapGestureRecognizer()..onTap = () {
+            goTo(path: RoutePath.signIn);
+          },
+          style: GoogleFonts.nunito(
+            color: const Color(0xFFEF8733),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    ),
+  );
 }

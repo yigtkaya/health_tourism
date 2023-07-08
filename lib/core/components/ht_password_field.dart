@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_tourism/core/components/ht_text.dart';
 
+import '../constants/horizontal_space.dart';
 import '../constants/theme/styles.dart';
+import '../constants/vertical_space.dart';
 
 class HTPasswordField extends StatefulWidget {
   final TextEditingController textController;
@@ -22,6 +25,8 @@ class HTPasswordField extends StatefulWidget {
 }
 
 class _HTPasswordFieldState extends State<HTPasswordField> {
+  bool _isSecure = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,14 +60,34 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
             Expanded(
               child:TextField(
                 maxLines: 1,
+                onChanged: (value) {
+                },
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
+                obscureText: _isSecure,
                 style: htLabelStyle,
                 decoration: InputDecoration(
-                  suffixIcon: const Icon(
-                    Icons.visibility,
-                    color: Colors.white70,
+                  suffixIcon: _isSecure ?  IconButton(
+                    icon: const Icon(
+                        Icons.visibility_off,
+                        color: Colors.white70,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isSecure = !_isSecure;
+                      });
+                    },
+
+                  ) : IconButton(
+                    icon: const Icon(
+                      Icons.visibility,
+                      color: Colors.white70,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isSecure = !_isSecure;
+                      });
+                    },
                   ),
                     hintText: widget.hintText,
                     hintStyle: htHintTextStyle,

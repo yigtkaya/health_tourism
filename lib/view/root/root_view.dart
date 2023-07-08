@@ -16,7 +16,7 @@ class RootView extends StatelessWidget {
           if (state is Authenticated) {
             return const LandingView();
           }
-          return const LoginPage();
+          return const LoginView();
         });
   }
 }

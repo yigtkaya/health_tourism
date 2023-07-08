@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../constants/theme/styles.dart';
 
 class HTEmailField extends StatefulWidget {
@@ -53,7 +51,7 @@ class _HTEmailFieldState extends State<HTEmailField> {
 
             //email address textField
             Expanded(
-              child: TextField(
+              child: TextFormField(
                 maxLines: 1,
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.emailAddress,

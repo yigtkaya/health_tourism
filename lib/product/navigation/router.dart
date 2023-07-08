@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
-import 'package:health_tourism/view/login/LoginView.dart';
 import 'package:health_tourism/view/login/login_view.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
@@ -46,7 +45,7 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
   GoRoute(
       path: RoutePath.signIn,
       builder: (context, state) {
-        return  LoginView();
+        return  const LoginView();
       }),
   GoRoute(
       path: RoutePath.register,

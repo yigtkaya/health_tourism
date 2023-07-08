@@ -52,12 +52,12 @@ dependencies:
   google_fonts:
   google_sign_in:
   email_validator:
+  flutter_pw_validator:
 
   shared_preferences:
   flutter_local_notifications:
 
   go_router:
-
 
 dev_dependencies:
   flutter_test:

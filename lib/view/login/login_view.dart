@@ -1,28 +1,57 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_tourism/core/components/ht_checkbox.dart';
 import 'package:health_tourism/core/components/ht_password_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
+import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
+import 'package:health_tourism/cubit/auth/auth_cubit.dart';
+import 'package:health_tourism/cubit/button/button_cubit.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/dimen.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+
+class LoginView extends StatefulWidget {
+  const LoginView({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+class _LoginViewState extends State<LoginView> {
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+
+
+  final authCubit = AuthCubit();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
+
+  bool isEnabled() {
+    if (EmailValidator.validate(emailController.text) && passController.text.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,17 +89,26 @@ class _LoginPageState extends State<LoginPage> {
                           textController: passController,
                           hintText: "Enter your password",
                           iconName: Icons.lock),
-                      const VerticalSpace(
-                        spaceAmount: DimenConstant.LARGE,
-                      ),
-                      const HTCheckBox(checkboxText: "Remember me"),
+                      const VerticalSpace(),
+
                     ],
                   )),
               Expanded(
                   flex: 2,
                   child: Column(
                     children: [
-                      signInButton(size),
+                      GestureDetector(onTap: () {
+                        // check email is valid and password is not empty then sign in
+                        if (authCubit.isEmailValid(emailController.text)) {
+                          if (passController.text.isNotEmpty) {
+                            authCubit.signInWithEmailAndPassword(emailController.text, passController.text);
+                          }
+                        } else {
+                            print("Error");
+                        }
+                        print("sign in button tapped");
+                      },
+                          child: signInButton(size)),
                       const VerticalSpace(
                         spaceAmount: DimenConstant.VERY_LARGE,
                       ),
@@ -84,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        signInGoogleFacebookButton(size),
+                        signInGoogleFacebookButton(size, authCubit),
                         const Spacer(),
                         buildFooter(context),
                       ],
@@ -118,21 +156,16 @@ Widget loginTitle() {
 }
 
 Widget signInButton(Size size) {
-  return GestureDetector(
-    onTap: () {
-
-    },
-    child: Container(
-      alignment: Alignment.center,
-      height: size.height / 13,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: const Color(0xFFEF8733),
-      ),
-      child: const Text(
-        'Sign in',
-        style: htBoldLabelStyle,
-      ),
+  return Container(
+    alignment: Alignment.center,
+    height: size.height / 13,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10.0),
+      color: const Color(0xFFEF8733),
+    ),
+    child: const Text(
+      'Sign in',
+      style: htBoldLabelStyle,
     ),
   );
 }
@@ -161,42 +194,48 @@ Widget buildContinueText() {
   );
 }
 
-Widget signInGoogleFacebookButton(Size size) {
+Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
       //sign in google button
-      Container(
-        alignment: Alignment.center,
-        width: size.width / 3,
-        height: size.height / 16,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-            width: 1.0,
-            color: Colors.white,
+      GestureDetector(
+        onTap: () {
+          authCubit.signInWithGoogle();
+          print("sign in google button tapped");
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: size.width / 3,
+          height: size.height / 16,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(
+              width: 1.0,
+              color: Colors.white,
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //icon of google
-            HTIcon(
-              iconName: AssetConstants.icons.googleIcon,
-              width: 28,
-              height: 28,
-            ),
-            const SizedBox(
-              width: 16,
-            ),
-            //google txt
-            const Text(
-              'Google',
-              style: htLabelStyle,
-              textAlign: TextAlign.center,
-            ),
-          ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //icon of google
+              HTIcon(
+                iconName: AssetConstants.icons.googleIcon,
+                width: 28,
+                height: 28,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              //google txt
+              const Text(
+                'Google',
+                style: htLabelStyle,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
       const SizedBox(
@@ -255,7 +294,6 @@ Widget buildFooter(BuildContext context) {
           text: 'Sign up',
           recognizer: TapGestureRecognizer()..onTap = () {
             goTo(path: RoutePath.register);
-            print("deneme");
           },
           style: GoogleFonts.nunito(
             color: const Color(0xFFEF8733),
