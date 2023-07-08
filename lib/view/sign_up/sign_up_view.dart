@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_checkbox.dart';
 import 'package:health_tourism/core/components/ht_password_field.dart';
@@ -8,6 +9,7 @@ import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
+import '../../cubit/button/validation_cubit.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
@@ -57,6 +59,7 @@ class _SignUpViewState extends State<SignUpView> {
                               iconName: Icons.mail_rounded),
                           const VerticalSpace(),
                           HTPasswordField(
+                              onChanged: context.read<ValidationCubit>().validatePassword("value"),
                               textController: passController,
                               hintText: "Enter your password",
                               iconName: Icons.lock),

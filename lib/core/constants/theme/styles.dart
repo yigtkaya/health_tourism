@@ -12,6 +12,12 @@ const htLabelStyle =  TextStyle(
   fontFamily: 'OpenSans',
   fontSize: 14
 );
+const htLabelBlackStyle =  TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.normal,
+  fontFamily: 'OpenSans',
+  fontSize: 14
+);
 const htBoldLabelStyle =  TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,

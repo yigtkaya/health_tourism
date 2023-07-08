@@ -2,16 +2,13 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_password_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
-import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
-import 'package:health_tourism/cubit/button/button_cubit.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
@@ -87,6 +84,7 @@ class _LoginViewState extends State<LoginView> {
                       const VerticalSpace(),
                       HTPasswordField(
                           textController: passController,
+                          validation: false,
                           hintText: "Enter your password",
                           iconName: Icons.lock),
                       const VerticalSpace(),
@@ -116,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
                     ],
                   )),
               Expanded(
-                  flex: 4,
+                  flex: 3,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: Column(
