@@ -59,7 +59,7 @@ class _SignUpViewState extends State<SignUpView> {
                               iconName: Icons.mail_rounded),
                           const VerticalSpace(),
                           HTPasswordField(
-                              onChanged: context.read<ValidationCubit>().validatePassword("value"),
+                              validation: true,
                               textController: passController,
                               hintText: "Enter your password",
                               iconName: Icons.lock),
@@ -78,7 +78,7 @@ class _SignUpViewState extends State<SignUpView> {
                         ],
                       )),
                   Expanded(
-                      flex: 4,
+                      flex: 3,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 20.0),
                         child: Column(
@@ -98,8 +98,6 @@ class _SignUpViewState extends State<SignUpView> {
   }
 }
 
-
-// ^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$
 
 Widget loginTitle() {
   return Text.rich(

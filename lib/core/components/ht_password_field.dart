@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
+import 'package:health_tourism/core/components/validation.dart';
 import 'package:health_tourism/cubit/button/validation_cubit.dart';
 import 'package:health_tourism/cubit/button/validation_state.dart';
 
@@ -69,9 +70,9 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
                     Expanded(
                       child:TextField(
                         maxLines: 1,
-                        onChanged: (value) {
+                        onChanged: widget.validation ?(value) {
                           context.read<ValidationCubit>().validatePassword(value);
-                        },
+                        } : (value) {},
                         cursorColor: Colors.white70,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: _isSecure,
@@ -109,62 +110,10 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
               ),
             ),
             const VerticalSpace(),
-            Row(
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      color: context.read<ValidationCubit>().state.isPasswordLongEnough ?  Colors.green : Colors.transparent,
-                      border: context.read<ValidationCubit>().state.isPasswordLongEnough ? Border.all(color: Colors.transparent) :
-                      Border.all(color: Colors.grey.shade400),
-                      borderRadius: BorderRadius.circular(50)
-                  ),
-                  child: const Center(child: Icon(Icons.check, color: Colors.white, size: 15,),),
-                ),
-                const HorizontalSpace(spaceAmount: 10,),
-                const HTText(label: "Contains at least 8 characters", style: htLabelBlackStyle)
-              ],
-            ),
-            const VerticalSpace(spaceAmount: 10,),
-            Row(
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      color: context.read<ValidationCubit>().state.hasOneNumber ?  Colors.green : Colors.transparent,
-                      border: context.read<ValidationCubit>().state.hasOneNumber ? Border.all(color: Colors.transparent) :
-                      Border.all(color: Colors.grey.shade400),
-                      borderRadius: BorderRadius.circular(50)
-                  ),
-                  child: const Center(child: Icon(Icons.check, color: Colors.white, size: 15,),),
-                ),
-                const HorizontalSpace(spaceAmount: 10,),
-                const HTText(label: "Contains at least 1 number", style: htLabelBlackStyle,)
-              ],
-            ),
-            const VerticalSpace(spaceAmount: 10,),
-            Row(
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      color: context.read<ValidationCubit>().state.hasOneUpperCase ?  Colors.green : Colors.transparent,
-                      border: context.read<ValidationCubit>().state.hasOneUpperCase ? Border.all(color: Colors.transparent) :
-                      Border.all(color: Colors.grey.shade400),
-                      borderRadius: BorderRadius.circular(50)
-                  ),
-                  child: const Center(child: Icon(Icons.check, color: Colors.white, size: 15,),),
-                ),
-                const HorizontalSpace(spaceAmount: 10,),
-                const HTText(label: "Contains at least 1 Upper case", style: htLabelBlackStyle,)
-              ],
-            ),
+            !widget.validation ? const SizedBox() : ValidationContainer(
+                isPasswordLongEnough: context.read<ValidationCubit>().state.isPasswordLongEnough,
+                isPasswordContainsNumber: context.read<ValidationCubit>().state.hasOneNumber,
+                isPasswordContainsUpperCase: context.read<ValidationCubit>().state.hasOneUpperCase,)
           ],
         );
       },
