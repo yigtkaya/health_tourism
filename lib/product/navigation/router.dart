@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/view/forgot_password/forgot_password.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
 import 'package:health_tourism/view/login/login_view.dart';
 import 'package:health_tourism/view/root/root_view.dart';
@@ -18,6 +19,7 @@ class RoutePath {
   static const String signIn = '/signIn';
   static const String register = '/register';
   static const String onBoarding = '/onBoarding';
+  static const String forgotPassword = '/forgotPassword';
 
 }
 
@@ -51,6 +53,11 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
       path: RoutePath.register,
       builder: (context, state) {
         return const SignUpView();
+      }),
+  GoRoute(
+      path: RoutePath.forgotPassword,
+      builder: (context, state) {
+        return const ForgotPasswordView();
       }),
 ],);
 

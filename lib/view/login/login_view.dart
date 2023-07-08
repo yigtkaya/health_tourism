@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_tourism/core/components/ht_checkbox.dart';
 import 'package:health_tourism/core/components/ht_password_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
@@ -14,7 +15,6 @@ import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/dimen.dart';
 
-
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -23,10 +23,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
-
 
   final authCubit = AuthCubit();
 
@@ -43,7 +41,8 @@ class _LoginViewState extends State<LoginView> {
   }
 
   bool isEnabled() {
-    if (EmailValidator.validate(emailController.text) && passController.text.isNotEmpty) {
+    if (EmailValidator.validate(emailController.text) &&
+        passController.text.isNotEmpty) {
       return true;
     } else {
       return false;
@@ -88,24 +87,26 @@ class _LoginViewState extends State<LoginView> {
                           hintText: "Enter your password",
                           iconName: Icons.lock),
                       const VerticalSpace(),
-
+                      rememberMeRow(),
                     ],
                   )),
               Expanded(
                   flex: 2,
                   child: Column(
                     children: [
-                      GestureDetector(onTap: () {
-                        // check email is valid and password is not empty then sign in
-                        if (authCubit.isEmailValid(emailController.text)) {
-                          if (passController.text.isNotEmpty) {
-                            authCubit.signInWithEmailAndPassword(emailController.text, passController.text);
-                          }
-                        } else {
-                            print("Error");
-                        }
-                        print("sign in button tapped");
-                      },
+                      GestureDetector(
+                          onTap: () {
+                            // check email is valid and password is not empty then sign in
+                            if (authCubit.isEmailValid(emailController.text)) {
+                              if (passController.text.isNotEmpty) {
+                                authCubit.signInWithEmailAndPassword(
+                                    emailController.text, passController.text);
+                              }
+                            } else {
+                              print("Error");
+                            }
+                            print("sign in button tapped");
+                          },
                           child: signInButton(size)),
                       const VerticalSpace(
                         spaceAmount: DimenConstant.VERY_LARGE,
@@ -150,6 +151,32 @@ Widget loginTitle() {
         TextSpan(text: 'PAGE', style: htTitleStyle2),
       ],
     ),
+  );
+}
+
+Widget rememberMeRow() {
+  return Row(
+    children: [
+      const HTCheckBox(
+        checkboxText: "Remember me",
+      ),
+      const Spacer(),
+      Text.rich(
+        TextSpan(
+          style: htLabelStyle,
+          children: [
+            TextSpan(
+              text: 'Forgot Password?',
+              style: htLabelStyle,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  goTo(path: RoutePath.forgotPassword);
+                },
+            ),
+          ],
+        ),
+      ),
+    ],
   );
 }
 
@@ -290,9 +317,10 @@ Widget buildFooter(BuildContext context) {
         ),
         TextSpan(
           text: 'Sign up',
-          recognizer: TapGestureRecognizer()..onTap = () {
-            goTo(path: RoutePath.register);
-          },
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              goTo(path: RoutePath.register);
+            },
           style: GoogleFonts.nunito(
             color: const Color(0xFFEF8733),
             fontWeight: FontWeight.w600,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:health_tourism/core/constants/horizontal_space.dart';
 
 import '../constants/theme/styles.dart';
 
@@ -32,9 +33,7 @@ class _HTCheckBoxState extends State<HTCheckBox> {
             'assets/images/checkbox.svg',
           ),
         ),
-        const SizedBox(
-          width: 16,
-        ),
+        const HorizontalSpace(),
         Text(
           widget.checkboxText,
           style: htLabelStyle,
