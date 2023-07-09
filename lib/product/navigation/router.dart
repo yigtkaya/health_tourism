@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/view/forgot_password/forgot_password.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
@@ -48,12 +49,34 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
       path: RoutePath.signIn,
       builder: (context, state) {
         return  const LoginView();
-      }),
+      },),
   GoRoute(
       path: RoutePath.register,
-      builder: (context, state) {
-        return const SignUpView();
-      }),
+    pageBuilder: (context, state) {
+      return CustomTransitionPage(
+        transitionDuration: const Duration(milliseconds: 500),
+        key: state.pageKey,
+        child: const SignUpView(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          // Change the opacity of the screen using a Curve based on the the animation's value
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+
+          final tween = Tween(begin: begin, end: end);
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: curve,
+          );
+
+          return SlideTransition(
+            position: tween.animate(curvedAnimation),
+            child: child,
+          );
+        },
+      );
+    },
+  ),
   GoRoute(
       path: RoutePath.forgotPassword,
       builder: (context, state) {
