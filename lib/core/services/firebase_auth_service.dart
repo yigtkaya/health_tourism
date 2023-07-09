@@ -1,7 +1,9 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:health_tourism/core/services/auth_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,6 +44,7 @@ class FirebaseAuthService extends AuthRepository {
         authUser.user?.reload();
 
         if (authUser.user!.emailVerified) {
+          sendResetPassword();
         } else {
           authUser.user!.sendEmailVerification();
         }
@@ -50,8 +53,10 @@ class FirebaseAuthService extends AuthRepository {
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       // TO DO show error message
+      showToastMessage(e.code);
     } catch (e) {
       // TO DO show error message
+      print(e.toString());
     }
   }
 
@@ -80,6 +85,7 @@ class FirebaseAuthService extends AuthRepository {
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       // TO DO show error message
+    showToastMessage(message);
     } catch (e) {
       // TO DO show error message
     }
@@ -138,5 +144,16 @@ class FirebaseAuthService extends AuthRepository {
   Future<void> sendResetPassword() {
     // TODO: implement sendResetPassword
     throw UnimplementedError();
+  }
+
+  void showToastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.blueGrey,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }

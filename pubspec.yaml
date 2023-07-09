@@ -54,6 +54,7 @@ dependencies:
   google_sign_in:
   email_validator:
   flutter_pw_validator:
+  fluttertoast:
 
   shared_preferences:
   flutter_local_notifications:
