@@ -73,14 +73,10 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
                       child:TextField(
                         maxLines: 1,
                         onChanged: widget.validation ? (value) {
-                          try {
-                            context.read<ValidationCubit>().validatePassword(value);
                             widget.onChanged(value);
-                          } on Exception catch (e) {
-                            // TODO
-                            print(e.toString());
-                          }
-                        } : (value) {},
+                        } : (value) {
+                          widget.onChanged(value);
+                        },
                         cursorColor: Colors.white70,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: _isSecure,
