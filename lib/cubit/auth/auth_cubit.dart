@@ -14,13 +14,6 @@ class AuthCubit extends Cubit<AuthState> {
   @override
   List<Object> get props => [];
 
-  void updateEmail(String email) {
-    emit(AuthEmailUpdated(email));
-  }
-
-  void updatePassword(String password) {
-    emit(AuthPasswordUpdated(password));
-  }
   void updatePasswordConfirm(String passwordSec) {
     emit(AuthPasswordConfirmUpdated(passwordSec));
   }
@@ -41,9 +34,6 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
-      email = (state as AuthEmailUpdated).email;
-      password = (state as AuthPasswordUpdated).password;
-  print(email + password + "email and password");
       emit(const AuthLoading());
       await _authRepository.signInWithEmailAndPassword(email: email, password: password);
       emit(Authenticated(firebaseAuth.currentUser!));
@@ -59,26 +49,6 @@ class AuthCubit extends Cubit<AuthState> {
       await _authRepository.signUpWithEmailAndPassword(email: email, password: password);
       final currentUser = _authRepository.getCurrentUser();
       emit(Authenticated(currentUser));
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> signUp(String email, String password) async {
-    try {
-      emit(const AuthLoading());
-      await _authRepository.signUpWithEmailAndPassword(email: email, password: password);
-      emit(Authenticated(firebaseAuth.currentUser!));
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> logout() async {
-    try {
-      emit(const AuthLoading());
-      await _authRepository.logout();
-      emit(const NotAuthenticated());
     } catch (e) {
       emit(AuthError(e.toString()));
     }
@@ -130,5 +100,15 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // create a function to sign out
+  Future<void> signOut() async {
+    try {
+      emit(const AuthLoading());
+      await _authRepository.logout();
+      emit(const NotAuthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 
 }

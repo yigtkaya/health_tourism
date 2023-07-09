@@ -1,6 +1,4 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +28,7 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController passController = TextEditingController();
   bool isChecked = false;
   String email = '';
+  String password = '';
 
   final authCubit = AuthCubit();
 
@@ -43,6 +42,18 @@ class _LoginViewState extends State<LoginView> {
     emailController.dispose();
     passController.dispose();
     super.dispose();
+  }
+
+  void updateEmail(String value) {
+    setState(() {
+      email = value;
+    });
+  }
+
+  void updatePassword(String value) {
+    setState(() {
+      password = value;
+    });
   }
 
   bool isEnabled() {
@@ -83,7 +94,7 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       HTEmailField(
                           onChanged: (value) {
-                            context.read<AuthCubit>().updateEmail(value);
+                            updateEmail(value);
                           },
                           textController: emailController,
                           hintText: "Enter your email address",
@@ -91,7 +102,7 @@ class _LoginViewState extends State<LoginView> {
                       const VerticalSpace(),
                       HTPasswordField(
                           onChanged: (value) {
-                            context.read<AuthCubit>().updatePassword(value);
+                            updatePassword(value);
                           },
                           textController: passController,
                           validation: false,
@@ -121,7 +132,7 @@ class _LoginViewState extends State<LoginView> {
                                   style: htLabelStyle,
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      goTo(path: RoutePath.forgotPassword);
+                                      BlocProvider.of<AuthCubit>(context).signOut();
                                     },
                                 ),
                               ],
@@ -138,10 +149,7 @@ class _LoginViewState extends State<LoginView> {
                       GestureDetector(
                           onTap: () {
                             // check email is valid and password is not empty then sign in
-                            context
-                                .read<AuthCubit>()
-                                .signInWithEmailAndPassword(
-                                    email, passController.text);
+                            BlocProvider.of<AuthCubit>(context).signInWithEmailAndPassword(email, password);
                             print("object");
                           },
                           child: signInButton(size)),

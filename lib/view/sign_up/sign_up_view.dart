@@ -22,8 +22,45 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+  final TextEditingController confPassController = TextEditingController();
+  String email = '';
+  String password = '';
+  String confPassword = '';
+
+  final authCubit = AuthCubit();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    confPassController.dispose();
+    super.dispose();
+  }
+
+  void updateEmail(String value) {
+    setState(() {
+      email = value;
+    });
+  }
+
+  void updatePassword(String value) {
+    setState(() {
+      password = value;
+    });
+  }
+
+  void updateConfPassword(String value) {
+    setState(() {
+      confPassword = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,92 +70,93 @@ class _SignUpViewState extends State<SignUpView> {
       backgroundColor: const Color(0xFF81A1C8),
       body: SafeArea(
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: loginTitle(),
-                  ),
-                  const Expanded(
-                      flex: 1,
-                      child: HTText(
-                          label: "Continue with email for sign up App",
-                          style: htLabelStyle)),
-                  // email address textField
-                  Expanded(
-                      flex: 6,
-                      child: Column(
-                        children: [
-                          HTEmailField(
-                              onChanged: (value) {
-                                setState(() {
-                                  context.read<AuthCubit>().updateEmail(value);
-                                });
-                              },
-                              textController: emailController,
-                              hintText: "Enter your email address",
-                              iconName: Icons.mail_rounded),
-                          const VerticalSpace(),
-                          HTPasswordField(
-                            onChanged: (value) {
-                              context.read<AuthCubit>().updatePassword(value);
-                            },
-                              validation: false,
-                              textController: passController,
-                              hintText: "Enter your password",
-                              iconName: Icons.lock),
-                          HTPasswordField(
-                            onChanged: (value) {
-                              context.read<AuthCubit>().updatePasswordConfirm(value);
-                            },
-                              validation: false,
-                              textController: passController,
-                              hintText: "Enter your password",
-                              iconName: Icons.lock),
-                          const VerticalSpace(),
-                        ],
-                      )),
-                  Expanded(
-                      flex: 4,
-                      child: Column(
-                        children: [
-                          GestureDetector(onTap: () {
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 3,
+                child: loginTitle(),
+              ),
+              const Expanded(
+                  flex: 1,
+                  child: HTText(
+                      label: "Continue with email for sign up App",
+                      style: htLabelStyle)),
+              // email address textField
+              Expanded(
+                  flex: 6,
+                  child: Column(
+                    children: [
+                      HTEmailField(
+                          onChanged: (value) {
+                            updateEmail(value);
+                          },
+                          textController: emailController,
+                          hintText: "Enter your email address",
+                          iconName: Icons.mail_rounded),
+                      const VerticalSpace(),
+                      HTPasswordField(
+                          onChanged: (value) {
+                            updatePassword(value);
+                          },
+                          validation: false,
+                          textController: passController,
+                          hintText: "Enter your password",
+                          iconName: Icons.lock),
+                      HTPasswordField(
+                          onChanged: (value) {
+                            updateConfPassword(value);
+                          },
+                          validation: false,
+                          textController: passController,
+                          hintText: "Enter your password",
+                          iconName: Icons.lock),
+                      const VerticalSpace(),
+                    ],
+                  )),
+              Expanded(
+                  flex: 4,
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
                             try {
-                              context.read<AuthCubit>().signUpWithEmailAndPassword(emailController.text, passController.text);
+                              context
+                                  .read<AuthCubit>()
+                                  .signUpWithEmailAndPassword(email, password);
                             } on Exception catch (e) {
                               print(e.toString());
                             }
-                          },child: signUpButton(size)),
-                          const VerticalSpace(
-                            spaceAmount: DimenConstant.VERY_LARGE,
-                          ),
-                          buildContinueText(),
-                        ],
-                      )),
-                  Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            signInGoogleFacebookButton(size),
-                            const Spacer(),
-                            buildFooter(context),
-                          ],
-                        ),
-                      )),
-                ],
-              ),
-            ),
-          )),
+                          },
+                          child: signUpButton(size)),
+                      const VerticalSpace(
+                        spaceAmount: DimenConstant.VERY_LARGE,
+                      ),
+                      buildContinueText(),
+                    ],
+                  )),
+              Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        signInGoogleFacebookButton(size),
+                        const Spacer(),
+                        buildFooter(context),
+                      ],
+                    ),
+                  )),
+            ],
+          ),
+        ),
+      )),
     );
   }
 }
-
 
 Widget loginTitle() {
   return Text.rich(
@@ -161,8 +199,8 @@ Widget buildContinueText() {
     children: <Widget>[
       Expanded(
           child: Divider(
-            color: Colors.white,
-          )),
+        color: Colors.white,
+      )),
       Expanded(
         child: Text(
           'Or Continue with',
@@ -172,8 +210,8 @@ Widget buildContinueText() {
       ),
       Expanded(
           child: Divider(
-            color: Color(0xFFE5E5E5),
-          )),
+        color: Color(0xFFE5E5E5),
+      )),
     ],
   );
 }
@@ -270,9 +308,10 @@ Widget buildFooter(BuildContext context) {
         ),
         TextSpan(
           text: 'Sign In',
-          recognizer: TapGestureRecognizer()..onTap = () {
-            goTo(path: RoutePath.signIn);
-          },
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              goTo(path: RoutePath.signIn);
+            },
           style: GoogleFonts.nunito(
             color: const Color(0xFFEF8733),
             fontWeight: FontWeight.w600,
