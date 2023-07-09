@@ -11,6 +11,7 @@ abstract class AuthRepository {
   Future<void> signInWithGoogle();
   Future<void> signInWithFacebook();
   Future<bool> isFirstRun();
+  Future<void> sendResetPassword();
   Future<void> updateUserData(
       String firstname, String lastName, String birthday);
 }

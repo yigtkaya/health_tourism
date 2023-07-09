@@ -133,4 +133,10 @@ class FirebaseAuthService extends AuthRepository {
     // TODO: implement updateUserData
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> sendResetPassword() {
+    // TODO: implement sendResetPassword
+    throw UnimplementedError();
+  }
 }

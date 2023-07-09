@@ -7,6 +7,7 @@ import 'package:health_tourism/core/components/ht_checkbox.dart';
 import 'package:health_tourism/core/components/ht_password_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
+import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
@@ -25,6 +26,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
+  bool isChecked = false;
 
   final authCubit = AuthCubit();
 
@@ -87,7 +89,37 @@ class _LoginViewState extends State<LoginView> {
                           hintText: "Enter your password",
                           iconName: Icons.lock),
                       const VerticalSpace(),
-                      rememberMeRow(),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isChecked = !isChecked;
+                              });
+                            },
+                            child: HTCheckBox(
+                              checkboxText: "Remember me",
+                              isChecked: isChecked,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text.rich(
+                            TextSpan(
+                              style: htLabelStyle,
+                              children: [
+                                TextSpan(
+                                  text: 'Forgot Password?',
+                                  style: htLabelStyle,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      goTo(path: RoutePath.forgotPassword);
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   )),
               Expanded(
@@ -154,32 +186,6 @@ Widget loginTitle() {
   );
 }
 
-Widget rememberMeRow() {
-  return Row(
-    children: [
-      const HTCheckBox(
-        checkboxText: "Remember me",
-      ),
-      const Spacer(),
-      Text.rich(
-        TextSpan(
-          style: htLabelStyle,
-          children: [
-            TextSpan(
-              text: 'Forgot Password?',
-              style: htLabelStyle,
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  goTo(path: RoutePath.forgotPassword);
-                },
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
-
 Widget signInButton(Size size) {
   return Container(
     alignment: Alignment.center,
@@ -232,8 +238,6 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
         },
         child: Container(
           alignment: Alignment.center,
-          width: size.width / 3,
-          height: size.height / 16,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(
@@ -241,32 +245,30 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
               color: Colors.white,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //icon of google
-              HTIcon(
-                iconName: AssetConstants.icons.googleIcon,
-                width: 28,
-                height: 28,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              //google txt
-              const Text(
-                'Google',
-                style: htLabelStyle,
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //icon of google
+                HTIcon(
+                  iconName: AssetConstants.icons.googleIcon,
+                  width: 28,
+                  height: 28,
+                ),
+                const HorizontalSpace(),
+                //google txt
+                const Text(
+                  'Google',
+                  style: htLabelStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),
-      const SizedBox(
-        width: 16,
-      ),
-
+      const HorizontalSpace(),
       //sign in facebook button
       GestureDetector(
         onTap: () {
@@ -275,8 +277,6 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
         },
         child: Container(
           alignment: Alignment.center,
-          width: size.width / 3,
-          height: size.height / 16,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(
@@ -284,25 +284,26 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
               color: Colors.white,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //facebook icon
-              HTIcon(
-                iconName: AssetConstants.icons.facebookIcon,
-                width: 28,
-                height: 28,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              //facebook txt
-              const Text(
-                'Facebook',
-                textAlign: TextAlign.center,
-                style: htLabelStyle,
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //facebook icon
+                HTIcon(
+                  iconName: AssetConstants.icons.facebookIcon,
+                  width: 28,
+                  height: 28,
+                ),
+                const HorizontalSpace(),
+                //facebook txt
+                const Text(
+                  'Facebook',
+                  textAlign: TextAlign.center,
+                  style: htLabelStyle,
+                ),
+              ],
+            ),
           ),
         ),
       ),

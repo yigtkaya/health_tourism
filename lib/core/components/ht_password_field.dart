@@ -110,7 +110,7 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
               ),
             ),
             const VerticalSpace(),
-            !widget.validation ? const SizedBox() : ValidationContainer(
+            !widget.validation ? const SizedBox.shrink() : ValidationContainer(
                 isPasswordLongEnough: context.read<ValidationCubit>().state.isPasswordLongEnough,
                 isPasswordContainsNumber: context.read<ValidationCubit>().state.hasOneNumber,
                 isPasswordContainsUpperCase: context.read<ValidationCubit>().state.hasOneUpperCase,)
