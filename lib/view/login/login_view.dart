@@ -132,7 +132,7 @@ class _LoginViewState extends State<LoginView> {
                                   style: htLabelStyle,
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      BlocProvider.of<AuthCubit>(context).signOut();
+                                      goTo(path: RoutePath.forgotPassword);
                                     },
                                 ),
                               ],

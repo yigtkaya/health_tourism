@@ -8,9 +8,11 @@ import 'package:health_tourism/core/components/validation.dart';
 import 'package:health_tourism/cubit/validation/validation_cubit.dart';
 import 'package:health_tourism/cubit/validation/validation_state.dart';
 
+import '../constants/asset.dart';
 import '../constants/horizontal_space.dart';
 import '../constants/theme/styles.dart';
 import '../constants/vertical_space.dart';
+import 'ht_icon.dart';
 
 class HTPasswordField extends StatefulWidget {
   final TextEditingController textController;
@@ -57,17 +59,14 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
                       Icons.lock,
                       color: Colors.white70,
                     ),
-                    const SizedBox(
-                      width: 12,
+                    const HorizontalSpace(
+                      spaceAmount: 12,
                     ),
                     //divider svg
-                    SvgPicture.asset(
-                      'assets/images/vertical_divider.svg',
+                    HTIcon(iconName: AssetConstants.icons.verticalDivider, width: 20, height: 20 , color: Colors.white70,),
+                    const HorizontalSpace(
+                      spaceAmount: 16,
                     ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-
                     //password textField
                     Expanded(
                       child:TextField(
