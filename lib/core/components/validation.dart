@@ -30,7 +30,7 @@ class _ValidationContainerState extends State<ValidationContainer> {
         Row(
           children: [
             AnimatedContainer(
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 200),
               width: 20,
               height: 20,
               decoration: BoxDecoration(

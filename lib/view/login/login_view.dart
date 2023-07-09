@@ -268,36 +268,42 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
       ),
 
       //sign in facebook button
-      Container(
-        alignment: Alignment.center,
-        width: size.width / 3,
-        height: size.height / 16,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-            width: 1.0,
-            color: Colors.white,
+      GestureDetector(
+        onTap: () {
+          authCubit.signInWithFacebook();
+          print("sign in facebook button tapped");
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: size.width / 3,
+          height: size.height / 16,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(
+              width: 1.0,
+              color: Colors.white,
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //facebook icon
-            HTIcon(
-              iconName: AssetConstants.icons.facebookIcon,
-              width: 28,
-              height: 28,
-            ),
-            const SizedBox(
-              width: 16,
-            ),
-            //facebook txt
-            const Text(
-              'Facebook',
-              textAlign: TextAlign.center,
-              style: htLabelStyle,
-            ),
-          ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //facebook icon
+              HTIcon(
+                iconName: AssetConstants.icons.facebookIcon,
+                width: 28,
+                height: 28,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              //facebook txt
+              const Text(
+                'Facebook',
+                textAlign: TextAlign.center,
+                style: htLabelStyle,
+              ),
+            ],
+          ),
         ),
       ),
     ],

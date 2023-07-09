@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/core/services/firebase_auth_service.dart';
+import 'package:health_tourism/product/navigation/router.dart';
 import 'AuthState.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -73,6 +74,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.signInWithGoogle();
       emit(Authenticated(firebaseAuth.currentUser!));
+      goTo(path: RoutePath.landing);
     } catch (e) {
       emit(AuthError(e.toString()));
     }
@@ -92,5 +94,14 @@ class AuthCubit extends Cubit<AuthState> {
     return EmailValidator.validate(email);
   }
 
-
+ // create a function to login with facebook
+  Future<void> signInWithFacebook() async {
+    try {
+      emit(const AuthLoading());
+      await _authRepository.signInWithFacebook();
+      emit(Authenticated(firebaseAuth.currentUser!));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:health_tourism/core/services/auth_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -102,15 +103,34 @@ class FirebaseAuthService extends AuthRepository {
     }
   }
 
+  // create a function to login with facebook
   @override
-  Future<void> updateUserData(String firstname, String lastName, String birthday) async {
+  Future<void> signInWithFacebook() async {
+    try {
+      final facebookLoginResult = await FacebookAuth.instance.login(permissions: ['public_profile', 'email']);
+      final userData = await FacebookAuth.instance.getUserData();
 
+      final AuthCredential credential = FacebookAuthProvider.credential(facebookLoginResult.accessToken!.token);
 
+      await _firebaseAuth.signInWithCredential(credential);
+
+    } on FirebaseAuthException catch (e) {
+      final message = AuthExceptionHandler.generateExceptionMessage(e.code);
+      // TO DO show error message
+    } catch (e) {
+      // TO DO show error message
+    }
   }
 
   @override
   Future<bool> isUserLoggedIn() {
     // check if user is logged in or not
     return Future.value(_firebaseAuth.currentUser != null);
+  }
+
+  @override
+  Future<void> updateUserData(String firstname, String lastName, String birthday) {
+    // TODO: implement updateUserData
+    throw UnimplementedError();
   }
 }

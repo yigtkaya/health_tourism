@@ -50,7 +50,7 @@ class _SignUpViewState extends State<SignUpView> {
                           style: htLabelStyle)),
                   // email address textField
                   Expanded(
-                      flex: 4,
+                      flex: 6,
                       child: Column(
                         children: [
                           HTEmailField(
@@ -59,7 +59,13 @@ class _SignUpViewState extends State<SignUpView> {
                               iconName: Icons.mail_rounded),
                           const VerticalSpace(),
                           HTPasswordField(
-                              validation: true,
+                              validation: false,
+                              textController: passController,
+                              hintText: "Enter your password",
+                              iconName: Icons.lock),
+                          const VerticalSpace(),
+                          HTPasswordField(
+                              validation: false,
                               textController: passController,
                               hintText: "Enter your password",
                               iconName: Icons.lock),

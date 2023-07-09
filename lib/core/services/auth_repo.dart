@@ -9,6 +9,7 @@ abstract class AuthRepository {
   Future<void> resetPassword({required String email});
   Future<bool> isUserLoggedIn();
   Future<void> signInWithGoogle();
+  Future<void> signInWithFacebook();
   Future<bool> isFirstRun();
   Future<void> updateUserData(
       String firstname, String lastName, String birthday);
