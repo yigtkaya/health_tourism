@@ -51,75 +51,85 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFF81A1C8),
       body: SafeArea(
-          child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  BackButton(
-                    color: Colors.white,
-                    onPressed: () {
-                      goTo(path: RoutePath.signIn);
-                    },
-                  ),
-                  Expanded(child: loginTitle()),
-                ],
-              ),
-              Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color(0xFF9EB9D2),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text.rich(
-                      TextSpan(
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 14),
-                          children: [
-                            WidgetSpan(
-                                child: HTIcon(
-                              iconName: AssetConstants.icons.infoIcon,
-                              color: Colors.white,
-                              width: 16,
-                              height: 16,
-                            )),
-                            const TextSpan(
-                                text:
-                                    " Type email address you used to register. We will send you an email with your username and a link to reset your password.")
-                          ]),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        BackButton(
+                          color: Colors.white,
+                          onPressed: () {
+                            goTo(path: RoutePath.signIn);
+                          },
+                        ),
+                        Expanded(child: loginTitle()),
+                      ],
                     ),
-                  )),
-              const VerticalSpace(),
-              HTEmailField(
-                  onChanged: (value) {
-                    updateEmail(value);
-                  },
-                  textController: emailController,
-                  hintText: "Enter your email address",
-                  iconName: Icons.mail_rounded),
-              const VerticalSpace(),
-              GestureDetector(
-                onTap: () {
-                  // check email is valid and password is not empty then sign in
-                  BlocProvider.of<AuthCubit>(context)
-                      .passwordResetSubmit(email);
-                  print("object");
-                },
-                child: signInButton(),
-              ),
-              const VerticalSpace(
-                spaceAmount: DimenConstant.VERY_LARGE,
-              ),
-            ],
-          ),
-        ),
-      )),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0xFF9EB9D2),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text.rich(
+                                TextSpan(
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 14),
+                                    children: [
+                                      WidgetSpan(
+                                          child: HTIcon(
+                                            iconName: AssetConstants.icons.infoIcon,
+                                            color: Colors.white,
+                                            width: 16,
+                                            height: 16,
+                                          )),
+                                      const TextSpan(
+                                          text:
+                                          " Type email address you used to register. We will send you an email with your username and a link to reset your password.")
+                                    ]),
+                              ),
+                            )),
+                        const VerticalSpace(),
+                        HTEmailField(
+                            onChanged: (value) {
+                              updateEmail(value);
+                            },
+                            textController: emailController,
+                            hintText: "Enter your email address",
+                            iconName: Icons.mail_rounded),
+                        const VerticalSpace(),
+                        GestureDetector(
+                          onTap: () {
+                            // check email is valid and password is not empty then sign in
+                            BlocProvider.of<AuthCubit>(context)
+                                .passwordResetSubmit(email);
+                            print("object");
+                          },
+                          child: signInButton(),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+
+              ],
+            ),
+          )),
     );
   }
 }
@@ -144,17 +154,22 @@ Widget loginTitle() {
 }
 
 Widget signInButton() {
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10.0),
-      color: const Color(0xFFEF8733),
-    ),
-    child: const Padding(
-      padding: EdgeInsets.all(18.0),
-      child: Text(
-        'Send Email',
-        style: htBoldLabelStyle,
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: const Color(0xFFEF8733),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.all(18.0),
+          child: Text(
+            'Send Email',
+            style: htBoldLabelStyle,
+          ),
+        ),
       ),
-    ),
+    ],
   );
 }

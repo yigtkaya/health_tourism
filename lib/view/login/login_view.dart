@@ -149,7 +149,8 @@ class _LoginViewState extends State<LoginView> {
                       GestureDetector(
                           onTap: () {
                             // check email is valid and password is not empty then sign in
-                            BlocProvider.of<AuthCubit>(context).signInWithEmailAndPassword(email, password);
+                            BlocProvider.of<AuthCubit>(context)
+                                .signInWithEmailAndPassword(email, password);
                             print("object");
                           },
                           child: signInButton(size)),
