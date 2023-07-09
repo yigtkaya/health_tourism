@@ -16,6 +16,7 @@ class HTPasswordField extends StatefulWidget {
   final TextEditingController textController;
   final String hintText;
   final bool validation;
+  final Function(String) onChanged;
   final IconData iconName;
 
   const HTPasswordField({
@@ -23,6 +24,7 @@ class HTPasswordField extends StatefulWidget {
     required this.textController,
     required this.hintText,
     required this.iconName,
+    required this.onChanged,
     required this.validation,
   }) : super(key: key);
 
@@ -70,8 +72,14 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
                     Expanded(
                       child:TextField(
                         maxLines: 1,
-                        onChanged: widget.validation ?(value) {
-                          context.read<ValidationCubit>().validatePassword(value);
+                        onChanged: widget.validation ? (value) {
+                          try {
+                            context.read<ValidationCubit>().validatePassword(value);
+                            widget.onChanged(value);
+                          } on Exception catch (e) {
+                            // TODO
+                            print(e.toString());
+                          }
                         } : (value) {},
                         cursorColor: Colors.white70,
                         keyboardType: TextInputType.visiblePassword,

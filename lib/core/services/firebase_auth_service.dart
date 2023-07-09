@@ -17,9 +17,9 @@ class FirebaseAuthService extends AuthRepository {
 
 
   @override
-  IUser getCurrentUser() {
+  User getCurrentUser() {
     // create IUser object
-    return IUser(uid: _firebaseAuth.currentUser!.uid, email: _firebaseAuth.currentUser!.email!);
+    return _firebaseAuth.currentUser!;
   }
 
   @override
@@ -88,7 +88,8 @@ class FirebaseAuthService extends AuthRepository {
     showToastMessage(message);
     } catch (e) {
       // TO DO show error message
-    }
+    showToastMessage(e.toString());
+  }
   }
 
   @override

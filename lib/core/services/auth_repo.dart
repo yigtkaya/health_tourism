@@ -1,7 +1,7 @@
-import '../../product/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthRepository {
-  IUser getCurrentUser();
+  User getCurrentUser();
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password});
   Future<void> signUpWithEmailAndPassword({required String email, required String password});

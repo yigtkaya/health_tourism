@@ -13,7 +13,6 @@ import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
-import '../../cubit/auth/auth_exception_handler.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
@@ -30,6 +29,7 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   bool isChecked = false;
+  String email = '';
 
   final authCubit = AuthCubit();
 
@@ -82,11 +82,17 @@ class _LoginViewState extends State<LoginView> {
                   child: Column(
                     children: [
                       HTEmailField(
+                          onChanged: (value) {
+                            context.read<AuthCubit>().updateEmail(value);
+                          },
                           textController: emailController,
                           hintText: "Enter your email address",
                           iconName: Icons.mail_rounded),
                       const VerticalSpace(),
                       HTPasswordField(
+                          onChanged: (value) {
+                            context.read<AuthCubit>().updatePassword(value);
+                          },
                           textController: passController,
                           validation: false,
                           hintText: "Enter your password",
@@ -132,8 +138,10 @@ class _LoginViewState extends State<LoginView> {
                       GestureDetector(
                           onTap: () {
                             // check email is valid and password is not empty then sign in
-                            context.read<AuthCubit>().signInWithEmailAndPassword(
-                                emailController.text, passController.text);
+                            context
+                                .read<AuthCubit>()
+                                .signInWithEmailAndPassword(
+                                    email, passController.text);
                             print("object");
                           },
                           child: signInButton(size)),

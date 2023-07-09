@@ -3,13 +3,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_tourism/core/components/ht_checkbox.dart';
 import 'package:health_tourism/core/components/ht_password_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
-import '../../cubit/button/validation_cubit.dart';
+import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
@@ -54,17 +53,27 @@ class _SignUpViewState extends State<SignUpView> {
                       child: Column(
                         children: [
                           HTEmailField(
+                              onChanged: (value) {
+                                setState(() {
+                                  context.read<AuthCubit>().updateEmail(value);
+                                });
+                              },
                               textController: emailController,
                               hintText: "Enter your email address",
                               iconName: Icons.mail_rounded),
                           const VerticalSpace(),
                           HTPasswordField(
+                            onChanged: (value) {
+                              context.read<AuthCubit>().updatePassword(value);
+                            },
                               validation: false,
                               textController: passController,
                               hintText: "Enter your password",
                               iconName: Icons.lock),
-                          const VerticalSpace(),
                           HTPasswordField(
+                            onChanged: (value) {
+                              context.read<AuthCubit>().updatePasswordConfirm(value);
+                            },
                               validation: false,
                               textController: passController,
                               hintText: "Enter your password",
@@ -73,10 +82,16 @@ class _SignUpViewState extends State<SignUpView> {
                         ],
                       )),
                   Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: Column(
                         children: [
-                          signInButton(size),
+                          GestureDetector(onTap: () {
+                            try {
+                              context.read<AuthCubit>().signUpWithEmailAndPassword(emailController.text, passController.text);
+                            } on Exception catch (e) {
+                              print(e.toString());
+                            }
+                          },child: signUpButton(size)),
                           const VerticalSpace(
                             spaceAmount: DimenConstant.VERY_LARGE,
                           ),
@@ -124,22 +139,17 @@ Widget loginTitle() {
   );
 }
 
-Widget signInButton(Size size) {
-  return GestureDetector(
-    onTap: () {
-
-    },
-    child: Container(
-      alignment: Alignment.center,
-      height: size.height / 13,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: const Color(0xFFEF8733),
-      ),
-      child: const Text(
-        'Sign up',
-        style: htBoldLabelStyle,
-      ),
+Widget signUpButton(Size size) {
+  return Container(
+    alignment: Alignment.center,
+    height: size.height / 13,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10.0),
+      color: const Color(0xFFEF8733),
+    ),
+    child: const Text(
+      'Sign up',
+      style: htBoldLabelStyle,
     ),
   );
 }

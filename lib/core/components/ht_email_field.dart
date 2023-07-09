@@ -6,6 +6,7 @@ import '../constants/theme/styles.dart';
 class HTEmailField extends StatefulWidget {
   final TextEditingController textController;
   final String hintText;
+  final Function(String) onChanged;
   final IconData iconName;
 
   const HTEmailField({
@@ -13,6 +14,7 @@ class HTEmailField extends StatefulWidget {
     required this.textController,
     required this.hintText,
     required this.iconName,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -53,6 +55,9 @@ class _HTEmailFieldState extends State<HTEmailField> {
             Expanded(
               child: TextFormField(
                 maxLines: 1,
+                onChanged: (value) {
+                  widget.onChanged(value);
+                },
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.emailAddress,
                 style: htLabelStyle,
