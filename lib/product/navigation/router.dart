@@ -68,7 +68,6 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
             parent: animation,
             curve: curve,
           );
-
           return SlideTransition(
             position: tween.animate(curvedAnimation),
             child: child,
