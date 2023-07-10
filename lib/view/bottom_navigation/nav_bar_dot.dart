@@ -8,11 +8,10 @@ class CustomBottomNavBarDash extends StatefulWidget {
   final Color backgroundColor;
   final Color selectedColor;
   final Color unselectedColor;
-  final double radius;
-  final double sizeIcon;
   final bool showLabel;
 
-  CustomBottomNavBarDash({
+  const CustomBottomNavBarDash({
+    super.key,
     this.defaultSelectedIndex = 0,
     required this.onChange,
     required this.iconList,
@@ -20,8 +19,6 @@ class CustomBottomNavBarDash extends StatefulWidget {
     this.backgroundColor = Colors.white,
     this.selectedColor = Colors.red,
     this.unselectedColor = Colors.grey,
-    this.radius = 0.0,
-    this.sizeIcon = 24,
     this.showLabel = true,
   });
 
@@ -53,9 +50,9 @@ class _CustomBottomNavBarDashState extends State<CustomBottomNavBarDash> {
     return Container(
       decoration: BoxDecoration(
           color: widget.backgroundColor,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(widget.radius),
-              topRight: Radius.circular(widget.radius))),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(3),
+              topRight: Radius.circular(3))),
       child: Row(
         children: _navBarItemList,
       ),
@@ -69,7 +66,7 @@ class _CustomBottomNavBarDashState extends State<CustomBottomNavBarDash> {
         _selectedIndex = index;
       },
       child: Container(
-        decoration: BoxDecoration(),
+        decoration: const BoxDecoration(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -78,7 +75,7 @@ class _CustomBottomNavBarDashState extends State<CustomBottomNavBarDash> {
               padding: const EdgeInsets.only(bottom: 8, top: 16),
               child: Icon(
                 icon,
-                size: widget.sizeIcon,
+                size: 24,
                 color: _selectedIndex == index
                     ? widget.selectedColor
                     : widget.unselectedColor,
@@ -110,10 +107,10 @@ class _CustomBottomNavBarDashState extends State<CustomBottomNavBarDash> {
 
   Widget selectedIndicator() {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 250),
       width: 40,
       height: 3,
-      margin: const EdgeInsets.only(top: 4),
+      margin: const EdgeInsets.only(top: 4, bottom: 4),
       decoration: BoxDecoration(
           color: widget.selectedColor,
           borderRadius: const BorderRadius.only(
@@ -128,7 +125,7 @@ class _CustomBottomNavBarDashState extends State<CustomBottomNavBarDash> {
       duration: const Duration(milliseconds: 250),
       width: 40,
       height: 0,
-      margin: const EdgeInsets.only(top: 7),
+      margin: const EdgeInsets.only(top: 7, bottom: 5),
       color: Colors.transparent,
     );
   }
