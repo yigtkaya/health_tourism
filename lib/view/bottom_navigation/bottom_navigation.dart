@@ -8,12 +8,12 @@ import '../../bottom_navigation_state.dart';
 import '../../cubit/bottom_navigation/bottom_navigation_cubit.dart';
 import '../landing/landing_view.dart';
 
-class BottomNav extends StatefulWidget {
+class HTBottomNav extends StatefulWidget {
   @override
-  _BottomNavState createState() => _BottomNavState();
+  _HTBottomNavState createState() => _HTBottomNavState();
 }
 
-class _BottomNavState extends State<BottomNav> {
+class _HTBottomNavState extends State<HTBottomNav> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
