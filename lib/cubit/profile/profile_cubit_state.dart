@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
+import 'package:health_tourism/product/models/customer.dart';
 @immutable
 abstract class ProfileState {
   const ProfileState();
@@ -16,7 +16,8 @@ class ProfileLoadingState extends ProfileState {
 
 // create loaded state
 class ProfileLoadedState extends ProfileState {
-  const ProfileLoadedState();
+  Future<Customer> costumer;
+  ProfileLoadedState(this.costumer);
 }
 
 // create error state

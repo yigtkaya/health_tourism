@@ -48,7 +48,6 @@ dependencies:
   firebase_core:
   firebase_messaging:
   cloud_firestore:
-  fires
   flutter_facebook_auth:
 
   google_fonts:

@@ -1,4 +1,4 @@
-import '../models/user.dart';
+import '../models/customer.dart';
 
 abstract class FirestoreRepository {
   Future<Customer> getCustomer() async {

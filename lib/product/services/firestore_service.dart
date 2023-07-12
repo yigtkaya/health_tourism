@@ -1,4 +1,4 @@
-import 'package:health_tourism/product/models/user.dart';
+import 'package:health_tourism/product/models/customer.dart';
 import 'package:health_tourism/product/services/firestore_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../product/services/firebase_auth_service.dart';
@@ -23,13 +23,13 @@ class FirestoreService extends FirestoreRepository {
       String hairTransplantOperations) async {
     final data = await FirebaseFirestore.instance
         .collection("users")
-        .doc(_authRepository.getCurrentUserId())
+        .doc( "iniAcRHUF5HLDjk0IaFh")
         .get();
 
     if (!data.exists) {
       FirebaseFirestore.instance
           .collection("users")
-          .doc(_authRepository.getCurrentUserId())
+          .doc( "iniAcRHUF5HLDjk0IaFh")
           .set({
         "fullName": fullName,
         "email": email,
@@ -54,7 +54,7 @@ class FirestoreService extends FirestoreRepository {
 
   @override
   Future<Customer> getCustomer() async {
-    final data = await customers.doc(_authRepository.getCurrentUserId()).get();
+    final data = await customers.doc( "iniAcRHUF5HLDjk0IaFh").get();
     Map<dynamic, dynamic> map = data.data() as Map;
 
     return Customer.fromData(map);
@@ -65,11 +65,11 @@ class FirestoreService extends FirestoreRepository {
     /// ve ya saved valueyu sadece değiştiricez. fazla yazım miktarı saymasın diye
     FirebaseFirestore.instance
         .collection("users")
-        .doc(_authRepository.getCurrentUserId())
+        .doc( "iniAcRHUF5HLDjk0IaFh")
         .set({
       "fullName": customer.fullName,
       "email": customer.email,
-      "birthday": customer.birthday,
+      "birthday": customer.age,
       "alcohol": customer.alcohol,
       "smoke": customer.smoke,
       "medications": customer.medications,

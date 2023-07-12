@@ -29,9 +29,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<NavbarCubit>(
           create: (context) => NavbarCubit(),
         ),
-        BlocProvider<ProfileCubit>(
-          create: (context) => ProfileCubit(),
-        ),
       ],
       child: MaterialApp.router(
         routerConfig: router,
