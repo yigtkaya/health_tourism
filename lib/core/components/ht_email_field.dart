@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:health_tourism/core/components/ht_icon.dart';
+import 'package:health_tourism/core/constants/asset.dart';
+import 'package:health_tourism/core/constants/horizontal_space.dart';
 import '../constants/theme/styles.dart';
 
 class HTEmailField extends StatefulWidget {
   final TextEditingController textController;
   final String hintText;
+  final Function(String) onChanged;
   final IconData iconName;
 
   const HTEmailField({
@@ -13,6 +17,7 @@ class HTEmailField extends StatefulWidget {
     required this.textController,
     required this.hintText,
     required this.iconName,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -38,13 +43,11 @@ class _HTEmailFieldState extends State<HTEmailField> {
               widget.iconName,
               color: Colors.white70,
             ),
-            const SizedBox(
-              width: 12,
+            const HorizontalSpace(
+              spaceAmount: 10,
             ),
             //divider svg
-            SvgPicture.asset(
-              'assets/images/vertical_divider.svg',
-            ),
+            HTIcon(iconName: AssetConstants.icons.verticalDivider, width: 20, height: 20 , color: Colors.white70,),
             const SizedBox(
               width: 16,
             ),
@@ -53,6 +56,9 @@ class _HTEmailFieldState extends State<HTEmailField> {
             Expanded(
               child: TextFormField(
                 maxLines: 1,
+                onChanged: (value) {
+                  widget.onChanged(value);
+                },
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.emailAddress,
                 style: htLabelStyle,

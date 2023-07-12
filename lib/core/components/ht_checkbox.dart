@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:health_tourism/core/constants/horizontal_space.dart';
 
 import '../constants/theme/styles.dart';
 
 class HTCheckBox extends StatefulWidget {
   // create checkbox text
   final String checkboxText;
+  final bool isChecked;
 
-  const HTCheckBox({Key? key, required this.checkboxText}) : super(key: key);
+  const HTCheckBox({Key? key, required this.checkboxText, required this.isChecked}) : super(key: key);
 
   @override
   State<HTCheckBox> createState() => _HTCheckBoxState();
@@ -28,13 +31,13 @@ class _HTCheckBoxState extends State<HTCheckBox> {
             borderRadius: BorderRadius.circular(4.0),
             color: const Color(0xFF9AD5D1),
           ),
-          child: SvgPicture.asset(
-            'assets/images/checkbox.svg',
+          child: widget.isChecked ? const SizedBox() : const Icon(
+            Icons.check,
+            size: 12.0,
+            color: Colors.white,
           ),
         ),
-        const SizedBox(
-          width: 16,
-        ),
+        const HorizontalSpace(spaceAmount: 7,),
         Text(
           widget.checkboxText,
           style: htLabelStyle,

@@ -1,11 +1,13 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_tourism/core/components/ht_checkbox.dart';
 import 'package:health_tourism/core/components/ht_password_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
+import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
@@ -13,7 +15,6 @@ import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/dimen.dart';
-
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -23,10 +24,11 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
-
+  bool isChecked = false;
+  String email = '';
+  String password = '';
 
   final authCubit = AuthCubit();
 
@@ -42,8 +44,21 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
+  void updateEmail(String value) {
+    setState(() {
+      email = value;
+    });
+  }
+
+  void updatePassword(String value) {
+    setState(() {
+      password = value;
+    });
+  }
+
   bool isEnabled() {
-    if (EmailValidator.validate(emailController.text) && passController.text.isNotEmpty) {
+    if (EmailValidator.validate(emailController.text) &&
+        passController.text.isNotEmpty) {
       return true;
     } else {
       return false;
@@ -78,34 +93,66 @@ class _LoginViewState extends State<LoginView> {
                   child: Column(
                     children: [
                       HTEmailField(
+                          onChanged: (value) {
+                            updateEmail(value);
+                          },
                           textController: emailController,
                           hintText: "Enter your email address",
                           iconName: Icons.mail_rounded),
                       const VerticalSpace(),
                       HTPasswordField(
+                          onChanged: (value) {
+                            updatePassword(value);
+                          },
                           textController: passController,
                           validation: false,
                           hintText: "Enter your password",
                           iconName: Icons.lock),
                       const VerticalSpace(),
-
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isChecked = !isChecked;
+                              });
+                            },
+                            child: HTCheckBox(
+                              checkboxText: "Remember me",
+                              isChecked: isChecked,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text.rich(
+                            TextSpan(
+                              style: htLabelStyle,
+                              children: [
+                                TextSpan(
+                                  text: 'Forgot Password?',
+                                  style: htLabelStyle,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      goTo(path: RoutePath.forgotPassword);
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   )),
               Expanded(
                   flex: 2,
                   child: Column(
                     children: [
-                      GestureDetector(onTap: () {
-                        // check email is valid and password is not empty then sign in
-                        if (authCubit.isEmailValid(emailController.text)) {
-                          if (passController.text.isNotEmpty) {
-                            authCubit.signInWithEmailAndPassword(emailController.text, passController.text);
-                          }
-                        } else {
-                            print("Error");
-                        }
-                        print("sign in button tapped");
-                      },
+                      GestureDetector(
+                          onTap: () {
+                            // check email is valid and password is not empty then sign in
+                            BlocProvider.of<AuthCubit>(context)
+                                .signInWithEmailAndPassword(email, password);
+                            print("object");
+                          },
                           child: signInButton(size)),
                       const VerticalSpace(
                         spaceAmount: DimenConstant.VERY_LARGE,
@@ -205,8 +252,6 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
         },
         child: Container(
           alignment: Alignment.center,
-          width: size.width / 3,
-          height: size.height / 16,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(
@@ -214,63 +259,66 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
               color: Colors.white,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //icon of google
-              HTIcon(
-                iconName: AssetConstants.icons.googleIcon,
-                width: 28,
-                height: 28,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              //google txt
-              const Text(
-                'Google',
-                style: htLabelStyle,
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //icon of google
+                HTIcon(
+                  iconName: AssetConstants.icons.googleIcon,
+                  width: 28,
+                  height: 28,
+                ),
+                const HorizontalSpace(),
+                //google txt
+                const Text(
+                  'Google',
+                  style: htLabelStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),
-      const SizedBox(
-        width: 16,
-      ),
-
+      const HorizontalSpace(),
       //sign in facebook button
-      Container(
-        alignment: Alignment.center,
-        width: size.width / 3,
-        height: size.height / 16,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-            width: 1.0,
-            color: Colors.white,
+      GestureDetector(
+        onTap: () {
+          authCubit.signInWithFacebook();
+          print("sign in facebook button tapped");
+        },
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(
+              width: 1.0,
+              color: Colors.white,
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //facebook icon
-            HTIcon(
-              iconName: AssetConstants.icons.facebookIcon,
-              width: 28,
-              height: 28,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //facebook icon
+                HTIcon(
+                  iconName: AssetConstants.icons.facebookIcon,
+                  width: 28,
+                  height: 28,
+                ),
+                const HorizontalSpace(),
+                //facebook txt
+                const Text(
+                  'Facebook',
+                  textAlign: TextAlign.center,
+                  style: htLabelStyle,
+                ),
+              ],
             ),
-            const SizedBox(
-              width: 16,
-            ),
-            //facebook txt
-            const Text(
-              'Facebook',
-              textAlign: TextAlign.center,
-              style: htLabelStyle,
-            ),
-          ],
+          ),
         ),
       ),
     ],
@@ -290,9 +338,10 @@ Widget buildFooter(BuildContext context) {
         ),
         TextSpan(
           text: 'Sign up',
-          recognizer: TapGestureRecognizer()..onTap = () {
-            goTo(path: RoutePath.register);
-          },
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              goTo(path: RoutePath.register);
+            },
           style: GoogleFonts.nunito(
             color: const Color(0xFFEF8733),
             fontWeight: FontWeight.w600,

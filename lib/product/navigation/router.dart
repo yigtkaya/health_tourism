@@ -1,8 +1,14 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/cubit/profile/profile_cubit.dart';
+import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
+import 'package:health_tourism/view/forgot_password/forgot_password.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
 import 'package:health_tourism/view/login/login_view.dart';
+import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 
@@ -18,41 +24,91 @@ class RoutePath {
   static const String signIn = '/signIn';
   static const String register = '/register';
   static const String onBoarding = '/onBoarding';
-
+  static const String forgotPassword = '/forgotPassword';
+  static const String bottomNavigation = '/bottomNavigation';
+  static const String profile = '/profile';
 }
 
-final GoRouter router = GoRouter(routes: <RouteBase>[
-  GoRoute(
+final GoRouter router = GoRouter(
+  routes: <RouteBase>[
+    GoRoute(
       path: RoutePath.landing,
       builder: (context, state) {
         return const LandingView();
-      }),
-  GoRoute(
+      },
+    ),
+    GoRoute(
       path: RoutePath.onBoarding,
       builder: (context, state) {
         return const OnBoardingView();
-      }),
-  GoRoute(
+      },
+    ),
+    GoRoute(
       path: RoutePath.splash,
       builder: (context, state) {
         return const SplashView();
-      }),
-  GoRoute(
+      },
+    ),
+    GoRoute(
       path: RoutePath.root,
       builder: (context, state) {
         return const RootView();
-      }),
-  GoRoute(
+      },
+    ),
+    GoRoute(
       path: RoutePath.signIn,
       builder: (context, state) {
-        return  const LoginView();
-      }),
-  GoRoute(
-      path: RoutePath.register,
+        return const LoginView();
+      },
+    ),
+    GoRoute(
+      path: RoutePath.bottomNavigation,
       builder: (context, state) {
-        return const SignUpView();
-      }),
-],);
+        return BlocProvider(
+          create: (context) => ProfileCubit(),
+          child: HTBottomNav(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePath.profile,
+      builder: (context, state) {
+        return const ProfileView();
+      },
+    ),
+    GoRoute(
+      path: RoutePath.register,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          transitionDuration: const Duration(milliseconds: 500),
+          key: state.pageKey,
+          child: const SignUpView(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Change the opacity of the screen using a Curve based on the the animation's value
+            const begin = Offset(0.0, 1.0);
+            const end = Offset.zero;
+            const curve = Curves.ease;
+
+            final tween = Tween(begin: begin, end: end);
+            final curvedAnimation = CurvedAnimation(
+              parent: animation,
+              curve: curve,
+            );
+            return SlideTransition(
+              position: tween.animate(curvedAnimation),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+        path: RoutePath.forgotPassword,
+        builder: (context, state) {
+          return const ForgotPasswordView();
+        }),
+  ],
+);
 
 void goTo({required String path}) {
   router.go(path);

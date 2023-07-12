@@ -1,18 +1,25 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:health_tourism/core/services/firebase_auth_service.dart';
+import 'package:health_tourism/product/navigation/router.dart';
+import 'package:health_tourism/product/services/firestore_service.dart';
+import '../../product/services/firebase_auth_service.dart';
 import 'AuthState.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuthService _authRepository = FirebaseAuthService();
   final firebaseAuth = FirebaseAuth.instance;
+  final _firestore = FirestoreService();
 
   AuthCubit() : super(const AuthInitial());
 
   @override
   List<Object> get props => [];
 
+  void updatePasswordConfirm(String passwordSec) {
+    emit(AuthPasswordConfirmUpdated(passwordSec));
+  }
   // check if user is logged in
   Future<void> checkIfUserIsLoggedIn() async {
     try {
@@ -33,28 +40,25 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.signInWithEmailAndPassword(email: email, password: password);
       emit(Authenticated(firebaseAuth.currentUser!));
+
+      goTo(path: RoutePath.bottomNavigation);
     } catch (e) {
       emit(AuthError(e.toString()));
+      _authRepository.showToastMessage(e.toString());
     }
   }
 
-  Future<void> signUp(String email, String password) async {
+  // create function to sign up with email and password
+  Future<void> signUpWithEmailAndPassword(String email, String password) async {
     try {
       emit(const AuthLoading());
       await _authRepository.signUpWithEmailAndPassword(email: email, password: password);
-      emit(Authenticated(firebaseAuth.currentUser!));
+      final currentUser = _authRepository.getCurrentUser();
+      emit(Authenticated(currentUser));
     } catch (e) {
       emit(AuthError(e.toString()));
-    }
-  }
+      _authRepository.showToastMessage(e.toString());
 
-  Future<void> logout() async {
-    try {
-      emit(const AuthLoading());
-      await _authRepository.logout();
-      emit(const NotAuthenticated());
-    } catch (e) {
-      emit(AuthError(e.toString()));
     }
   }
 
@@ -73,6 +77,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.signInWithGoogle();
       emit(Authenticated(firebaseAuth.currentUser!));
+      goTo(path: RoutePath.bottomNavigation);
     } catch (e) {
       emit(AuthError(e.toString()));
     }
@@ -92,5 +97,27 @@ class AuthCubit extends Cubit<AuthState> {
     return EmailValidator.validate(email);
   }
 
+ // create a function to login with facebook
+  Future<void> signInWithFacebook() async {
+    try {
+      emit(const AuthLoading());
+      await _authRepository.signInWithFacebook();
+      emit(Authenticated(firebaseAuth.currentUser!));
+      goTo(path: RoutePath.bottomNavigation);
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  // create a function to sign out
+  Future<void> signOut() async {
+    try {
+      emit(const AuthLoading());
+      await _authRepository.logout();
+      emit(const NotAuthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 
 }

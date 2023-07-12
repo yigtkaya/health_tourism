@@ -2,10 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
-import 'package:health_tourism/cubit/button/validation_cubit.dart';
+import 'package:health_tourism/cubit/validation/validation_cubit.dart';
 import 'package:health_tourism/product/navigation/router.dart';
-
-
+import 'cubit/profile/profile_cubit.dart';
+import 'cubit/bottom_navigation/bottom_navigation_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +20,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit> (
+        BlocProvider<AuthCubit>(
           create: (context) => AuthCubit()..checkIfUserIsLoggedIn(),
         ),
-        BlocProvider<ValidationCubit>(create: (context) => ValidationCubit()),
+        BlocProvider<ValidationCubit>(
+          create: (context) => ValidationCubit(),
+        ),
+        BlocProvider<NavbarCubit>(
+          create: (context) => NavbarCubit(),
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: router,
@@ -35,4 +40,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

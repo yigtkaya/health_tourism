@@ -5,17 +5,20 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/validation.dart';
-import 'package:health_tourism/cubit/button/validation_cubit.dart';
-import 'package:health_tourism/cubit/button/validation_state.dart';
+import 'package:health_tourism/cubit/validation/validation_cubit.dart';
+import 'package:health_tourism/cubit/validation/validation_state.dart';
 
+import '../constants/asset.dart';
 import '../constants/horizontal_space.dart';
 import '../constants/theme/styles.dart';
 import '../constants/vertical_space.dart';
+import 'ht_icon.dart';
 
 class HTPasswordField extends StatefulWidget {
   final TextEditingController textController;
   final String hintText;
   final bool validation;
+  final Function(String) onChanged;
   final IconData iconName;
 
   const HTPasswordField({
@@ -23,6 +26,7 @@ class HTPasswordField extends StatefulWidget {
     required this.textController,
     required this.hintText,
     required this.iconName,
+    required this.onChanged,
     required this.validation,
   }) : super(key: key);
 
@@ -55,24 +59,23 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
                       Icons.lock,
                       color: Colors.white70,
                     ),
-                    const SizedBox(
-                      width: 12,
+                    const HorizontalSpace(
+                      spaceAmount: 12,
                     ),
                     //divider svg
-                    SvgPicture.asset(
-                      'assets/images/vertical_divider.svg',
+                    HTIcon(iconName: AssetConstants.icons.verticalDivider, width: 20, height: 20 , color: Colors.white70,),
+                    const HorizontalSpace(
+                      spaceAmount: 16,
                     ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-
                     //password textField
                     Expanded(
                       child:TextField(
                         maxLines: 1,
-                        onChanged: widget.validation ?(value) {
-                          context.read<ValidationCubit>().validatePassword(value);
-                        } : (value) {},
+                        onChanged: widget.validation ? (value) {
+                            widget.onChanged(value);
+                        } : (value) {
+                          widget.onChanged(value);
+                        },
                         cursorColor: Colors.white70,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: _isSecure,
@@ -110,7 +113,7 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
               ),
             ),
             const VerticalSpace(),
-            !widget.validation ? const SizedBox() : ValidationContainer(
+            !widget.validation ? const SizedBox.shrink() : ValidationContainer(
                 isPasswordLongEnough: context.read<ValidationCubit>().state.isPasswordLongEnough,
                 isPasswordContainsNumber: context.read<ValidationCubit>().state.hasOneNumber,
                 isPasswordContainsUpperCase: context.read<ValidationCubit>().state.hasOneUpperCase,)
