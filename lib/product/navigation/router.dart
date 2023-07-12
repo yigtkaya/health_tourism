@@ -64,16 +64,16 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePath.bottomNavigation,
       builder: (context, state) {
-        return HTBottomNav();
+        return BlocProvider(
+          create: (context) => ProfileCubit(),
+          child: HTBottomNav(),
+        );
       },
     ),
     GoRoute(
       path: RoutePath.profile,
       builder: (context, state) {
-        return BlocProvider(
-          create: (context) => ProfileCubit(),
-          child: const ProfileView(),
-        );
+        return const ProfileView();
       },
     ),
     GoRoute(
