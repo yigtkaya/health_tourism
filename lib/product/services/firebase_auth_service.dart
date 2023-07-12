@@ -13,6 +13,10 @@ class FirebaseAuthService {
     // get current user from firebase auth
     return _firebaseAuth.currentUser!;
   }
+  String? getCurrentUserId() {
+    // get current user from firebase auth
+    return _firebaseAuth.currentUser?.uid;
+  }
 
   Future<bool> isUserLoggedIn() {
     // check if user is logged in

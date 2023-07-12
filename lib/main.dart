@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/validation/validation_cubit.dart';
 import 'package:health_tourism/product/navigation/router.dart';
-
+import 'cubit/profile/profile_cubit.dart';
 import 'cubit/bottom_navigation/bottom_navigation_cubit.dart';
 
 Future<void> main() async {
@@ -28,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<NavbarCubit>(
           create: (context) => NavbarCubit(),
+        ),
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(),
         ),
       ],
       child: MaterialApp.router(
