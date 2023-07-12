@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/view/bottom_navigation/nav_bar_dot.dart';
-import 'package:health_tourism/view/onboarding/onboarding_view.dart';
+import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 
 import '../../bottom_navigation_state.dart';
@@ -51,7 +51,7 @@ class _HTBottomNavState extends State<HTBottomNav> {
               children: const [
                 LandingView(),
                 SplashView(),
-                OnBoardingView(),
+                ProfileView(),
               ],
             )
           );
