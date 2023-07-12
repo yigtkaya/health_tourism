@@ -15,11 +15,17 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   // create function read user data from firestore
   void getUserData() {
-    emit(const ProfileLoadingState());
-    final customer = _firestoreService.getCustomer();
-    emit(ProfileLoadedState(customer));
+    try {
+      emit(const ProfileLoadingState());
+      Future.value(_firestoreService.getCustomer()
+      ).then((value) => {
+        emit(ProfileLoadedState(value))
+      });
+    } on Exception catch (e) {
+      emit(const ProfileErrorState('Error while loading user data'));
+    }
     // if error
-    emit(const ProfileErrorState('Error while loading user data'));
+
   }
 
 }

@@ -16,7 +16,7 @@ class ProfileLoadingState extends ProfileState {
 
 // create loaded state
 class ProfileLoadedState extends ProfileState {
-  Future<Customer> costumer;
+  Customer costumer;
   ProfileLoadedState(this.costumer);
 }
 

@@ -52,6 +52,7 @@ class FirestoreService extends FirestoreRepository {
     customers.doc(uid).delete();
   }
 
+
   @override
   Future<Customer> getCustomer() async {
     final data = await customers.doc( "iniAcRHUF5HLDjk0IaFh").get();

@@ -32,18 +32,16 @@ class _ProfileViewState extends State<ProfileView> {
           );
         } else if (state is ProfileLoadedState) {
           // return customer data in the screen
-          Customer currentCustomer = state.costumer as Customer;
 
           return RefreshIndicator(
             onRefresh: () async {
               context.read<ProfileCubit>().getUserData();
-              currentCustomer = state.costumer as Customer;
-            },
+             },
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(currentCustomer.fullName),
+                  Text(state.costumer.fullName),
                 ],
               ),
             ),
