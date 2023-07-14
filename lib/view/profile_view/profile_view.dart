@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/dimen.dart';
+import 'package:health_tourism/core/constants/gradient_colors.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
@@ -37,84 +38,65 @@ class _ProfileViewState extends State<ProfileView> {
       backgroundColor: Colors.grey.shade100,
       body: SafeArea(
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(alignment: Alignment.center, child: profileTitle()),
-                const VerticalSpace(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Row(
-                    children: [
-                      // fotoğraf alanı için komponent
-                      SizedBox(
-                        height: 70,
-                        width: 70,
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(30.0)),
-                          child: Image.asset("assets/images/yigit.jpg"),
-                        ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding:EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+                child: Row(
+                  children: [
+                    // fotoğraf alanı için komponent
+                    CircleAvatar(
+                      radius: 36, // Image radius
+                      backgroundImage: AssetImage('assets/images/yigit.jpg'),
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: HTText(
+                            label: ("Yiğit Kaya, 22"),
+                            style: htLabelBoldBlackStyle),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                ),
+              ),
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      const Divider(
+                        height: 1.5,
+                        color: Colors.grey,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Icon(settingsList[6].iconData,
+                            color: Colors.grey.shade400),
                       ),
                       const HorizontalSpace(
-                        spaceAmount: DimenConstant.VERY_LARGE,
+                        spaceAmount: DimenConstant.LARGE,
                       ),
-                      const HTText(
-                          label: ("İsim Soyisim + Yaş"),
-                          style: htLabelBlackStyle),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Expanded(
+                          child: Text(
+                            settingsList[6].titleTxt!,
+                            style: htLabelBlackStyle,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                const VerticalSpace(),
-                Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: settingsList.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          onListItemTap(index);
-                        },
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Text(
-                                        settingsList[index].titleTxt!,
-                                        style: htLabelBoldBlackStyle,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Icon(settingsList[index].iconData,
-                                        color: Colors.amber),
-                                  )
-                                ],
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 16, right: 16),
-                              child: Divider(
-                                height: 1,
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
