@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
     <string name="app_name">health_tourism</string>
-    <string name="facebook_app_id">795591362100790</string>
-    <string name="fb_login_protocol_scheme">fb795591362100790</string>
-    <string name="facebook_client_token">ff90e9842d27d1830e26c33076807ac1</string>
+    <string name="facebook_app_id">###</string>
+    <string name="fb_login_protocol_scheme">##</string>
+    <string name="facebook_client_token">##</string>
 </resources>
