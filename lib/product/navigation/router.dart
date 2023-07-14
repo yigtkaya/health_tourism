@@ -1,15 +1,18 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
+import 'package:health_tourism/view/edit_personal_info/edit_personal_info_view.dart';
 import 'package:health_tourism/view/forgot_password/forgot_password.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
 import 'package:health_tourism/view/login/login_view.dart';
 import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/root/root_view.dart';
+import 'package:health_tourism/view/settings/settings_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 
 import '../../view/onboarding/onboarding_view.dart';
@@ -27,6 +30,8 @@ class RoutePath {
   static const String forgotPassword = '/forgotPassword';
   static const String bottomNavigation = '/bottomNavigation';
   static const String profile = '/profile';
+  static const String editProfile = '/editProfile';
+  static const String settings = '/settings';
 }
 
 final GoRouter router = GoRouter(
@@ -49,6 +54,19 @@ final GoRouter router = GoRouter(
         return const SplashView();
       },
     ),
+    GoRoute(
+      path: RoutePath.editProfile,
+      builder: (context, state) {
+        return const EditProfileView();
+      },
+    ),
+    GoRoute(
+      path: RoutePath.settings,
+      builder: (context, state) {
+        return const SettingsView();
+      },
+    ),
+
     GoRoute(
       path: RoutePath.root,
       builder: (context, state) {
