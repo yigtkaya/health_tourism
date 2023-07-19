@@ -42,20 +42,20 @@ class ClinicRowOneWidget extends StatelessWidget {
                         ', ' +
                         "clinicData!.roomSizeTxt"),
                   )
-                      : SizedBox(),
+                      : const SizedBox(),
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: AppTheme.getTheme().dividerColor,
-                          offset: Offset(4, 4),
+                          offset: const Offset(4, 4),
                           blurRadius: 16,
                         ),
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                       child: Stack(
                         children: <Widget>[
                           Column(
@@ -63,7 +63,7 @@ class ClinicRowOneWidget extends StatelessWidget {
                               AspectRatio(
                                 aspectRatio: 2,
                                 child: Image.asset(
-                                  clinicData!.imagePath,
+                                  clinicData!.operationPhotosPath,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -87,7 +87,7 @@ class ClinicRowOneWidget extends StatelessWidget {
                                               Text(
                                                 clinicData!.titleTxt,
                                                 textAlign: TextAlign.left,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 22,
                                                 ),
@@ -105,7 +105,7 @@ class ClinicRowOneWidget extends StatelessWidget {
                                                         color: Colors.grey
                                                             .withOpacity(0.8)),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 4,
                                                   ),
                                                   Icon(
@@ -114,18 +114,6 @@ class ClinicRowOneWidget extends StatelessWidget {
                                                     size: 12,
                                                     color: AppTheme.getTheme()
                                                         .primaryColor,
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      "${clinicData!.dist.toStringAsFixed(1)} km to city",
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.grey
-                                                              .withOpacity(
-                                                              0.8)),
-                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -168,7 +156,7 @@ class ClinicRowOneWidget extends StatelessWidget {
                                           Text(
                                             "\$${clinicData!.price}",
                                             textAlign: TextAlign.left,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 22,
                                             ),
@@ -198,7 +186,7 @@ class ClinicRowOneWidget extends StatelessWidget {
                               splashColor: AppTheme.getTheme()
                                   .primaryColor
                                   .withOpacity(0.1),
-                              borderRadius: BorderRadius.all(
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(16.0),
                               ),
                               onTap: () {
@@ -218,7 +206,7 @@ class ClinicRowOneWidget extends StatelessWidget {
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(32.0),
                                   ),
                                   onTap: () {},

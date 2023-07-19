@@ -39,7 +39,7 @@ class ClinicMapViewRowWidget extends StatelessWidget {
                     AspectRatio(
                       aspectRatio: 0.90,
                       child: Image.asset(
-                        clinicData!.imagePath,
+                        clinicData!.operationPhotosPath,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -89,7 +89,7 @@ class ClinicMapViewRowWidget extends StatelessWidget {
                                             color: ColorHelper.primaryColor,
                                           ),
                                           Text(
-                                            " ${clinicData!.dist.toStringAsFixed(1)} km to city",
+                                            " km to city",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 fontSize: 14,

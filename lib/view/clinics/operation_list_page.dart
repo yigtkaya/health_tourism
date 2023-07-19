@@ -15,7 +15,6 @@ class OperationListPage extends StatefulWidget {
 
 class _OperationListPageState extends State<OperationListPage>
     with TickerProviderStateMixin {
-  List<ClinicEntity> romeList = ClinicEntity.clinicList;
   AnimationController? animationController;
 
   @override
@@ -41,9 +40,9 @@ class _OperationListPageState extends State<OperationListPage>
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(0.0),
-              itemCount: romeList.length,
+              itemCount: 2,
               itemBuilder: (context, index) {
-                var count = romeList.length > 10 ? 10 : romeList.length;
+                var count = 1 > 10 ? 10 : 2;
                 var animation = Tween(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
                         parent: animationController!,
@@ -51,7 +50,7 @@ class _OperationListPageState extends State<OperationListPage>
                             curve: Curves.fastOutSlowIn)));
                 animationController!.forward();
                 return OperationListRowWidget(
-                  operationData: romeList[index],
+                  operationData: ClinicEntity(cid: '', operationPhotosPath: '', videoPath: '',titleTxt: " ", rating: 0 , reviews: 0, packages: " ", price: 0, subTxt: '', dateTxt: " " ) ,
                   animation: animation,
                   animationController: animationController,
                 );

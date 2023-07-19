@@ -21,7 +21,7 @@ class _OperationListRowWidgetState extends State<OperationListRowWidget> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> images = widget.operationData!.imagePath.split(" ");
+    List<String> images = widget.operationData!.operationPhotosPath.split(" ");
     return AnimatedBuilder(
       animation: widget.animationController!,
       builder: (BuildContext context, Widget? child) {

@@ -47,7 +47,7 @@ dependencies:
   #state management
   bloc:
   flutter_bloc:
-  equatable:
+  equatable: ^2.0.3
 
   #firebase
   firebase_auth:

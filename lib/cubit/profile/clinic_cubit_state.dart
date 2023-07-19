@@ -1,3 +1,5 @@
+import '../../product/models/clinics-entity.dart';
+
 abstract class ClinicState{
   const ClinicState();
 
@@ -12,8 +14,20 @@ class ClinicLoadingState extends ClinicState{
 }
 
 class ClinicsLoaded extends ClinicState {
-  const ClinicsLoaded();
+  final List<ClinicEntity> clinicList;
+  const ClinicsLoaded(this.clinicList);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ClinicsLoaded && other.clinicList == clinicList;
+  }
+
+  @override
+  int get hashCode => clinicList.hashCode;
 }
+
 
 class ClinicsError extends ClinicState {
   final String message;

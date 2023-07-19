@@ -4,39 +4,23 @@ import 'package:health_tourism/product/services/firestore_service.dart';
 
 import '../../product/models/clinics-entity.dart';
 
-class ClinicCubit extends ClinicState {
+class ClinicCubit extends Cubit<ClinicState> {
+  final FirestoreService _firestoreService = FirestoreService();
+  late var clinicList = List<ClinicEntity>;
 
-  ClinicCubit() : super(const ClinicInitState()){
-    getClinicData();
+  ClinicCubit() : super(const ClinicInitState()) {
+    getAllClinic();
   }
 
-}
+  void getAllClinic() async {
+    try {
+      emit(const ClinicLoadingState());
+      print("ClinicLoadingState");
+      Future.value(_firestoreService.getClinicData())
+          .then((value) => emit(ClinicsLoaded(value)));
 
-static ClinicCubit get(context) => BlocProvider.of(context);
-
-
-final FirestoreService _firestoreService = FirestoreService();
-
-
-
-void getClinicData() {
-  try {
-    emit(const ClinicLoadingState());
-    _firestoreService.getClinicData().then((value) {
-      emit(ClinicCubit(value));
-    }).catchError((e) {
-      emit(const ClinicErrorState('Error while loading clinic data'));
-    });
-  } catch (e) {
-    emit(const ClinicErrorState('Error while loading clinic data'));
+    } catch (e) {
+      emit(ClinicsError(e.toString()));
+    }
   }
-}
-
-class ClinicErrorState extends ClinicState {
-  final String errorMessage;
-
-  const ClinicErrorState(this.errorMessage);
-
-  @override
-  List<Object?> get props => [errorMessage];
 }

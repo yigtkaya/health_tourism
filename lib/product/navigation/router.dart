@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/cubit/profile/clinic_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
 import 'package:health_tourism/view/forgot_password/forgot_password.dart';
@@ -64,8 +65,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePath.bottomNavigation,
       builder: (context, state) {
-        return BlocProvider(
-          create: (context) => ProfileCubit(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => ProfileCubit()),
+            BlocProvider(create: (context) => ClinicCubit()),
+          ],
           child: HTBottomNav(),
         );
       },

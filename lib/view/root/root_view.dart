@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:health_tourism/cubit/profile/clinic_cubit.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
 import 'package:health_tourism/view/clinics/clinics.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
@@ -17,8 +18,13 @@ class RootView extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is Authenticated) {
-            return BlocProvider(
-              create: (context) => ProfileCubit(),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                create: (context) => ProfileCubit(),),
+                BlocProvider(
+                create: (context) => ClinicCubit(),)
+              ],
               child: HTBottomNav(),
             );
           }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:health_tourism/cubit/profile/clinic_cubit.dart';
+import 'package:health_tourism/cubit/profile/clinic_cubit_state.dart';
 import 'package:health_tourism/product/models/clinics-entity.dart';
 import 'package:health_tourism/view/clinics/operation_list_page.dart';
 import 'package:health_tourism/view/clinics/widgets/calender_popup_widget.dart';
+import 'package:health_tourism/view/clinics/widgets/clinic_filter_bar.dart';
 import 'package:health_tourism/view/clinics/widgets/clinic_map_view_row_widget.dart';
 import 'package:health_tourism/view/clinics/widgets/clinic_range_selection_widget.dart';
 import 'package:health_tourism/view/clinics/widgets/clinic_row_one_widget.dart';
@@ -21,10 +25,8 @@ class _ClinicsViewState extends State<ClinicsView>
     with TickerProviderStateMixin {
   AnimationController? animationController;
   late AnimationController _animationController;
-  var clinicList = ClinicEntity.clinicList;
   ScrollController scrollController = ScrollController();
-  int room = 1;
-  int ad = 2;
+  List<String> operationFilter = [];
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(const Duration(days: 5));
   bool isMap = false;
@@ -50,196 +52,207 @@ class _ClinicsViewState extends State<ClinicsView>
         _animationController.animateTo(1.0);
       }
     });
-    super.initState();
-  }
 
-  Future<bool> getData() async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return true;
+    super.initState();
   }
 
   @override
   void dispose() {
     animationController?.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          InkWell(
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: Column(
-              children: <Widget>[
-                getAppBarUI(),
-                isMap
-                    ? Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            getSearchBarUI(),
-                            getTimeDateUI(),
-                            Expanded(
-                              child: Stack(
-                                children: <Widget>[
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Image.asset(
-                                          "assets/images/mapImage.png",
-                                          fit: BoxFit.cover,
+    return BlocBuilder<ClinicCubit, ClinicState>(
+        builder: (context, state) {
+          if( state is ClinicLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is ClinicsLoaded) {
+            return Scaffold(
+              body: Stack(
+                children: <Widget>[
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    child: Column(
+                      children: <Widget>[
+                        getAppBarUI(),
+                        isMap
+                            ? Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              getSearchBarUI(),
+                              getTimeDateUI(),
+                              Expanded(
+                                child: Stack(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width:
+                                      MediaQuery.of(context).size.width,
+                                      child: Image.asset(
+                                        "assets/images/mapImage.png",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            AppTheme.getTheme()
+                                                .scaffoldBackgroundColor
+                                                .withOpacity(1.0),
+                                            AppTheme.getTheme()
+                                                .scaffoldBackgroundColor
+                                                .withOpacity(0.0),
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
                                         ),
                                       ),
-                                      Container(
-                                        height: 80,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              AppTheme.getTheme()
-                                                  .scaffoldBackgroundColor
-                                                  .withOpacity(1.0),
-                                              AppTheme.getTheme()
-                                                  .scaffoldBackgroundColor
-                                                  .withOpacity(0.0),
-                                            ],
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                          ),
-                                        ),
-                                      ),
-                                    ] +
-                                    getMapPinUI() +
-                                    [
-                                      Positioned(
-                                        bottom: 0,
-                                        right: 0,
-                                        left: 0,
-                                        child: Container(
-                                          height: 156,
-                                          // color: Colors.green,
-                                          child: ListView.builder(
-                                            itemCount: clinicList.length,
-                                            padding: const EdgeInsets.only(
-                                                top: 8, bottom: 8, right: 16),
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index) {
-                                              return ClinicMapViewRowWidget(
-                                                callback: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          OperationListPage(
-                                                        clinicName:
-                                                            clinicList[index]
-                                                                .titleTxt,
+                                    ),
+                                  ] +
+                                      getMapPinUI(state) +
+                                      [
+                                        Positioned(
+                                          bottom: 0,
+                                          right: 0,
+                                          left: 0,
+                                          child: Container(
+                                            height: 156,
+                                            // color: Colors.green,
+                                            child: ListView.builder(
+                                              itemCount: state.clinicList.length,
+                                              padding: const EdgeInsets.only(
+                                                  top: 8, bottom: 8, right: 16),
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) {
+                                                return ClinicMapViewRowWidget(
+                                                  callback: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            OperationListPage(
+                                                              clinicName:
+                                                              state.clinicList[index]
+                                                                  .titleTxt,
+                                                            ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                                clinicData: clinicList[index],
-                                              );
-                                            },
+                                                    );
+                                                  },
+                                                  clinicData: state.clinicList[index],
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : Expanded(
-                        child: Stack(
-                          children: <Widget>[
-                            Container(
-                              color: AppTheme.getTheme().backgroundColor,
-                              child: ListView.builder(
-                                controller: scrollController,
-                                itemCount: clinicList.length,
-                                padding: const EdgeInsets.only(
-                                  top: 8 + 158 + 52.0,
+                                      ],
                                 ),
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context, index) {
-                                  var count = clinicList.length > 10
-                                      ? 10
-                                      : clinicList.length;
-                                  var animation = Tween(begin: 0.0, end: 1.0)
-                                      .animate(CurvedAnimation(
-                                          parent: animationController!,
-                                          curve: Interval(
-                                              (1 / count) * index, 1.0,
-                                              curve: Curves.fastOutSlowIn)));
-                                  animationController!.forward();
-                                  return ClinicRowOneWidget(
-                                    callback: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              OperationListPage(
-                                            clinicName:
-                                                clinicList[index].titleTxt,
+                              )
+                            ],
+                          ),
+                        )
+                            : Expanded(
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                color: AppTheme.getTheme().backgroundColor,
+                                child: ListView.builder(
+                                  controller: scrollController,
+                                  itemCount: state.clinicList.length,
+                                  padding: const EdgeInsets.only(
+                                    top: 8 + 158 + 52.0,
+                                  ),
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    var count = state.clinicList.length > 10
+                                        ? 10
+                                        : state.clinicList.length;
+                                    var animation = Tween(begin: 0.0, end: 1.0)
+                                        .animate(CurvedAnimation(
+                                        parent: animationController!,
+                                        curve: Interval(
+                                            (1 / count) * index, 1.0,
+                                            curve: Curves.fastOutSlowIn)));
+                                    animationController!.forward();
+                                    return ClinicRowOneWidget(
+                                      callback: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                OperationListPage(
+                                                  clinicName:
+                                                  state.clinicList[index].titleTxt,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      clinicData: state.clinicList[index],
+                                      animation: animation,
+                                      animationController: animationController,
+                                    );
+                                  },
+                                ),
+                              ),
+                              AnimatedBuilder(
+                                animation: _animationController,
+                                builder: (BuildContext context, Widget? child) {
+                                  return Positioned(
+                                    top: -searchBarHeight *
+                                        (_animationController.value),
+                                    left: 0,
+                                    right: 0,
+                                    child: Column(
+                                      children: <Widget>[
+                                        Container(
+                                          color: AppTheme.getTheme()
+                                              .scaffoldBackgroundColor,
+                                          child: Column(
+                                            children: <Widget>[
+                                              getSearchBarUI(),
+                                              getTimeDateUI(),
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                    clinicData: clinicList[index],
-                                    animation: animation,
-                                    animationController: animationController,
+                                        filterBar(),
+                                      ],
+                                    ),
                                   );
                                 },
                               ),
-                            ),
-                            AnimatedBuilder(
-                              animation: _animationController,
-                              builder: (BuildContext context, Widget? child) {
-                                return Positioned(
-                                  top: -searchBarHeight *
-                                      (_animationController.value),
-                                  left: 0,
-                                  right: 0,
-                                  child: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        color: AppTheme.getTheme()
-                                            .scaffoldBackgroundColor,
-                                        child: Column(
-                                          children: <Widget>[
-                                            getSearchBarUI(),
-                                            getTimeDateUI(),
-                                          ],
-                                        ),
-                                      ),
-                                      getFilterBarUI(),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          if (state is ClinicsError) {
+            return const Center(child:Text("HATA"));
+          }
+          else {
+            return const Center(child:Text("boş"));
+          }
+        });
   }
 
-  List<Widget> getMapPinUI() {
+  List<Widget> getMapPinUI(ClinicsLoaded state) {
     List<Widget> list = [];
 
-    for (var i = 0; i < clinicList.length; i++) {
+    for (var i = 0; i < state.clinicList.length; i++) {
       double? top;
       double? left;
       double? right;
@@ -268,9 +281,7 @@ class _ClinicsViewState extends State<ClinicsView>
           bottom: bottom,
           child: Container(
             decoration: BoxDecoration(
-              color: clinicList[i].isSelected
-                  ? AppTheme.getTheme().primaryColor
-                  : AppTheme.getTheme().colorScheme.background,
+              color: Colors.red,
               borderRadius: const BorderRadius.all(Radius.circular(24.0)),
               boxShadow: <BoxShadow>[
                 BoxShadow(
@@ -285,24 +296,14 @@ class _ClinicsViewState extends State<ClinicsView>
               child: InkWell(
                 borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                 onTap: () {
-                  if (clinicList[i].isSelected == false) {
-                    setState(() {
-                      clinicList.forEach((f) {
-                        f.isSelected = false;
-                      });
-                      clinicList[i].isSelected = true;
-                    });
-                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: 16, right: 16, top: 8, bottom: 8),
                   child: Text(
-                    "\$${clinicList[i].price}",
+                    "\$${state.clinicList[i].price}",
                     style: TextStyle(
-                        color: clinicList[i].isSelected
-                            ? AppTheme.getTheme().colorScheme.background
-                            : AppTheme.getTheme().primaryColor,
+                        color: AppTheme.getTheme().primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
@@ -316,7 +317,7 @@ class _ClinicsViewState extends State<ClinicsView>
     return list;
   }
 
-  Widget getListUI() {
+  Widget getListUI(ClinicsLoaded state) {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.getTheme().backgroundColor,
@@ -332,17 +333,16 @@ class _ClinicsViewState extends State<ClinicsView>
           Container(
             height: MediaQuery.of(context).size.height - 156 - 50,
             child: FutureBuilder(
-              future: getData(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SizedBox();
                 } else {
                   return ListView.builder(
-                    itemCount: clinicList.length,
+                    itemCount: state.clinicList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       var count =
-                          clinicList.length > 10 ? 10 : clinicList.length;
+                      state.clinicList.length > 10 ? 10 : state.clinicList.length;
                       var animation = Tween(begin: 0.0, end: 1.0).animate(
                           CurvedAnimation(
                               parent: animationController!,
@@ -351,7 +351,7 @@ class _ClinicsViewState extends State<ClinicsView>
                       animationController!.forward();
                       return ClinicRowOneWidget(
                         callback: () {},
-                        clinicData: clinicList[index],
+                        clinicData: state.clinicList[index],
                         animation: animation,
                         animationController: animationController,
                       );
@@ -366,10 +366,10 @@ class _ClinicsViewState extends State<ClinicsView>
     );
   }
 
-  Widget getClinicViewList() {
+  Widget getClinicViewList(ClinicsLoaded state) {
     List<Widget> clinicListViews = [];
-    for (var i = 0; i < clinicList.length; i++) {
-      var count = clinicList.length;
+    for (var i = 0; i < state.clinicList.length; i++) {
+      var count = state.clinicList.length;
       var animation = Tween(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
           parent: animationController!,
@@ -379,7 +379,7 @@ class _ClinicsViewState extends State<ClinicsView>
       clinicListViews.add(
         ClinicRowOneWidget(
           callback: () {},
-          clinicData: clinicList[i],
+          clinicData: state.clinicList[i],
           animation: animation,
           animationController: animationController,
         ),
@@ -470,14 +470,11 @@ class _ClinicsViewState extends State<ClinicsView>
                       context: context,
                       builder: (BuildContext context) =>
                           ClinicRangeSelectionWidget(
-                        ad: 2,
-                        room: 1,
-                        ch: 0,
+                        operationFilter: operationFilter,
                         barrierDismissible: true,
-                        onChnage: (ro, a, c) {
+                        onChange: (o) {
                           setState(() {
-                            room = ro;
-                            ad = a;
+                            operationFilter.add(o);
                           });
                         },
                       ),
@@ -491,17 +488,17 @@ class _ClinicsViewState extends State<ClinicsView>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          " S.of(context).numberOfRooms",
+                          "Operations",
                           style: TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 16,
-                              color: Colors.grey.withOpacity(0.8)),
+                              color: Colors.grey),
                         ),
                         const SizedBox(
                           height: 8,
                         ),
                         Text(
-                          "$room Room - $ad Adults",
+                          "- $operationFilter Adults",
                           style: const TextStyle(
                             fontWeight: FontWeight.w100,
                             fontSize: 16,
@@ -608,100 +605,7 @@ class _ClinicsViewState extends State<ClinicsView>
     );
   }
 
-  Widget getFilterBarUI() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: 24,
-            decoration: BoxDecoration(
-              color: AppTheme.getTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: AppTheme.getTheme().dividerColor,
-                    offset: const Offset(0, -2),
-                    blurRadius: 8.0),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          color: AppTheme.getTheme().backgroundColor,
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
-            child: Row(
-              children: <Widget>[
-                const Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "530 clinics found",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    onTap: () {
-                      // FocusScope.of(context).requestFocus(FocusNode());
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => FiltersPage(),
-                      //       fullscreenDialog: true),
-                      // );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        children: <Widget>[
-                          const Text(
-                            "S.of(context).filter",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.sort,
-                                color: AppTheme.getTheme().primaryColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Divider(
-            height: 1,
-          ),
-        )
-      ],
-    );
-  }
+
 
   void showDemoDialog({required BuildContext context}) {
     showDialog(

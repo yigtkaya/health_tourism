@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/view/bottom_navigation/nav_bar_dot.dart';
+import 'package:health_tourism/view/clinics/clinics.dart';
 import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 
@@ -49,7 +50,7 @@ class _HTBottomNavState extends State<HTBottomNav> {
                 cubit.changeBottomNavBar(index);
               },
               children: const [
-                LandingView(),
+                ClinicsView(),
                 SplashView(),
                 ProfileView(),
               ],

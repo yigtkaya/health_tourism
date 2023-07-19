@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:health_tourism/view/clinics/clinics.dart';
 
 import '../../../core/app/appTheme.dart';
 
 
 class ClinicRangeSelectionWidget extends StatefulWidget {
-  final Function(int, int, int)? onChnage;
+  final Function(String)? onChange;
   final bool? barrierDismissible;
-  final int? room;
-  final int? ad;
-  final int? ch;
+  final List<String>? operationFilter;
+
+
 
   const ClinicRangeSelectionWidget(
       {Key? key,
         this.barrierDismissible,
-        this.room,
-        this.ad,
-        this.ch,
-        this.onChnage})
+        this.onChange,
+        this.operationFilter})
       : super(key: key);
 
   @override
@@ -26,22 +25,33 @@ class ClinicRangeSelectionWidget extends StatefulWidget {
 
 class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
     with TickerProviderStateMixin {
-  PopupTextType popupTextType = PopupTextType.no;
   late AnimationController animationController;
-  int room = 1;
-  int ad = 2;
-  int ch = 0;
+
   DateTime? startDate;
   DateTime? endDate;
+
+  List<String> texts = ['Hair', 'Skin', 'Nails'];
+  late List<String> selectedOperations=[];
+
+
+
+  void handleSelectedNumber(int? selectedNumber) {
+    if (selectedNumber != null) {
+      // Perform any operations based on the selected number
+      print('Selected number: $selectedNumber');
+      // Update the state or perform any other actions based on the selected number
+    } else {
+      // Handle the case when no number is selected
+      print('No number selected');
+    }
+  }
 
   @override
   void initState() {
     animationController =
-        AnimationController(duration: Duration(milliseconds: 400), vsync: this);
-    room = widget.room ?? 0;
-    ad = widget.ad ?? 0;
-    ch = widget.ch ?? 0;
+        AnimationController(duration: const Duration(milliseconds: 400), vsync: this);
     animationController.forward();
+    selectedOperations = widget.operationFilter ?? [];
     super.initState();
   }
 
@@ -60,7 +70,7 @@ class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
           animation: animationController,
           builder: (BuildContext context, Widget? child) {
             return AnimatedOpacity(
-              duration: Duration(milliseconds: 100),
+              duration: const Duration(milliseconds: 100),
               opacity: animationController.value,
               child: InkWell(
                 splashColor: Colors.transparent,
@@ -77,17 +87,17 @@ class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
                     padding: const EdgeInsets.all(24.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppTheme.getTheme().backgroundColor,
-                        borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                        color: AppTheme.getTheme().colorScheme.background,
+                        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                         boxShadow: <BoxShadow>[
                           BoxShadow(
                               color: AppTheme.getTheme().dividerColor,
-                              offset: Offset(4, 4),
+                              offset: const Offset(4, 4),
                               blurRadius: 8.0),
                         ],
                       ),
                       child: InkWell(
-                        borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                         onTap: () {},
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -95,11 +105,9 @@ class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             getRowView(
-                                "Number of Rooms", "", room, PopupTextType.no),
-                            getRowView(
-                                "Adult", " (Aged 18+)", ad, PopupTextType.ad),
-                            getRowView(
-                                "Children", " (0-17)", ch, PopupTextType.ch),
+                                "Adult",
+                                0,
+                                onSelectNumber: handleSelectedNumber),
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 16, right: 16, bottom: 16, top: 24),
@@ -108,12 +116,12 @@ class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
                                 decoration: BoxDecoration(
                                   color: AppTheme.getTheme().primaryColor,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(24.0)),
+                                  const BorderRadius.all(Radius.circular(24.0)),
                                   boxShadow: <BoxShadow>[
                                     BoxShadow(
                                       color: AppTheme.getTheme().dividerColor,
                                       blurRadius: 8,
-                                      offset: Offset(4, 4),
+                                      offset: const Offset(4, 4),
                                     ),
                                   ],
                                 ),
@@ -121,15 +129,17 @@ class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
                                   color: Colors.transparent,
                                   child: InkWell(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(24.0)),
+                                    const BorderRadius.all(Radius.circular(24.0)),
                                     highlightColor: Colors.transparent,
                                     onTap: () {
                                       try {
-                                        widget.onChnage!(room, ad, ch);
+                                        for(var opr in selectedOperations){
+                                          widget.onChange!(opr);
+                                        }
                                         Navigator.pop(context);
                                       } catch (e) {}
                                     },
-                                    child: Center(
+                                    child: const Center(
                                       child: Text(
                                         "S.of(context).apply",
                                         style: TextStyle(
@@ -157,7 +167,15 @@ class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
   }
 
   Widget getRowView(
-      String txt, String subtxt, int count, PopupTextType popupTextType) {
+      String txt,
+      int? count,
+      {List<String>? numberList,
+        required void Function(int?) onSelectNumber}
+      ) {
+    numberList ??= ["LL", "KK"];
+    int size = texts.length;
+// Default number list if not provided
+
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
       child: Column(
@@ -176,95 +194,33 @@ class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    txt,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    subtxt,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14,
-                                        color:
-                                        AppTheme.getTheme().disabledColor),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(32.0),
-                              onTap: () {
-                                setState(() {
-                                  if (popupTextType == PopupTextType.no) {
-                                    room += 1;
-                                  } else if (popupTextType ==
-                                      PopupTextType.ad) {
-                                    ad += 1;
-                                  } else {
-                                    ch += 1;
-                                  }
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Icon(
-                                  Icons.add_circle_outline,
-                                  size: 28,
-                                  color: AppTheme.getTheme().disabledColor,
+                                child: ListView.builder(
+                                  itemCount: size,
+                                  shrinkWrap: true,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    String itemText = texts[index];
+                                    bool isSelected = selectedOperations.contains(itemText);
+
+                                    return ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          if (isSelected) {
+                                            for (var oper in selectedOperations) {
+                                              print(oper);
+                                            }
+                                            selectedOperations.remove(itemText);
+                                          } else {
+                                            selectedOperations.add(itemText);
+                                            print("ADD"+itemText);
+                                          }
+                                        });
+                                      },
+                                      title: Text(itemText),
+                                      // Add a checkbox or indicator to show selection
+                                      leading: isSelected ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
+                                    );
+                                  },
                                 ),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "  $count  ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(32.0),
-                              onTap: () {
-                                setState(() {
-                                  if (popupTextType == PopupTextType.no) {
-                                    room -= 1;
-                                    if (room < 0) {
-                                      room = 0;
-                                    }
-                                  } else if (popupTextType ==
-                                      PopupTextType.ad) {
-                                    ad -= 1;
-                                    if (ad < 0) {
-                                      ad = 0;
-                                    }
-                                  } else {
-                                    ch -= 1;
-                                    if (ch < 0) {
-                                      ch = 0;
-                                    }
-                                  }
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.remove_circle_outline,
-                                  size: 28,
-                                  color: AppTheme.getTheme().disabledColor,
-                                ),
-                              ),
                             ),
                           ),
                         ],
@@ -282,6 +238,7 @@ class _ClinicRangeSelectionWidgetState extends State<ClinicRangeSelectionWidget>
       ),
     );
   }
+
+
 }
 
-enum PopupTextType { no, ad, ch }
