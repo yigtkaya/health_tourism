@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
-import 'package:health_tourism/core/components/validation.dart';
+import 'package:health_tourism/core/components/ht_validation.dart';
 import 'package:health_tourism/cubit/validation/validation_cubit.dart';
 import 'package:health_tourism/cubit/validation/validation_state.dart';
 

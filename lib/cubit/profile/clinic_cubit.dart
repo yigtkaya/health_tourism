@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/profile/clinic_cubit_state.dart';
 import 'package:health_tourism/product/services/firestore_service.dart';
 
-import '../../product/models/clinics-entity.dart';
+import '../../product/models/clinic.dart';
 
 class ClinicCubit extends Cubit<ClinicState> {
   final FirestoreService _firestoreService = FirestoreService();

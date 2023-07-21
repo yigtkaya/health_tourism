@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/app/appTheme.dart';
-import 'package:health_tourism/product/models/clinics-entity.dart';
+import 'package:health_tourism/product/models/clinic.dart';
 import 'package:health_tourism/view/clinics/widgets/operation_list_row_widget.dart';
 
 

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_tourism/cubit/profile/clinic_cubit.dart';
 import 'package:health_tourism/cubit/profile/clinic_cubit_state.dart';
-import 'package:health_tourism/product/models/clinics-entity.dart';
+import 'package:health_tourism/product/models/clinic.dart';
 import 'package:health_tourism/view/clinics/operation_list_page.dart';
 import 'package:health_tourism/view/clinics/widgets/calender_popup_widget.dart';
 import 'package:health_tourism/view/clinics/widgets/clinic_filter_bar.dart';

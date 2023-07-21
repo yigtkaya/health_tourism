@@ -1,4 +1,4 @@
-import 'package:health_tourism/product/models/clinics-entity.dart';
+import 'package:health_tourism/product/models/clinic.dart';
 import 'package:health_tourism/product/models/customer.dart';
 import 'package:health_tourism/product/services/firestore_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

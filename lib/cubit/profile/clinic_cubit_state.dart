@@ -1,4 +1,4 @@
-import '../../product/models/clinics-entity.dart';
+import '../../product/models/clinic.dart';
 
 abstract class ClinicState{
   const ClinicState();

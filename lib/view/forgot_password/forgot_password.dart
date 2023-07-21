@@ -1,20 +1,14 @@
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:health_tourism/core/components/ht_checkbox.dart';
-import 'package:health_tourism/core/components/ht_password_field.dart';
-import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
-import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/theme/styles.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
+import '../../product/navigation/route_paths.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
-import '../../core/constants/dimen.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({Key? key}) : super(key: key);

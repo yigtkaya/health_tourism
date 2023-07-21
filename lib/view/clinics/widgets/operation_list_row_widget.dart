@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/app/color_helper.dart';
-import 'package:health_tourism/product/models/clinics-entity.dart';
+import 'package:health_tourism/product/models/clinic.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OperationListRowWidget extends StatefulWidget {

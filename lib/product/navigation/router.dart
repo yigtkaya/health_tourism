@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:health_tourism/cubit/profile/clinic_cubit.dart';
-import 'package:health_tourism/cubit/profile/profile_cubit.dart';
+import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
 import 'package:health_tourism/view/forgot_password/forgot_password.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
@@ -16,19 +14,6 @@ import 'package:health_tourism/view/splash/splash_view.dart';
 import '../../view/onboarding/onboarding_view.dart';
 import '../../view/sign_up/sign_up_view.dart';
 
-class RoutePath {
-  RoutePath._();
-
-  static const String root = '/';
-  static const String splash = '/splash';
-  static const String landing = '/landing';
-  static const String signIn = '/signIn';
-  static const String register = '/register';
-  static const String onBoarding = '/onBoarding';
-  static const String forgotPassword = '/forgotPassword';
-  static const String bottomNavigation = '/bottomNavigation';
-  static const String profile = '/profile';
-}
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -65,13 +50,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePath.bottomNavigation,
       builder: (context, state) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => ProfileCubit()),
-            BlocProvider(create: (context) => ClinicCubit()),
-          ],
-          child: HTBottomNav(),
-        );
+        return HTBottomNav();
       },
     ),
     GoRoute(

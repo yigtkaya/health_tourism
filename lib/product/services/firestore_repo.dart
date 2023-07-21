@@ -1,4 +1,4 @@
-import 'package:health_tourism/product/models/clinics-entity.dart';
+import 'package:health_tourism/product/models/clinic.dart';
 
 import '../models/customer.dart';
 
