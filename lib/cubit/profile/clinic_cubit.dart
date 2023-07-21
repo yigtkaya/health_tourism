@@ -12,6 +12,10 @@ class ClinicCubit extends Cubit<ClinicState> {
     getAllClinic();
   }
 
+  void emitFilteredClinics(List<ClinicEntity> filteredClinics) {
+    emit(ClinicsFiltered(filteredClinics));
+  }
+
   void getAllClinic() async {
     try {
       emit(const ClinicLoadingState());
@@ -23,4 +27,14 @@ class ClinicCubit extends Cubit<ClinicState> {
       emit(ClinicsError(e.toString()));
     }
   }
+}
+
+
+class ClinicsFiltered extends ClinicState {
+  final List<ClinicEntity> clinics;
+
+  ClinicsFiltered(this.clinics);
+
+  @override
+  List<Object?> get props => [clinics];
 }
