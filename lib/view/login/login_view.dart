@@ -158,7 +158,7 @@ class _LoginViewState extends State<LoginView> {
                       const VerticalSpace(
                         spaceAmount: DimenConstant.VERY_LARGE,
                       ),
-                      buildContinueText(),
+                      buildContinueText(context),
                     ],
                   )),
               Expanded(
@@ -216,23 +216,19 @@ Widget signInButton(Size size) {
   );
 }
 
-Widget buildContinueText() {
-  return const Row(
+Widget buildContinueText(BuildContext context) {
+  return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
-      Expanded(
+      const Expanded(
           child: Divider(
         color: Colors.white,
       )),
       Expanded(
-        child: Text(
-          'Or Continue with',
-          style: htLabelStyle,
-          textAlign: TextAlign.center,
-        ),
+        child: HTText.labelMedium("Or Continue with", context: context)
       ),
-      Expanded(
+      const Expanded(
           child: Divider(
         color: Color(0xFFE5E5E5),
       )),

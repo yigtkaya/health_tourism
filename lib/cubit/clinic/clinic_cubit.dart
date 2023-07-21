@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:health_tourism/cubit/profile/clinic_cubit_state.dart';
-import 'package:health_tourism/product/services/firestore_service.dart';
+import 'package:health_tourism/cubit/clinic/clinic_cubit_state.dart';
+import 'package:health_tourism/product/repoImpl/clinic_repo_impl.dart';
 
 import '../../product/models/clinic.dart';
 
 class ClinicCubit extends Cubit<ClinicState> {
-  final FirestoreService _firestoreService = FirestoreService();
+  final ClinicRepositoryImpl _clinicRepositoryImpl = ClinicRepositoryImpl();
   late var clinicList = List<ClinicEntity>;
 
   ClinicCubit() : super(const ClinicInitState()) {
@@ -16,7 +16,7 @@ class ClinicCubit extends Cubit<ClinicState> {
     try {
       emit(const ClinicLoadingState());
       print("ClinicLoadingState");
-      Future.value(_firestoreService.getClinicData())
+      Future.value(_clinicRepositoryImpl.getClinicData())
           .then((value) => emit(ClinicsLoaded(value)));
 
     } catch (e) {

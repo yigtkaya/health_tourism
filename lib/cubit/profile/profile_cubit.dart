@@ -1,8 +1,7 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
-import 'package:health_tourism/product/services/firestore_service.dart';
+import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(const ProfileInitState()) {
@@ -11,13 +10,13 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   static ProfileCubit get(context) => BlocProvider.of(context);
 
-  final FirestoreService _firestoreService = FirestoreService();
+  final UserRepositoryImpl _userRepositoryImpl = UserRepositoryImpl();
 
   // create function read user data from firestore
   void getUserData() {
     try {
       emit(const ProfileLoadingState());
-      Future.value(_firestoreService.getCustomer()
+      Future.value(_userRepositoryImpl.getCustomer()
       ).then((value) => {
         emit(ProfileLoadedState(value))
       });

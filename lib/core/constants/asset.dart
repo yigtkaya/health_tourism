@@ -1,5 +1,5 @@
 class AssetConstants {
-  static DTIcons icons = DTIcons();
+  static HTIcons icons = HTIcons();
   static String toLotti(String name) => 'assets/lottie/$name.json';
   static String toJpg(String name) => 'assets/image/$name.jpg';
   static String toPng(String name) => 'assets/image/$name.png';
@@ -7,7 +7,7 @@ class AssetConstants {
   static String toJson(String name) => 'assets/mock/$name.json';
 }
 
-class DTIcons {
+class HTIcons {
   final String googleIcon = AssetConstants.toIcon("google_icon");
   final String facebookIcon = AssetConstants.toIcon("facebook_icon");
   final String infoIcon = AssetConstants.toIcon("info_icon");

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/core/app/appTheme.dart';
-import 'package:health_tourism/cubit/profile/clinic_cubit.dart';
+import 'package:health_tourism/cubit/clinic/clinic_cubit.dart';
 import 'package:health_tourism/product/models/clinic.dart';
 
-import '../../../cubit/profile/clinic_cubit_state.dart';
+import '../../../cubit/clinic/clinic_cubit_state.dart';
 
 
 class filterBar extends StatelessWidget {

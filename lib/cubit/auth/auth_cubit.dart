@@ -1,17 +1,14 @@
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/product/navigation/router.dart';
-import 'package:health_tourism/product/services/firestore_service.dart';
+import 'package:health_tourism/product/repoImpl/auth_repo_impl.dart';
 import '../../product/navigation/route_paths.dart';
-import '../../product/services/firebase_auth_service.dart';
 import 'AuthState.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final FirebaseAuthService _authRepository = FirebaseAuthService();
+  final AuthRepositoryImpl _authRepository = AuthRepositoryImpl();
   final firebaseAuth = FirebaseAuth.instance;
-  final _firestore = FirestoreService();
 
   AuthCubit() : super(const AuthInitial());
 

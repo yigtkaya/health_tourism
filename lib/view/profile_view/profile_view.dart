@@ -5,6 +5,8 @@ import 'package:health_tourism/cubit/profile/profile_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
 import 'package:health_tourism/product/models/customer.dart';
 
+import '../../core/components/ht_text.dart';
+
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
 
@@ -41,7 +43,7 @@ class _ProfileViewState extends State<ProfileView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(state.costumer.fullName),
+                  HTText.labelMedium(state.costumer.fullName, context: context)
                 ],
               ),
             ),

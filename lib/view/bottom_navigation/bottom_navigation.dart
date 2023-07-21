@@ -4,10 +4,8 @@ import 'package:health_tourism/view/bottom_navigation/nav_bar_dot.dart';
 import 'package:health_tourism/view/clinics/clinics.dart';
 import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
-
-import '../../bottom_navigation_state.dart';
 import '../../cubit/bottom_navigation/bottom_navigation_cubit.dart';
-import '../landing/landing_view.dart';
+import '../../cubit/bottom_navigation/bottom_navigation_state.dart';
 
 class HTBottomNav extends StatefulWidget {
   @override
