@@ -10,6 +10,4 @@ abstract class AuthRepository {
   Future<void> resetPassword({required String email}) async {}
   Future<bool> isUserLoggedIn();
   Future<void> logout();
-  Future<void> updateUserData(
-      String firstname, String lastName, String birthday);
 }

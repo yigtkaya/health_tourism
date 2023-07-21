@@ -3,9 +3,10 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:health_tourism/product/repositories/auth_repo.dart';
 import '../../cubit/auth/auth_exception_handler.dart';
 
-class AuthRepositoryImpl {
+class AuthRepositoryImpl extends AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
 
@@ -110,12 +111,6 @@ class AuthRepositoryImpl {
       showToastMessage(e.toString());
     }
   }
-
-  Future<void> updateUserData(String firstname, String lastName, String birthday) {
-    // TODO: implement updateUserData
-    throw UnimplementedError();
-  }
-
 
   void showToastMessage(String message) {
     Fluttertoast.showToast(

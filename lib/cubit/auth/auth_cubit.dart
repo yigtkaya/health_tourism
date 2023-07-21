@@ -77,16 +77,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> updateUserData(String firstname, String lastName, String birthday) async {
-    try {
-      emit(const AuthLoading());
-      await _authRepository.updateUserData(firstname, lastName, birthday);
-      emit(const PersonalDataUpdated());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
   bool isEmailValid(String email) {
     return EmailValidator.validate(email);
   }
