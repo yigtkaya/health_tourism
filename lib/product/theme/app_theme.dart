@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:health_tourism/core/constants/theme/text/ITextTheme.dart';
-import 'package:health_tourism/core/constants/theme/text/dark_text.dart';
-import 'package:health_tourism/core/constants/theme/text/light_text.dart';
-
+import 'package:health_tourism/product/theme/text/ITextTheme.dart';
+import 'package:health_tourism/product/theme/text/dark_text.dart';
+import 'package:health_tourism/product/theme/text/light_text.dart';
 import 'color/IColorTheme.dart';
 import 'color/dark_color.dart';
 import 'color/light_color.dart';

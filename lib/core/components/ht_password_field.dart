@@ -8,9 +8,9 @@ import 'package:health_tourism/core/components/ht_validation.dart';
 import 'package:health_tourism/cubit/validation/validation_cubit.dart';
 import 'package:health_tourism/cubit/validation/validation_state.dart';
 
+import '../../product/theme/styles.dart';
 import '../constants/asset.dart';
 import '../constants/horizontal_space.dart';
-import '../constants/theme/styles.dart';
 import '../constants/vertical_space.dart';
 import 'ht_icon.dart';
 

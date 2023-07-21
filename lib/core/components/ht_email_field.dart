@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
-import '../constants/theme/styles.dart';
+
+import '../../product/theme/styles.dart';
 
 class HTEmailField extends StatefulWidget {
   final TextEditingController textController;
