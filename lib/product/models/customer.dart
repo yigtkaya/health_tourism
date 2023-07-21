@@ -1,5 +1,3 @@
-// create user model class
-
 import 'package:equatable/equatable.dart';
 
 class Customer extends Equatable {

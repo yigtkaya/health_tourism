@@ -16,7 +16,7 @@ class ClinicRowOneWidget extends StatelessWidget {
       : super(key: key);
   final bool isShowDate;
   final VoidCallback? callback;
-  final ClinicEntity? clinicData;
+  final Clinic? clinicData;
   final AnimationController? animationController;
   final Animation? animation;
 

@@ -14,7 +14,7 @@ class ClinicLoadingState extends ClinicState{
 }
 
 class ClinicsLoaded extends ClinicState {
-  final List<ClinicEntity> clinicList;
+  final List<Clinic> clinicList;
   const ClinicsLoaded(this.clinicList);
 
   @override

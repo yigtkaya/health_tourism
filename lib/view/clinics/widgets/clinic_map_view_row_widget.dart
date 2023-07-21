@@ -7,7 +7,7 @@ import 'package:health_tourism/view/clinics/widgets/rating_bar_widget.dart';
 
 class ClinicMapViewRowWidget extends StatelessWidget {
   final VoidCallback? callback;
-  final ClinicEntity? clinicData;
+  final Clinic? clinicData;
 
   const ClinicMapViewRowWidget({Key? key, this.clinicData, this.callback})
       : super(key: key);

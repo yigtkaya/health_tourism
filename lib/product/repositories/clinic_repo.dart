@@ -4,10 +4,10 @@ import '../models/customer.dart';
 
 abstract class ClinicRepo {
 
-  Future<ClinicEntity> getClinicEntity() async {
+  Future<Clinic> getClinicEntity() async {
     throw UnimplementedError();
   }
-  Future<void> updateClinicEntityData(ClinicEntity clinicEntity);
+  Future<void> updateClinicEntityData(Clinic clinicEntity);
   Future<void> deleteClinicEntity(String cid);
   Future<void> createClinic(
     String cid,

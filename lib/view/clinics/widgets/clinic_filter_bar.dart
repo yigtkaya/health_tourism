@@ -119,8 +119,8 @@ class filterBar extends StatelessWidget {
 
 }
 
-List<ClinicEntity> filterClinics(
-    List<ClinicEntity> clinicList,
+List<Clinic> filterClinics(
+    List<Clinic> clinicList,
     double maxPrice,
     double minPrice,
     double minRating,
@@ -155,7 +155,7 @@ class _MyWidgetState extends State<MyWidget> {
     });
 
     try {
-      final List<ClinicEntity> filteredList = filterClinics(state.clinicList, 2000.0, 1000.0, 3.4);
+      final List<Clinic> filteredList = filterClinics(state.clinicList, 2000.0, 1000.0, 3.4);
 
       setState(() {
         currentState = ClinicsLoaded(filteredList);

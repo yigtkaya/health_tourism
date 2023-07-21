@@ -50,7 +50,7 @@ class _OperationListPageState extends State<OperationListPage>
                             curve: Curves.fastOutSlowIn)));
                 animationController!.forward();
                 return OperationListRowWidget(
-                  operationData: ClinicEntity(cid: '', operationPhotosPath: '', videoPath: '',titleTxt: " ", rating: 0 , reviews: 0, packages: " ", price: 0, subTxt: '', dateTxt: " " ) ,
+                  operationData: Clinic(cid: '', operationPhotosPath: '', videoPath: '',titleTxt: " ", rating: 0 , reviews: 0, packages: " ", price: 0, subTxt: '', dateTxt: " " ) ,
                   animation: animation,
                   animationController: animationController,
                 );

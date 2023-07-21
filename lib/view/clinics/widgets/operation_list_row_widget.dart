@@ -4,7 +4,7 @@ import 'package:health_tourism/product/models/clinic.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OperationListRowWidget extends StatefulWidget {
-  final ClinicEntity? operationData;
+  final Clinic? operationData;
   final AnimationController? animationController;
   final Animation? animation;
 

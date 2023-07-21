@@ -5,7 +5,7 @@ import 'package:health_tourism/view/clinics/widgets/rating_bar_widget.dart';
 
 
 class ClinicRatingWidget extends StatelessWidget {
-  final ClinicEntity? hotelData;
+  final Clinic? hotelData;
 
   const ClinicRatingWidget({Key? key, this.hotelData}) : super(key: key);
 

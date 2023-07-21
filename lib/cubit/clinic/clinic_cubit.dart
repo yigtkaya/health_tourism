@@ -6,7 +6,7 @@ import '../../product/models/clinic.dart';
 
 class ClinicCubit extends Cubit<ClinicState> {
   final ClinicRepositoryImpl _clinicRepositoryImpl = ClinicRepositoryImpl();
-  late var clinicList = List<ClinicEntity>;
+  late var clinicList = List<Clinic>;
 
   ClinicCubit() : super(const ClinicInitState()) {
     getAllClinic();

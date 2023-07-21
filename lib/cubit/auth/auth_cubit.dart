@@ -42,7 +42,6 @@ class AuthCubit extends Cubit<AuthState> {
       goTo(path: RoutePath.bottomNavigation);
     } catch (e) {
       emit(AuthError(e.toString()));
-      _authRepository.showToastMessage(e.toString());
     }
   }
 
@@ -51,12 +50,9 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(const AuthLoading());
       await _authRepository.signUpWithEmailAndPassword(email: email, password: password);
-      final currentUser = _authRepository.getCurrentUser();
-      emit(Authenticated(currentUser));
+      emit(Authenticated(firebaseAuth.currentUser!));
     } catch (e) {
       emit(AuthError(e.toString()));
-      _authRepository.showToastMessage(e.toString());
-
     }
   }
 

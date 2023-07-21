@@ -7,15 +7,15 @@ class ClinicRepositoryImpl extends ClinicRepo {
   CollectionReference clinicEntities =
       FirebaseFirestore.instance.collection("clinics");
 
-  Future<List<ClinicEntity>> getClinicData() async {
+  Future<List<Clinic>> getClinicData() async {
     QuerySnapshot querySnapshot =  await clinicEntities.get();
-    final list = querySnapshot.docs.map((doc) => ClinicEntity.fromData(doc.data() as Map<String, dynamic>)).toList();
+    final list = querySnapshot.docs.map((doc) => Clinic.fromData(doc.data() as Map<String, dynamic>)).toList();
     return list;
   }
 
-  ClinicEntity clinicFromSnapshot(DocumentSnapshot snapshot) {
+  Clinic clinicFromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
-    return ClinicEntity.fromData(data);
+    return Clinic.fromData(data);
   }
 
   @override
@@ -50,7 +50,7 @@ class ClinicRepositoryImpl extends ClinicRepo {
   }
 
   @override
-  Future<void> updateClinicEntityData(ClinicEntity clinicEntity) async {
+  Future<void> updateClinicEntityData(Clinic clinicEntity) async {
     await clinicEntities.doc(clinicEntity.cid).update({
       "operationPhotosPath": clinicEntity.operationPhotosPath,
       "videoPath": clinicEntity.videoPath,
