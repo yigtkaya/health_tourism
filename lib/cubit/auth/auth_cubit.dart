@@ -38,8 +38,9 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.signInWithEmailAndPassword(email: email, password: password);
       emit(Authenticated(firebaseAuth.currentUser!));
-
-      goTo(path: RoutePath.bottomNavigation);
+      Future.delayed(const Duration(seconds: 2), () {
+        goTo(path: RoutePath.bottomNavigation);
+      });
     } catch (e) {
       emit(AuthError(e.toString()));
     }
@@ -71,8 +72,9 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.signInWithGoogle();
       emit(Authenticated(firebaseAuth.currentUser!));
-      goTo(path: RoutePath.bottomNavigation);
-    } catch (e) {
+      Future.delayed(const Duration(seconds: 2), () {
+        goTo(path: RoutePath.bottomNavigation);
+      });    } catch (e) {
       emit(AuthError(e.toString()));
     }
   }
@@ -87,8 +89,9 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.signInWithFacebook();
       emit(Authenticated(firebaseAuth.currentUser!));
-      goTo(path: RoutePath.bottomNavigation);
-    } catch (e) {
+      Future.delayed(const Duration(seconds: 2), () {
+        goTo(path: RoutePath.bottomNavigation);
+      });    } catch (e) {
       emit(AuthError(e.toString()));
     }
   }

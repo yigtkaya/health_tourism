@@ -20,26 +20,17 @@ class ClinicRepositoryImpl extends ClinicRepo {
 
   @override
   Future<void> createClinic(
-      String cid,
-      String operationPhotosPath,
-      String videoPath,
-      String titleTxt,
-      String subTxt,
-      String dateTxt,
-      String packages,
-      double rating,
-      int reviews,
-      double price) async {
-    await clinicEntities.doc(cid).set({
-      "operationPhotosPath": operationPhotosPath,
-      "videoPath": videoPath,
-      "titleTxt": titleTxt,
-      "subTxt": subTxt,
-      "dateTxt": dateTxt,
-      "packages": packages,
-      "rating": rating,
-      "reviews": reviews,
-      "price": price,
+      Clinic clinic) async {
+    await clinicEntities.doc(clinic.cid).set({
+      "operationPhotosPath": clinic.operationPhotosPath,
+      "videoPath": clinic.videoPath,
+      "titleTxt": clinic.titleTxt,
+      "subTxt": clinic.subTxt,
+      "dateTxt": clinic.dateTxt,
+      "packages": clinic.packages,
+      "rating": clinic.rating,
+      "reviews": clinic.reviews,
+      "price": clinic.price,
     });
   }
 

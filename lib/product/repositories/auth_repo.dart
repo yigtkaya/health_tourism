@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthRepository {
-  User getCurrentUser();
+  String? getCurrentUserId();
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password}) async {}
   Future<void> signInWithGoogle();

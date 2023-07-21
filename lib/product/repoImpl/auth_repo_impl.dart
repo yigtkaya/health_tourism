@@ -10,26 +10,26 @@ class AuthRepositoryImpl extends AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
 
-  User getCurrentUser() {
-    // get current user from firebase auth
-    return _firebaseAuth.currentUser!;
-  }
   String? getCurrentUserId() {
     // get current user from firebase auth
     return _firebaseAuth.currentUser?.uid;
   }
 
+  @override
   Future<bool> isUserLoggedIn() {
     // check if user is logged in
     return Future.value(_firebaseAuth.currentUser != null);
   }
 
+  @override
   Future<void> logout() async {
     // sign out from firebase auth and google or facebook
     await _firebaseAuth.signOut();
+    await GoogleSignIn().signOut();
     await _facebookAuth.logOut();
   }
 
+  @override
   Future<void> resetPassword({required String email}) async {
     // send reset password email
     try {
@@ -42,6 +42,7 @@ class AuthRepositoryImpl extends AuthRepository {
     }
   }
 
+  @override
   Future<void> signInWithEmailAndPassword({required String email, required String password}) async {
     // sign in with email and password
     try {
@@ -61,6 +62,7 @@ class AuthRepositoryImpl extends AuthRepository {
     }
   }
 
+  @override
   Future<void> signInWithFacebook() async {
     try {
       final facebookLoginResult = await _facebookAuth.login(permissions: ['public_profile', 'email']);
@@ -78,6 +80,7 @@ class AuthRepositoryImpl extends AuthRepository {
     }
   }
 
+  @override
   Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -95,6 +98,7 @@ class AuthRepositoryImpl extends AuthRepository {
     }
   }
 
+  @override
   Future<void> signUpWithEmailAndPassword({required String email, required String password}) async {
     // sign up with email and password
     try {
