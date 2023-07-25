@@ -68,9 +68,11 @@ dependencies:
   #navigation
   go_router:
 
-  flutter_stripe:
+
+  webview_flutter:
   dio:
   flutter_dotenv:
+  flutter_credit_card:
 
 dev_dependencies:
   flutter_test:
