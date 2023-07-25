@@ -28,7 +28,7 @@ class _PaymentViewState extends State<PaymentView> {
               const VerticalSpace(),
               ElevatedButton(onPressed: () {
 
-              }, child: const Text("PAY"),)
+              }, child: const Text("PAY 20 dollar"),)
             ],
           ),),
     );
