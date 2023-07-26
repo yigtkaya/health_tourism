@@ -1,57 +1,60 @@
-const functions = require("firebase-functions");
-const admin = require("firebase-admin");
-admin.initializeApp();
+const functions = require('firebase-functions');
+const Iyzipay = require('iyzipay');
+
+var iyzipay = new Iyzipay({
+  apiKey: functions.config().iyzico.apikey,
+  secretKey: functions.config().iyzico.secretkey,
+  uri: functions.config().iyzico.link
+});
 
 // Ödeme işlemi için bir HTTP isteği dinleyen Firebase Function
 exports.makePayment = functions.https.onRequest(async (req, res) => {
   try {
     // İstekten gelen verileri alın
-    const {
-      locale,
-      conversationId,
-      price,
-      paidPrice,
-      currency,
-      installment,
-      basketId,
-      paymentChannel,
-      paymentGroup,
-      cardNumber,
-      expireYear,
-      expireMonth,
-      cvc,
-      cardHolderName,
-      registerCard,
-      id: buyerId,
-      name: buyerName,
-      surname: buyerSurname,
-      identityNumber: buyerIdentityNumber,
-      city: buyerCity,
-      country: buyerCountry,
-      email: buyerEmail,
-      gsmNumber: buyerGsmNumber,
-      ip: buyerIp,
-      registrationAddress: buyerRegistrationAddress,
-      zipCode: buyerZipCode,
-      registrationDate: buyerRegistrationDate,
-      lastLoginDate: buyerLastLoginDate,
-      contactName: billingContactName,
-      city: billingCity,
-      country: billingCountry,
-      address: billingAddress,
-      zipCode: billingZipCode,
-      contactName: shippingContactName,
-      city: shippingCity,
-      country: shippingCountry,
-      address: shippingAddress,
-      zipCode: shippingZipCode,
-      id: basketItemId,
-      itemType: basketItemType,
-      name: basketItemName,
-      category1: basketItemCategory1,
-      category2: basketItemCategory2,
-      price: basketItemPrice,
-    } = req.body;
+    const {package, buyer, price, cardHolderName, cardNumber, expireMonth, expireYear, cvc } = req.body;
+
+    var request = {
+        locale: Iyzipay.LOCALE.EN,
+        price: price,
+        paidPrice: price,
+        currency: Iyzipay.CURRENCY.USD,
+        installment: "1",
+        paymentCard: {
+            cardHolderName: cardHolderName,
+            cardNumber: cardNumber,
+            expireMonth: expireMonth,
+            expireYear: expireYear,
+            cvc: cvc,
+            registerCard: "0"
+        },
+        buyer: {
+            id: buyer.id,
+            name: buyer.name,
+            surname: buyer.sirName,
+            email: buyer.email,
+            identityNumber: '74300864791', // is it going to be fix number?
+            registrationAddress: buyer.address,
+            ip: buyer.ip,
+            city: buyer.city,
+            country: buyer.country,
+
+        },
+        address: {
+            'contactName': buyer.fullName,
+            'city': buyer.city,
+            'country': buyer.country,
+            'address': buyer.address,
+        },
+        basketItems: [
+            {
+                id: package.id,
+                name: package.packageName,
+                category1: package.category,
+                itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
+                price: package.price,
+            },
+        ]
+    }
 
     // Ödeme işlemini yapmak için gerekli kodları buraya ekleyin
     // Ödeme işlemi başarılı veya başarısız olduğuna göre status değeri ve diğer bilgileri ayarlayın

@@ -61,6 +61,7 @@ dependencies:
   email_validator:
   flutter_pw_validator:
   fluttertoast:
+  dart_ipify: ^1.1.1
 
   shared_preferences:
   flutter_local_notifications:

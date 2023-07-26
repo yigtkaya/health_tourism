@@ -10,6 +10,7 @@ class AuthRepositoryImpl extends AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
 
+  @override
   String? getCurrentUserId() {
     // get current user from firebase auth
     return _firebaseAuth.currentUser?.uid;

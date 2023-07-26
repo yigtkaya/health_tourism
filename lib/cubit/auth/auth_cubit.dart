@@ -96,6 +96,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // create a function to get user id
+  String? getCurrentUserId() {
+    return _authRepository.getCurrentUserId();
+  }
   // create a function to sign out
   Future<void> signOut() async {
     try {

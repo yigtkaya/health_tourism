@@ -1,9 +1,11 @@
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
+import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
 
@@ -123,7 +125,10 @@ class _PaymentViewState extends State<PaymentView> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          context.read<AuthCubit>().getCurrentUserId();
+                          final ipv4 = await Ipify.ipv4();
+                          
                           if (cardNumber.length == 19 &&
                               expiryDate.length == 5 &&
                               cardHolderName.isNotEmpty &&
