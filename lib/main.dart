@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
+import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/validation/validation_cubit.dart';
 import 'package:health_tourism/product/navigation/router.dart';
 import 'cubit/clinic/clinic_cubit.dart';
@@ -31,9 +32,14 @@ class MyApp extends StatelessWidget {
           create: (context) => NavbarCubit(),
         ),
         BlocProvider(
-          create: (context) => ProfileCubit(),),
+          create: (context) => ProfileCubit(),
+        ),
         BlocProvider(
-          create: (context) => ClinicCubit(),)
+          create: (context) => ClinicCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PaymentCubit(),
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: router,
