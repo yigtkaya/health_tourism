@@ -1,16 +1,21 @@
-import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
-import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
+import 'package:health_tourism/product/models/package.dart';
+
+import '../../product/models/buyer.dart';
 
 class PaymentView extends StatefulWidget {
-  const PaymentView({super.key});
+  Buyer? buyer;
+  Package? package;
+  double? price;
+
+  PaymentView(this.buyer, this.package, this.price, {super.key});
 
   @override
   State<PaymentView> createState() => _PaymentViewState();
@@ -35,16 +40,13 @@ class _PaymentViewState extends State<PaymentView> {
     var width = MediaQuery.of(context).size.width;
 
     return BlocBuilder<PaymentCubit, PaymentState>(builder: (context, state) {
-      if(state is PaymentStateLoadingState) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        else if (state is PaymentStateLoadedState) {
-          return const Center(child: Text("Payment is successful"));
-        }
-        else if (state is PaymentStateErrorState) {
-          return const Center(child: Text("Payment is failed"));
-        }
-        else {
+      if (state is PaymentLoadingState) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (state is PaymentLoadedState) {
+        return const Center(child: Text("Payment is successful"));
+      } else if (state is PaymentErrorState) {
+        return const Center(child: Text("Payment is failed"));
+      } else {
         return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
@@ -126,20 +128,63 @@ class _PaymentViewState extends State<PaymentView> {
                       padding: const EdgeInsets.all(16.0),
                       child: GestureDetector(
                         onTap: () async {
-                          context.read<AuthCubit>().getCurrentUserId();
-                          final ipv4 = await Ipify.ipv4();
-                          
-                          if (cardNumber.length == 19 &&
-                              expiryDate.length == 5 &&
-                              cardHolderName.isNotEmpty &&
-                              cvvCode.length == 3) {
-                            print("Valid");
-                            cardNumber = cardNumber.replaceAll(" ", "");
-                            var expireMonth = expiryDate.split("/")[0];
-                            var expireYear = "20${expiryDate.split("/")[1]}";
-                            // return fonksionu
+                          print("object");
+
+                          var expireMonth = expiryDate.split('/')[0];
+                          var expireYear = '20${expiryDate.split('/')[1]}';
+                          cardNumber = cardNumber.replaceAll(' ', '');
+                          var buyer = {
+                            'id': "01",
+                            'name': "yiğit",
+                            'surname': "kAYA",
+                            'email': "hasanyigtkaya@gmail.com",
+                            'city': "istanbul",
+                            'country': "Turkiye",
+                            'address': "umraniye",
+                          };
+                          var package = {
+                            'id': "widget.package!.id",
+                            'name': "widget.package!.name",
+                            'category': "widget.package!.category",
+                            'price': 1.5,
+                          };
+                          // check if credit card is amex card
+                          if (context
+                              .read<PaymentCubit>()
+                              .isAmexCard(cardNumber)) {
+                            // check if credit card model is valid
+                            if (context
+                                .read<PaymentCubit>()
+                                .isCreditCardExpireDateValid(
+                                    expireMonth, expireYear)) {
+                              context.read<PaymentCubit>().createPayment(
+                                  package,
+                                  buyer,
+                                  widget.package!.price,
+                                  cardHolderName,
+                                  cardNumber,
+                                  expireMonth,
+                                  expireYear,
+                                  cvvCode);
+                            }
                           } else {
-                            print("Invalid");
+                            if (context
+                                    .read<PaymentCubit>()
+                                    .isCreditCardExpireDateValid(
+                                        expireMonth, expireYear) &&
+                                context
+                                    .read<PaymentCubit>()
+                                    .isCreditCardNumberValid(cardNumber)) {
+                              context.read<PaymentCubit>().createPayment(
+                                  package,
+                                  buyer,
+                                  1.2,
+                                  cardHolderName,
+                                  cardNumber,
+                                  expireMonth,
+                                  expireYear,
+                                  cvvCode);
+                            }
                           }
                         },
                         child: Container(
@@ -161,7 +206,6 @@ class _PaymentViewState extends State<PaymentView> {
           ),
         );
       }
-
     });
   }
 }

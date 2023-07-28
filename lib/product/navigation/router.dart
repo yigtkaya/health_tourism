@@ -7,12 +7,15 @@ import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
 import 'package:health_tourism/view/forgot_password/forgot_password.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
 import 'package:health_tourism/view/login/login_view.dart';
+import 'package:health_tourism/view/payment/payment_view.dart';
 import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 
 import '../../view/onboarding/onboarding_view.dart';
 import '../../view/sign_up/sign_up_view.dart';
+import '../models/buyer.dart';
+import '../models/package.dart';
 
 
 final GoRouter router = GoRouter(
@@ -90,6 +93,12 @@ final GoRouter router = GoRouter(
         builder: (context, state) {
           return const ForgotPasswordView();
         }),
+    GoRoute(
+      path: RoutePath.payment,
+      builder: (context, state) {
+        return PaymentView(null, null, null);
+      },
+    ),
   ],
 );
 

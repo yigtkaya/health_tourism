@@ -16,9 +16,9 @@ class RootView extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is Authenticated) {
-            return WebView();
+            return HTBottomNav();
           }
-          return const WebView();
+          return const LoginView();
         });
   }
 }

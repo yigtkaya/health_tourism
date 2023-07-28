@@ -1,9 +1,29 @@
+import 'package:dio/dio.dart';
+import 'package:health_tourism/product/models/buyer.dart';
+import 'package:health_tourism/product/models/package.dart';
 import 'package:health_tourism/product/repositories/payment_repo.dart';
 
 class PaymentRepoImpl extends PaymentRepository {
+  final dio = Dio();
+
   @override
-  Future<void> createPayment(String cardHolderName, String cardNumber, String expireMonth, String expireYear, String cvc) async {
-    // create function to api call firebase cloud function and create payment
+  Future<void> createPayment(Map package, Map buyer, double price, String cardHolderName, String cardNumber, String expireMonth, String expireYear, String cvc) async {
+    // make request to firebase function with dio package
+     final result = await dio.post(
+      'https://us-central1-health-tourism-1c9e0.cloudfunctions.net/iyzicoPayment',
+      data: {
+        'package': package,
+        'buyer': buyer,
+        'price': price,
+        'cardHolderName': cardHolderName,
+        'cardNumber': cardNumber,
+        'expireMonth': expireMonth,
+        'expireYear': expireYear,
+        'cvc': cvc,
+      },
+    );
+
+    print(result.data);
   }
 
   @override

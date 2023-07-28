@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
 import 'package:health_tourism/product/models/customer.dart';
+import 'package:health_tourism/product/navigation/route_paths.dart';
+import 'package:health_tourism/product/navigation/router.dart';
 
 import '../../core/components/ht_text.dart';
 
@@ -43,7 +45,9 @@ class _ProfileViewState extends State<ProfileView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  HTText.labelMedium(state.costumer.fullName, context: context)
+                  ElevatedButton(onPressed: () {
+                    goTo(path: RoutePath.payment);
+                  }, child: Text("Payment")),
                 ],
               ),
             ),

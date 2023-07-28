@@ -13,19 +13,18 @@ class PaymentInitialState extends PaymentState {
 }
 
 // create loading state
-class PaymentStateLoadingState extends PaymentState {
-  final CreditCardModel creditCardModel;
-  const PaymentStateLoadingState(this.creditCardModel);
+class PaymentLoadingState extends PaymentState {
+  const PaymentLoadingState();
 }
 
 // create loaded state
-class PaymentStateLoadedState extends PaymentState {
-  const PaymentStateLoadedState();
+class PaymentLoadedState extends PaymentState {
+  const PaymentLoadedState();
 }
 
 // create error state
-class PaymentStateErrorState extends PaymentState {
+class PaymentErrorState extends PaymentState {
   final IyzicoError iyzicoError;
-  const PaymentStateErrorState(this.iyzicoError);
+  const PaymentErrorState(this.iyzicoError);
 }
 
