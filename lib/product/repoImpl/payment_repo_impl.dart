@@ -7,13 +7,17 @@ class PaymentRepoImpl extends PaymentRepository {
   final dio = Dio();
 
   @override
-  Future<void> createPayment(Map package, Map buyer, double price, String cardHolderName, String cardNumber, String expireMonth, String expireYear, String cvc) async {
+  Future<void> createPayment(String surName, String firstName, double price, String cardHolderName, String cardNumber, String expireMonth, String expireYear, String cvc) async {
     // make request to firebase function with dio package
      final result = await dio.post(
-      'https://us-central1-health-tourism-1c9e0.cloudfunctions.net/iyzicoPayment',
+      'http://10.0.2.2:3000/api/iyzico/pay',
       data: {
-        'package': package,
-        'buyer': buyer,
+        'contactName': '$firstName $surName',
+        'city': 'Istanbul',
+        'surName': surName,
+        'country': 'Turkey',
+        'address': 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
+        'email': "hasan.kays159@gmail.com",
         'price': price,
         'cardHolderName': cardHolderName,
         'cardNumber': cardNumber,

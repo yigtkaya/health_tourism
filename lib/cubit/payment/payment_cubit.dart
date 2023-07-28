@@ -12,8 +12,7 @@ class PaymentCubit extends Cubit<PaymentState> {
 
   // create function to create payment
   Future<void> createPayment(
-      Map package,
-      Map buyer,
+      String firstName, String surName,
       double price,
       String cardHolderName,
       String cardNumber,
@@ -21,7 +20,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       String expireYear,
       String cvc) async {
     emit(PaymentLoadingState());
-    await paymentRepoImpl.createPayment(package, buyer, price, cardHolderName,
+    await paymentRepoImpl.createPayment(firstName, surName, price, cardHolderName,
         cardNumber, expireMonth, expireYear, cvc);
     emit(const PaymentLoadedState());
   }

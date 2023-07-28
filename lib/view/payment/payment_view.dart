@@ -73,7 +73,7 @@ class _PaymentViewState extends State<PaymentView> {
                       formKey: formKey, // Required
                       onCreditCardModelChange: (CreditCardModel data) {
                         setState(() {
-                          if (data.cvvCode.length <= 3) {
+                          if (data.cvvCode.length <= 4) {
                             cvvCode = data.cvvCode;
                           }
                           cardNumber = data.cardNumber;
@@ -132,6 +132,9 @@ class _PaymentViewState extends State<PaymentView> {
 
                           var expireMonth = expiryDate.split('/')[0];
                           var expireYear = '20${expiryDate.split('/')[1]}';
+                          var firstName = cardHolderName.split(' ')[0];
+                          var surName = cardHolderName.split(' ')[1];
+
                           cardNumber = cardNumber.replaceAll(' ', '');
                           var buyer = {
                             'id': "01",
@@ -158,9 +161,9 @@ class _PaymentViewState extends State<PaymentView> {
                                 .isCreditCardExpireDateValid(
                                     expireMonth, expireYear)) {
                               context.read<PaymentCubit>().createPayment(
-                                  package,
-                                  buyer,
-                                  widget.package!.price,
+                                  firstName,
+                                  surName,
+                                  1.2,
                                   cardHolderName,
                                   cardNumber,
                                   expireMonth,
@@ -176,8 +179,8 @@ class _PaymentViewState extends State<PaymentView> {
                                     .read<PaymentCubit>()
                                     .isCreditCardNumberValid(cardNumber)) {
                               context.read<PaymentCubit>().createPayment(
-                                  package,
-                                  buyer,
+                                  firstName,
+                                  surName,
                                   1.2,
                                   cardHolderName,
                                   cardNumber,
