@@ -1,6 +1,6 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'package:health_tourism/product/models/buyer.dart';
-import 'package:health_tourism/product/models/package.dart';
 import 'package:health_tourism/product/repositories/payment_repo.dart';
 
 class PaymentRepoImpl extends PaymentRepository {
@@ -26,8 +26,8 @@ class PaymentRepoImpl extends PaymentRepository {
         'cvc': cvc,
       },
     );
-
-    print(result.data);
+    final res = json.encode(result.data);
+    print(res);
   }
 
   @override
