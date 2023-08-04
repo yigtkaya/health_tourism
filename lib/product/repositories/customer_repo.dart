@@ -7,7 +7,7 @@ abstract class UserRepo {
     // TODO: implement getCustomer
     throw UnimplementedError();
   }
-  Future<void> updateUserData(Customer customer);
+  Future<void> updateCustomerData(Customer customer);
   Future<void> deleteCustomer(String uid);
   Future<void> createCustomer(
       Customer customer) async {}

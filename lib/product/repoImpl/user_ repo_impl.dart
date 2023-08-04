@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/customer.dart';
-import '../repositories/user_repo.dart';
+import '../repositories/customer_repo.dart';
 
 class UserRepositoryImpl extends UserRepo {
   CollectionReference customers =
@@ -52,7 +52,7 @@ class UserRepositoryImpl extends UserRepo {
   }
 
   @override
-  Future<void> updateUserData(Customer customer) async {
+  Future<void> updateCustomerData(Customer customer) async {
     /// ve ya saved valueyu sadece değiştiricez. fazla yazım miktarı saymasın diye
     FirebaseFirestore.instance
         .collection("users")
