@@ -1,9 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
-import 'package:health_tourism/product/models/package.dart';
 import 'package:health_tourism/product/repoImpl/payment_repo_impl.dart';
-
-import '../../product/models/buyer.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit() : super(const PaymentInitialState());

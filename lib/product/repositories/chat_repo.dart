@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class ChatRepository {
 
-    Stream<List<Map<String, dynamic>>> getMessages({required String chatId});
-    Future<void> sendMessage({required String chatId, required String message});
-    Future<void> deleteMessage({required String chatId, required String messageId});
-    Future<void> deleteChat({required String chatId});
-    Future<void> deleteAllMessages({required String chatId});
-    Future<void> deleteAllChats();
+    Future<void> sendMessage({required String receiverId, required String message}) async {}
+    Future<void> deleteChat({required String receiverId});
+    Future<void> addChatRoom(receiverId) async {}
+    Stream<QuerySnapshot<Map<String, dynamic>>> getAllChats();
+    Stream<QuerySnapshot> getChat({required String receiverId});
 }
