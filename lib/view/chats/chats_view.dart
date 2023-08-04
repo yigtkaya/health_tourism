@@ -1,13 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/asset.dart';
+import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/cubit/chat_cubit/chat_cubit.dart';
+import 'package:health_tourism/product/navigation/route_paths.dart';
+import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 
+import '../../core/constants/vertical_space.dart';
 import '../../cubit/chat_cubit/chat_state.dart';
 
 class ChatsView extends StatefulWidget {
@@ -58,44 +63,30 @@ class _ChatsViewState extends State<ChatsView> {
           Expanded(
             flex: 3,
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: const Color(0xff292f3f),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
+                color: Color(0xff292f3f),
               ),
               child: BlocBuilder<ChatCubit, ChatState>(
                 builder: (context, state) {
-                  if (state is ChatLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
                   if (state is ChatLoaded) {
-                    return StreamBuilder(
-                            stream: state.chats,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return const Center(
-                                  child: Text("Error"),
-                                );
-                              }
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                                return ListView(
-                                  children: snapshot.data!.docs
-                                      .map((document) => _buildLineItem(document))
-                                      .toList(),
-                                );
-                            },
-                          );
-                  } else {
+                    return _buildChatListView(state);
+                  }
+                  if (state is ChatError) {
                     return const Center(
-                      child: Text("Error"),
+                      child: HTText(
+                        label: "Something went wrong",
+                        color: Colors.white,
+                        style: htLabelStyle,
+                      ),
                     );
                   }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 },
               ),
             ),
@@ -105,48 +96,99 @@ class _ChatsViewState extends State<ChatsView> {
     );
   }
 
+  Widget _buildChatListView(ChatLoaded state) {
+    return StreamBuilder(
+      stream: state.chats,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (context, index) {
+              return _buildLineItem(snapshot.data!.docs[index]);
+            },
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
   Widget _buildLineItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    String lastMessage = data['lastMessage']['message'];
+    // find id that matches with current user id from data ids
+    List id = data['ids'];
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    id.remove(currentUserId);
+    String receiverId = id[0];
+    // convert time stamp to date
+    DateTime t = data['lastMessage']['lastMessageTime'].toDate();
+    String formattedDate = "${t.hour}:${t.minute}";
 
-    return Row(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            image: const DecorationImage(
-              image: NetworkImage("https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
-              fit: BoxFit.cover,
+    if (data['lastMessage']['senderId'] != currentUserId) {
+      lastMessage = "${data['lastMessage']['senderId']}: $lastMessage";
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: GestureDetector(
+        onTap: () {
+          goTo(path: RoutePath.chatRoom);
+        },
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    image: const DecorationImage(
+                      image: NetworkImage(
+                          "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const HorizontalSpace(
+                  spaceAmount: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HTText(
+                      label: receiverId,
+                      color: Colors.white,
+                      style: htLabelStyle,
+                    ),
+                    const VerticalSpace(
+                      spaceAmount: 6,
+                    ),
+                    HTText(
+                      label: lastMessage,
+                      color: Colors.white,
+                      style: htLabelStyle,
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                HTText(
+                  label: formattedDate,
+                  color: Colors.white,
+                  style: htLabelStyle,
+                ),
+              ],
             ),
-          ),
+            const Divider(
+              color: Colors.white,
+            ),
+          ],
         ),
-        const SizedBox(
-          width: 10,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HTText(
-                label: data.values.toList()[0],
-                color: Colors.white,
-                style: htLabelStyle,
-              ),
-              HTText(
-                label: data['lastMessage']['message'],
-                color: Colors.white,
-                style: htLabelStyle,
-              ),
-            ],
-          ),
-        ),
-        HTText(
-          label: data['lastMessage']['lastMessageTime'],
-          color: Colors.white,
-          style: htLabelStyle,
-        ),
-      ],
+      ),
     );
   }
 }

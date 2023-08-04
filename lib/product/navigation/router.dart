@@ -12,6 +12,7 @@ import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 
+import '../../view/chats/chat_room_view.dart';
 import '../../view/onboarding/onboarding_view.dart';
 import '../../view/sign_up/sign_up_view.dart';
 import '../models/buyer.dart';
@@ -97,6 +98,12 @@ final GoRouter router = GoRouter(
       path: RoutePath.payment,
       builder: (context, state) {
         return PaymentView(null, null, null);
+      },
+    ),
+    GoRoute(
+      path: RoutePath.chatRoom,
+      builder: (context, state) {
+        return ChatRoomView();
       },
     ),
   ],

@@ -11,5 +11,6 @@ class RoutePath {
   static const String bottomNavigation = '/bottomNavigation';
   static const String profile = '/profile';
   static const String payment = '/payment';
+  static const String chatRoom = '/chatRoom';
 }
 

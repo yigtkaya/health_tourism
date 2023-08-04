@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../product/repoImpl/chat_repo_impl.dart';
 import 'chat_state.dart';
 
@@ -18,14 +16,11 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Stream<QuerySnapshot> getAllChatss() {
+  void getAllChats() {
     try {
       emit(ChatLoading());
-      final chats = repository.getAllChats();
-      emit(ChatLoaded(chats));
-
-      
-      return chats;
+      Future.value(repository.getAllChats())
+          .then((value) => emit(ChatLoaded(value)));
     } catch (e) {
       emit(ChatError(e.toString()));
     }
@@ -37,9 +32,5 @@ class ChatCubit extends Cubit<ChatState> {
     } catch (e) {
       emit(ChatError(e.toString()));
     }
-  }
-
-  Stream<QuerySnapshot> getAllChats() {
-    return repository.getAllChats();
   }
 }

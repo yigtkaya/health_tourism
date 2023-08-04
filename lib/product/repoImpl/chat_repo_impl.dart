@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/product/repositories/chat_repo.dart';
 
+import '../models/message.dart';
+
 class ChatRepositoryImpl extends ChatRepository {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
