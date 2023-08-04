@@ -33,4 +33,16 @@ class ChatCubit extends Cubit<ChatState> {
       emit(ChatError(e.toString()));
     }
   }
+
+  String formatDate (DateTime date) {
+    // if date is today return time only else return date only
+    if (date.day == DateTime.now().day && date.month == DateTime.now().month && date.year == DateTime.now().year) {
+      return "${date.hour}:${date.minute}";
+    } else if (date.day == DateTime.now().day - 1 && date.month == DateTime.now().month && date.year == DateTime.now().year) {
+      return "Yesterday";
+    }
+    else {
+      return "${date.day}.${date.month}.${date.year}";
+    }
+  }
 }

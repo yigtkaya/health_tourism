@@ -104,7 +104,9 @@ class _ChatsViewState extends State<ChatsView> {
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (context, index) {
-              return _buildLineItem(snapshot.data!.docs[index]);
+              return GestureDetector(onTap: () {
+                goTo(path: RoutePath.chatRoom);
+              },child: _buildLineItem(snapshot.data!.docs[index]));
             },
           );
         } else {
@@ -126,69 +128,66 @@ class _ChatsViewState extends State<ChatsView> {
     String receiverId = id[0];
     // convert time stamp to date
     DateTime t = data['lastMessage']['lastMessageTime'].toDate();
-    String formattedDate = "${t.hour}:${t.minute}";
+    // check if the message is sent today or yesterday or before
+    String formattedDate = context.read<ChatCubit>().formatDate(t);
+
 
     if (data['lastMessage']['senderId'] != currentUserId) {
       lastMessage = "${data['lastMessage']['senderId']}: $lastMessage";
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GestureDetector(
-        onTap: () {
-          goTo(path: RoutePath.chatRoom);
-        },
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: const DecorationImage(
-                      image: NetworkImage(
-                          "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
-                      fit: BoxFit.cover,
-                    ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 18.0, right: 18, top: 10),
+          child: Row(
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const HorizontalSpace(
-                  spaceAmount: 16,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HTText(
-                      label: receiverId,
-                      color: Colors.white,
-                      style: htLabelStyle,
-                    ),
-                    const VerticalSpace(
-                      spaceAmount: 6,
-                    ),
-                    HTText(
-                      label: lastMessage,
-                      color: Colors.white,
-                      style: htLabelStyle,
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                HTText(
-                  label: formattedDate,
-                  color: Colors.white,
-                  style: htLabelStyle,
-                ),
-              ],
-            ),
-            const Divider(
-              color: Colors.white,
-            ),
-          ],
+              ),
+              const HorizontalSpace(
+                spaceAmount: 16,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HTText(
+                    label: receiverId,
+                    color: Colors.white,
+                    style: htLabelStyle,
+                  ),
+                  const VerticalSpace(
+                    spaceAmount: 6,
+                  ),
+                  HTText(
+                    label: lastMessage,
+                    color: Colors.white,
+                    style: htLabelStyle,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              HTText(
+                label: formattedDate,
+                color: Colors.white,
+                style: htSmallLabelStyle,
+              ),
+            ],
+          ),
         ),
-      ),
+        const Divider(
+          color: Colors.white,
+        ),
+      ],
     );
   }
 }

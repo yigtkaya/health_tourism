@@ -10,6 +10,7 @@ class AssetConstants {
 class HTIcons {
   final String googleIcon = AssetConstants.toIcon("google_icon");
   final String facebookIcon = AssetConstants.toIcon("facebook_icon");
+  final String backIcon = AssetConstants.toIcon("back");
   final String infoIcon = AssetConstants.toIcon("info_icon");
   final String verticalDivider = AssetConstants.toIcon("vertical_divider_icon");
 }

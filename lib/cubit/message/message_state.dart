@@ -19,9 +19,9 @@ class MessageLoading extends MessageState {
 }
 
 class MessageLoaded extends MessageState {
-  final Stream<QuerySnapshot> chat;
+  final Stream<QuerySnapshot> messages;
 
-  MessageLoaded(this.chat);
+  MessageLoaded(this.messages);
 }
 
 class MessageSent extends MessageState {

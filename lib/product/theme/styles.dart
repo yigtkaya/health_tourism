@@ -27,9 +27,9 @@ const htBoldLabelStyle =  TextStyle(
 
 const htSmallLabelStyle = TextStyle(
   color: Colors.white,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.normal,
   fontFamily: 'OpenSans',
-  fontSize: 14
+  fontSize: 10
 );
 
 const htTitleStyle =  TextStyle(

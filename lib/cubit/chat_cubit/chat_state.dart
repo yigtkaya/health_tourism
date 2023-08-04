@@ -24,7 +24,7 @@ class ChatLoaded extends ChatState {
 class ChatError extends ChatState {
   final String message;
 
-  ChatError(this.message);
+  const ChatError(this.message);
 
   @override
   List<Object> get props => [message];
