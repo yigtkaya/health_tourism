@@ -1,12 +1,7 @@
-
 import 'dart:core';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/product/repositories/chat_repo.dart';
-
-import '../models/message.dart';
-import '../models/message_type.dart';
 
 class ChatRepositoryImpl extends ChatRepository {
 
@@ -40,4 +35,9 @@ class ChatRepositoryImpl extends ChatRepository {
         .snapshots();
     }
 
+  @override
+  Future<void> deleteChat({required String chatRoomId}) async {
+    // TODO: implement deleteChat
+    await _firestore.collection('chatRooms').doc(chatRoomId).delete();
+  }
 }

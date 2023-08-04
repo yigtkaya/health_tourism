@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/product/repositories/message_repo.dart';
@@ -41,11 +40,5 @@ class MessageRepositoryImpl extends MessageRepository {
 
     return _firestore.collection('chatRooms').doc(chatRoomId)
         .collection('messages').orderBy('timestamp', descending: false).snapshots();
-  }
-
-  @override
-  Future<void> deleteChat({required String chatRoomId}) async {
-    // TODO: implement deleteChat
-    await _firestore.collection('chatRooms').doc(chatRoomId).delete();
   }
 }
