@@ -21,10 +21,6 @@ class ChatLoaded extends ChatState {
   List<Object> get props => [chats];
 }
 
-class ChatRoomAdded extends ChatState {}
-
-class ChatDeleted extends ChatState {}
-
 class ChatError extends ChatState {
   final String message;
 

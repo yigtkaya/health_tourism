@@ -23,15 +23,24 @@ class MessageRepositoryImpl extends MessageRepository {
       senderId: currentUserId,
       receiverId: receiverId,
       message: message,
-      timestamp: Timestamp.now(),
+      messageTime: Timestamp.now(),
       type: MessageType.text,
     );
 
+    final lastmsg = {
+      "lastMessageTime" : msg.messageTime,
+      "message" : msg.message,
+      "senderId" : msg.senderId
+    };
     final chatRoomId = listJoiner(receiverId);
 
     await _firestore.collection('chatRooms').doc(chatRoomId)
         .collection('messages').add(msg.toMap());
 
+    // update last message
+    await _firestore.collection('chatRooms').doc(chatRoomId).set({
+      "lastMessage" : lastmsg
+    });
   }
 
   @override

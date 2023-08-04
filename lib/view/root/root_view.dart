@@ -7,6 +7,7 @@ import 'package:health_tourism/view/payment/payment_view.dart';
 import 'package:health_tourism/view/payment/webview.dart';
 import '../../cubit/auth/AuthState.dart';
 import '../../cubit/auth/auth_cubit.dart';
+import '../chats/chats_view.dart';
 
 class RootView extends StatelessWidget {
   const RootView({Key? key}) : super(key: key);
@@ -16,9 +17,9 @@ class RootView extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is Authenticated) {
-            return HTBottomNav();
+            return ChatsView();
           }
-          return const LoginView();
+          return const ChatsView();
         });
   }
 }

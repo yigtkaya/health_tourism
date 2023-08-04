@@ -28,16 +28,13 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllChats() {
-    return  _firestore.collection("chatRooms")
-        .where("ids", arrayContains: currentUserId)
-        .orderBy("timestamp", descending: false)
-        .snapshots();
-    }
+  Stream<QuerySnapshot> getAllChats() {
+    return _firestore.collection("chatRooms")
+        .where("ids", arrayContains: currentUserId).snapshots();
+  }
 
   @override
   Future<void> deleteChat({required String chatRoomId}) async {
-    // TODO: implement deleteChat
     await _firestore.collection('chatRooms').doc(chatRoomId).delete();
   }
 }

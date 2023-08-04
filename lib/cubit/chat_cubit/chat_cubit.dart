@@ -1,26 +1,31 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../product/repoImpl/chat_repo_impl.dart';
 import 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final repository = ChatRepositoryImpl();
-  ChatCubit() : super(ChatInitial());
+  ChatCubit() : super(ChatInitial()) {
+    getAllChats();
+  }
 
   void addChatRoom(receiverId) async {
     try {
       await repository.addChatRoom(receiverId);
-      emit(ChatRoomAdded());
     } catch (e) {
       emit(ChatError(e.toString()));
     }
   }
 
-  void getAllChats() async {
+  Stream<QuerySnapshot> getAllChatss() {
     try {
       emit(ChatLoading());
       final chats = repository.getAllChats();
       emit(ChatLoaded(chats));
+
+      
+      return chats;
     } catch (e) {
       emit(ChatError(e.toString()));
     }
@@ -29,11 +34,12 @@ class ChatCubit extends Cubit<ChatState> {
   void deleteChat(chatRoomId) async {
     try {
       await repository.deleteChat(chatRoomId: chatRoomId);
-      emit(ChatDeleted());
     } catch (e) {
       emit(ChatError(e.toString()));
     }
   }
 
-
+  Stream<QuerySnapshot> getAllChats() {
+    return repository.getAllChats();
+  }
 }

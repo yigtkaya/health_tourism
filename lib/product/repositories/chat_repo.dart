@@ -4,5 +4,5 @@ abstract class ChatRepository {
 
     Future<void> deleteChat({required String chatRoomId});
     Future<void> addChatRoom(receiverId) async {}
-    Stream<QuerySnapshot<Map<String, dynamic>>> getAllChats();
+    Stream<QuerySnapshot> getAllChats();
 }

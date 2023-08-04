@@ -6,14 +6,14 @@ class Message {
   final String senderId;
   final String receiverId;
   final String message;
-  final Timestamp timestamp;
+  final Timestamp messageTime;
   final MessageType type;
 
   Message({
     required this.senderId,
     required this.receiverId,
     required this.message,
-    required this.timestamp,
+    required this.messageTime,
     required this.type,
   });
 
@@ -22,7 +22,7 @@ class Message {
       'senderId': senderId,
       'receiverId': receiverId,
       'message': message,
-      'timestamp': timestamp,
+      'timestamp': messageTime,
       'type': type.index,
     };
   }
@@ -31,7 +31,7 @@ class Message {
       : senderId = map['senderId'],
         receiverId = map['receiverId'],
         message = map['message'],
-        timestamp = map['timestamp'],
+        messageTime = map['timestamp'],
         type = MessageType.values[map['type']];
 
   
