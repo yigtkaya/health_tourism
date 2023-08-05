@@ -104,7 +104,8 @@ class _ChatsViewState extends State<ChatsView> {
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (context, index) {
-              Map<String, dynamic> data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              Map<String, dynamic> data =
+                  snapshot.data!.docs[index].data() as Map<String, dynamic>;
               String currentUserId = FirebaseAuth.instance.currentUser!.uid;
               String lastMessage = data['lastMessage']['message'];
               List id = data['ids'];
@@ -113,18 +114,23 @@ class _ChatsViewState extends State<ChatsView> {
               String receiverId = id[0];
 
               if (data['lastMessage']['senderId'] != currentUserId) {
-                lastMessage = "${data['lastMessage']['senderId']}: $lastMessage";
+                lastMessage =
+                    "${data['lastMessage']['senderId']}: $lastMessage";
               }
               DateTime t = data['lastMessage']['lastMessageTime'].toDate();
               // check if the message is sent today or yesterday or before
               String formattedDate = context.read<ChatCubit>().formatDate(t);
-              return GestureDetector(onTap: () {
-                context.pushNamed(RoutePath.chatRoom, queryParameters: {
-                  "receiverId": receiverId,
-                  "chatRoomId": chatRoomId,
-                  "receiverName": receiverId,
-                });
-              },child: _buildLineItem(lastMessage, receiverId, chatRoomId, formattedDate));
+              return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    context.pushNamed(RoutePath.chatRoom, queryParameters: {
+                      "receiverId": receiverId,
+                      "chatRoomId": chatRoomId,
+                      "receiverName": receiverId,
+                    });
+                  },
+                  child: _buildLineItem(
+                      lastMessage, receiverId, chatRoomId, formattedDate));
             },
           );
         } else {
@@ -136,60 +142,60 @@ class _ChatsViewState extends State<ChatsView> {
     );
   }
 
-  Widget _buildLineItem(String lastMessage, String receiverId, String chatRoomId, String formattedDate) {
-
+  Widget _buildLineItem(String lastMessage, String receiverId,
+      String chatRoomId, String formattedDate) {
     return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 18.0, right: 18, top: 10),
-            child: Row(
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: const DecorationImage(
-                      image: NetworkImage(
-                          "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
-                      fit: BoxFit.cover,
-                    ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 18.0, right: 18, top: 10),
+          child: Row(
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const HorizontalSpace(
-                  spaceAmount: 16,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HTText(
-                      label: receiverId,
-                      color: Colors.white,
-                      style: htLabelStyle,
-                    ),
-                    const VerticalSpace(
-                      spaceAmount: 6,
-                    ),
-                    HTText(
-                      label: lastMessage,
-                      color: Colors.white,
-                      style: htLabelStyle,
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                HTText(
-                  label: formattedDate,
-                  color: Colors.white,
-                  style: htSmallLabelStyle,
-                ),
-              ],
-            ),
+              ),
+              const HorizontalSpace(
+                spaceAmount: 16,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HTText(
+                    label: receiverId,
+                    color: Colors.white,
+                    style: htLabelStyle,
+                  ),
+                  const VerticalSpace(
+                    spaceAmount: 6,
+                  ),
+                  HTText(
+                    label: lastMessage,
+                    color: Colors.white,
+                    style: htLabelStyle,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              HTText(
+                label: formattedDate,
+                color: Colors.white,
+                style: htSmallLabelStyle,
+              ),
+            ],
           ),
-          const Divider(
-            color: Colors.white,
-          ),
-        ],
-      );
+        ),
+        const Divider(
+          color: Colors.white,
+        ),
+      ],
+    );
   }
 }

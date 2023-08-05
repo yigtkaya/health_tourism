@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
@@ -12,12 +13,12 @@ import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 
+import '../../cubit/message/message_cubit.dart';
 import '../../view/chats/chat_room_view.dart';
 import '../../view/onboarding/onboarding_view.dart';
 import '../../view/sign_up/sign_up_view.dart';
 import '../models/buyer.dart';
 import '../models/package.dart';
-
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -104,11 +105,14 @@ final GoRouter router = GoRouter(
       path: RoutePath.chatRoom,
       name: RoutePath.chatRoom,
       builder: (context, state) {
-        return ChatRoomView(
-          receiverId: state.queryParameters['receiverId']!,
-          chatRoomId: state.queryParameters['chatRoomId']!,
-          receiverName: state.queryParameters['receiverName']!,
-
+        return BlocProvider(
+          create: (context) => MessageCubit()
+            ..getChat(chatRoomId: state.queryParameters['chatRoomId']!),
+          child: ChatRoomView(
+            receiverId: state.queryParameters['receiverId']!,
+            chatRoomId: state.queryParameters['chatRoomId']!,
+            receiverName: state.queryParameters['receiverName']!,
+          ),
         );
       },
     ),

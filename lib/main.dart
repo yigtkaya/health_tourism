@@ -45,9 +45,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ChatCubit(),
         ),
-        BlocProvider(
-          create: (context) => MessageCubit(),
-        ),
       ],
       child: MaterialApp.router(
         routerConfig: router,

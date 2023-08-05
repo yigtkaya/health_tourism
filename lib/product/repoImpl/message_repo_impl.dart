@@ -46,14 +46,21 @@ class MessageRepositoryImpl extends MessageRepository {
   }
 
   @override
-  Stream<QuerySnapshot> getChat({required String receiverId}) {
-    final chatRoomId = listJoiner(receiverId);
-
+  Stream<QuerySnapshot> getChat({required String chatRoomId}) {
     return _firestore
         .collection('chatRooms')
         .doc(chatRoomId)
         .collection('messages')
-        .orderBy('timestamp', descending: false)
+        .orderBy('messageTime', descending: false)
         .snapshots();
+  }
+
+  getMessages(String chatRoomId) async {
+    return await _firestore
+        .collection('chatRooms')
+        .doc(chatRoomId)
+        .collection('messages')
+        .orderBy('messageTime', descending: false)
+        .get();
   }
 }

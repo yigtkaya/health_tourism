@@ -41,58 +41,43 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               child: Row(
                 children: [
                   HTIcon(
-                    onPress: () {
-                      context.pop();
-                    },
+                      onPress: () {
+                        context.pop();
+                      },
                       iconName: AssetConstants.icons.backIcon,
                       color: Colors.white,
                       width: 24,
                       height: 24),
+                  // image gelecek bu araya
                   const HorizontalSpace(spaceAmount: 16),
                   HTText.title(
                     context: context,
                     label: widget.receiverId,
                     color: Colors.white,
                   ),
-                  const Spacer(),
-                  HTIcon(
-                    iconName: AssetConstants.icons.infoIcon,
-                    color: Colors.white,
-                    width: 24,
-                    height: 24,
-                  ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: const HTText(
-                  label: "Chats",
-                  color: Colors.white,
-                  style: htLabelStyle,
-                ),
-              ),
-            ),
-            BlocBuilder<MessageCubit, MessageState>(
-              builder: (context, state) {
-                if (state is MessageLoaded) {
-                  return _buildMessageListView(state);
-                }
-                if (state is MessageError) {
+            Expanded(
+              child: BlocBuilder<MessageCubit, MessageState>(
+                builder: (context, state) {
+                  if (state is MessageLoaded) {
+                    return _buildMessageListView(state);
+                  }
+                  if (state is MessageError) {
+                    return Center(
+                      child: HTText(
+                        label: state.message,
+                        color: Colors.white,
+                        style: htLabelStyle,
+                      ),
+                    );
+                  }
                   return const Center(
-                    child: HTText(
-                      label: "Something went wrong",
-                      color: Colors.white,
-                      style: htLabelStyle,
-                    ),
+                    child: CircularProgressIndicator(),
                   );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+                },
+              ),
             ),
           ],
         ),
@@ -118,6 +103,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             child: CircularProgressIndicator(),
           );
         }
+        print(FirebaseAuth.instance.currentUser!.uid);
         return ListView.builder(
           itemCount: snapshot.data?.docs.length,
           itemBuilder: (context, index) {
@@ -136,9 +122,8 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         : Alignment.centerLeft;
 
     var color = data['senderId'] == FirebaseAuth.instance.currentUser!.uid
-        ? const Color(0xff7a8194)
-        : const Color(0xff373e4e);
-
+        ? const Color(0xff373e4e)
+        : const Color(0xff7a8194);
     String message = data['message'];
 
     return Padding(
@@ -146,7 +131,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
       child: Container(
         alignment: alignment,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           color: color,
         ),
         child: Padding(
