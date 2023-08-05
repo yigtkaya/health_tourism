@@ -102,8 +102,14 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: RoutePath.chatRoom,
+      name: RoutePath.chatRoom,
       builder: (context, state) {
-        return ChatRoomView();
+        return ChatRoomView(
+          receiverId: state.queryParameters['receiverId']!,
+          chatRoomId: state.queryParameters['chatRoomId']!,
+          receiverName: state.queryParameters['receiverName']!,
+
+        );
       },
     ),
   ],
@@ -111,6 +117,10 @@ final GoRouter router = GoRouter(
 
 void goTo({required String path}) {
   router.go(path);
+}
+
+void pushTo({required String path}) {
+  router.push(path);
 }
 
 void goToWithWait({required String path}) {

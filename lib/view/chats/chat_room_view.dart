@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_tourism/cubit/message/message_cubit.dart';
 import 'package:health_tourism/cubit/message/message_state.dart';
 import '../../core/components/ht_icon.dart';
@@ -14,13 +15,12 @@ import '../../product/theme/styles.dart';
 class ChatRoomView extends StatefulWidget {
   String receiverId;
   String receiverName;
-  String receiverImage;
   String chatRoomId;
 
   ChatRoomView({
+    super.key,
     required this.receiverId,
     required this.receiverName,
-    required this.receiverImage,
     required this.chatRoomId,
   });
 
@@ -40,11 +40,18 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  HTIcon(iconName: AssetConstants.icons.backIcon, color: Colors.white, width: 24, height: 24),
+                  HTIcon(
+                    onPress: () {
+                      context.pop();
+                    },
+                      iconName: AssetConstants.icons.backIcon,
+                      color: Colors.white,
+                      width: 24,
+                      height: 24),
                   const HorizontalSpace(spaceAmount: 16),
                   HTText.title(
                     context: context,
-                    label: "Messages",
+                    label: widget.receiverId,
                     color: Colors.white,
                   ),
                   const Spacer(),
@@ -129,8 +136,8 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         : Alignment.centerLeft;
 
     var color = data['senderId'] == FirebaseAuth.instance.currentUser!.uid
-        ? Color(0xff7a8194)
-        : Color(0xff373e4e);
+        ? const Color(0xff7a8194)
+        : const Color(0xff373e4e);
 
     String message = data['message'];
 

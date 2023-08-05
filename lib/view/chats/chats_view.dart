@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/asset.dart';
@@ -104,9 +104,27 @@ class _ChatsViewState extends State<ChatsView> {
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (context, index) {
+              Map<String, dynamic> data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+              String lastMessage = data['lastMessage']['message'];
+              List id = data['ids'];
+              String chatRoomId = id.join("_");
+              id.remove(currentUserId);
+              String receiverId = id[0];
+
+              if (data['lastMessage']['senderId'] != currentUserId) {
+                lastMessage = "${data['lastMessage']['senderId']}: $lastMessage";
+              }
+              DateTime t = data['lastMessage']['lastMessageTime'].toDate();
+              // check if the message is sent today or yesterday or before
+              String formattedDate = context.read<ChatCubit>().formatDate(t);
               return GestureDetector(onTap: () {
-                goTo(path: RoutePath.chatRoom);
-              },child: _buildLineItem(snapshot.data!.docs[index]));
+                context.pushNamed(RoutePath.chatRoom, queryParameters: {
+                  "receiverId": receiverId,
+                  "chatRoomId": chatRoomId,
+                  "receiverName": receiverId,
+                });
+              },child: _buildLineItem(lastMessage, receiverId, chatRoomId, formattedDate));
             },
           );
         } else {
@@ -118,76 +136,60 @@ class _ChatsViewState extends State<ChatsView> {
     );
   }
 
-  Widget _buildLineItem(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    String lastMessage = data['lastMessage']['message'];
-    // find id that matches with current user id from data ids
-    List id = data['ids'];
-    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    id.remove(currentUserId);
-    String receiverId = id[0];
-    // convert time stamp to date
-    DateTime t = data['lastMessage']['lastMessageTime'].toDate();
-    // check if the message is sent today or yesterday or before
-    String formattedDate = context.read<ChatCubit>().formatDate(t);
-
-
-    if (data['lastMessage']['senderId'] != currentUserId) {
-      lastMessage = "${data['lastMessage']['senderId']}: $lastMessage";
-    }
+  Widget _buildLineItem(String lastMessage, String receiverId, String chatRoomId, String formattedDate) {
 
     return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18, top: 10),
-          child: Row(
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  image: const DecorationImage(
-                    image: NetworkImage(
-                        "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
-                    fit: BoxFit.cover,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0, right: 18, top: 10),
+            child: Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    image: const DecorationImage(
+                      image: NetworkImage(
+                          "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              const HorizontalSpace(
-                spaceAmount: 16,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HTText(
-                    label: receiverId,
-                    color: Colors.white,
-                    style: htLabelStyle,
-                  ),
-                  const VerticalSpace(
-                    spaceAmount: 6,
-                  ),
-                  HTText(
-                    label: lastMessage,
-                    color: Colors.white,
-                    style: htLabelStyle,
-                  ),
-                ],
-              ),
-              const Spacer(),
-              HTText(
-                label: formattedDate,
-                color: Colors.white,
-                style: htSmallLabelStyle,
-              ),
-            ],
+                const HorizontalSpace(
+                  spaceAmount: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HTText(
+                      label: receiverId,
+                      color: Colors.white,
+                      style: htLabelStyle,
+                    ),
+                    const VerticalSpace(
+                      spaceAmount: 6,
+                    ),
+                    HTText(
+                      label: lastMessage,
+                      color: Colors.white,
+                      style: htLabelStyle,
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                HTText(
+                  label: formattedDate,
+                  color: Colors.white,
+                  style: htSmallLabelStyle,
+                ),
+              ],
+            ),
           ),
-        ),
-        const Divider(
-          color: Colors.white,
-        ),
-      ],
-    );
+          const Divider(
+            color: Colors.white,
+          ),
+        ],
+      );
   }
 }
