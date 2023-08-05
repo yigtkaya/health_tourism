@@ -13,7 +13,6 @@ class MessageCubit extends Cubit<MessageState> {
       {required String receiverId, required String message}) async {
     try {
       await repository.sendMessage(receiverId: receiverId, message: message);
-      emit(MessageSent());
     } catch (e) {
       emit(MessageError(e.toString()));
     }

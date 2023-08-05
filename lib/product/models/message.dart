@@ -18,7 +18,7 @@ class Message {
       'senderId': senderId,
       'receiverId': receiverId,
       'message': message,
-      'timestamp': messageTime,
+      'messageTime': messageTime,
     };
   }
 
@@ -27,7 +27,7 @@ class Message {
       'senderId': senderId,
       'receiverId': receiverId,
       'message': message,
-      'timestamp': messageTime,
+      'messageTime': messageTime,
     };
   }
 }

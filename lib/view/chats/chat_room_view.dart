@@ -81,7 +81,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               },
             ),
             const Spacer(),
-            _buildMessageInputField(),
+            _buildMessageInputField(widget.receiverId),
           ],
         ),
       ),
@@ -207,6 +207,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                         receiverId: receiverId,
                         message: messageController.text,
                       );
+                  messageController.clear();
                 },
               ),
             )

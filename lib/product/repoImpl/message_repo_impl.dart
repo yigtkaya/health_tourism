@@ -10,7 +10,6 @@ class MessageRepositoryImpl extends MessageRepository {
 
   String listJoiner(String receiverId) {
     List<String> ids = [currentUserId, receiverId];
-    ids.sort();
     String chatRoomId = ids.join('_');
     return chatRoomId;
   }
@@ -42,7 +41,7 @@ class MessageRepositoryImpl extends MessageRepository {
     await _firestore
         .collection('chatRooms')
         .doc(chatRoomId)
-        .set({"lastMessage": lastmsg});
+        .set({"lastMessage": lastmsg, 'ids' : [currentUserId, receiverId]});
   }
 
   @override
@@ -53,14 +52,5 @@ class MessageRepositoryImpl extends MessageRepository {
         .collection('messages')
         .orderBy('messageTime', descending: false)
         .snapshots();
-  }
-
-  getMessages(String chatRoomId) async {
-    return await _firestore
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('messages')
-        .orderBy('messageTime', descending: false)
-        .get();
   }
 }
