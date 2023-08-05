@@ -12,5 +12,7 @@ class HTIcons {
   final String facebookIcon = AssetConstants.toIcon("facebook_icon");
   final String backIcon = AssetConstants.toIcon("back");
   final String infoIcon = AssetConstants.toIcon("info_icon");
+  final String cameraIcon = AssetConstants.toIcon("camera_icon");
+  final String sendIcon = AssetConstants.toIcon("send_icon");
   final String verticalDivider = AssetConstants.toIcon("vertical_divider_icon");
 }

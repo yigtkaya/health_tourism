@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/core/components/chat_bubble.dart';
 import 'package:health_tourism/cubit/message/message_cubit.dart';
 import 'package:health_tourism/cubit/message/message_state.dart';
 import '../../core/components/ht_icon.dart';
@@ -58,27 +59,29 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 ],
               ),
             ),
-            Expanded(
-              child: BlocBuilder<MessageCubit, MessageState>(
-                builder: (context, state) {
-                  if (state is MessageLoaded) {
-                    return _buildMessageListView(state);
-                  }
-                  if (state is MessageError) {
-                    return Center(
-                      child: HTText(
-                        label: state.message,
-                        color: Colors.white,
-                        style: htLabelStyle,
-                      ),
-                    );
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
+            BlocBuilder<MessageCubit, MessageState>(
+              builder: (context, state) {
+                if (state is MessageLoaded) {
+                  return Expanded(
+                    child: _buildMessageListView(state),
                   );
-                },
-              ),
+                }
+                if (state is MessageError) {
+                  return Center(
+                    child: HTText(
+                      label: state.message,
+                      color: Colors.white,
+                      style: htLabelStyle,
+                    ),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
+            const Spacer(),
+            _buildMessageInputField(),
           ],
         ),
       ),
@@ -103,12 +106,10 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             child: CircularProgressIndicator(),
           );
         }
-        print(FirebaseAuth.instance.currentUser!.uid);
-        return ListView.builder(
-          itemCount: snapshot.data?.docs.length,
-          itemBuilder: (context, index) {
-            return _buildMessageBubble(snapshot.data!.docs[index]);
-          },
+        return ListView(
+          children: snapshot.data!.docs
+              .map((document) => _buildMessageBubble(document))
+              .toList(),
         );
       },
     );
@@ -121,26 +122,95 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    var color = data['senderId'] == FirebaseAuth.instance.currentUser!.uid
-        ? const Color(0xff373e4e)
-        : const Color(0xff7a8194);
     String message = data['message'];
+
+    var boxDecoration =
+        data['senderId'] == FirebaseAuth.instance.currentUser!.uid
+            ? const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  bottomRight: Radius.circular(32),
+                  bottomLeft: Radius.circular(32),
+                ),
+                color: Color(0xff373e4e),
+              )
+            : const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
+                  bottomRight: Radius.circular(32),
+                ),
+                color: Color(0xff7a8194),
+              );
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         alignment: alignment,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: color,
+        child: Column(
+          children: [
+            ChatBubble(
+              message: message,
+              boxDecoration: boxDecoration,
+            ),
+          ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: HTText(
-            label: message,
-            color: Colors.white,
-            style: htLabelStyle,
-          ),
+      ),
+    );
+  }
+
+  Widget _buildMessageInputField(String receiverId) {
+    final messageController = TextEditingController();
+
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: const BoxDecoration(
+          color: Color(0xff3d4354),
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                color: Color(0xff9398a7),
+                shape: BoxShape.circle,
+              ),
+              child: HTIcon(
+                iconName: AssetConstants.icons.cameraIcon,
+                width: 24,
+                height: 24,
+              ),
+            ),
+            const HorizontalSpace(spaceAmount: 8),
+            Expanded(
+              child: TextField(
+                controller: messageController,
+                style: htLabelStyle,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Message",
+                  hintStyle: htHintTextStyle,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: HTIcon(
+                iconName: AssetConstants.icons.sendIcon,
+                width: 24,
+                height: 24,
+                onPress: () {
+                  context.read<MessageCubit>().sendMessage(
+                        receiverId: receiverId,
+                        message: messageController.text,
+                      );
+                },
+              ),
+            )
+          ],
         ),
       ),
     );
