@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:health_tourism/product/repositories/message_repo.dart';
 import '../models/message.dart';
 import '../models/message_type.dart';
@@ -17,31 +19,35 @@ class MessageRepositoryImpl extends MessageRepository {
   @override
   Future<void> sendMessage(
       {required String receiverId, required String message}) async {
-    Message msg = Message(
-      senderId: currentUserId,
-      receiverId: receiverId,
-      message: message,
-      messageTime: Timestamp.now(),
-    );
+    try {
+      Message msg = Message(
+        senderId: currentUserId,
+        receiverId: receiverId,
+        message: message,
+        messageTime: Timestamp.now(),
+      );
 
-    final lastmsg = {
-      "lastMessageTime": msg.messageTime,
-      "message": msg.message,
-      "senderId": msg.senderId
-    };
-    final chatRoomId = listJoiner(receiverId);
+      final lastmsg = {
+        "lastMessageTime": msg.messageTime,
+        "message": msg.message,
+        "senderId": msg.senderId
+      };
+      final chatRoomId = listJoiner(receiverId);
 
-    await _firestore
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('messages')
-        .add(msg.toMap());
+      await _firestore
+          .collection('chatRooms')
+          .doc(chatRoomId)
+          .collection('messages')
+          .add(msg.toMap());
 
-    // update last message
-    await _firestore
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .set({"lastMessage": lastmsg, 'ids' : [currentUserId, receiverId]});
+      // update last message
+      await _firestore.collection('chatRooms').doc(chatRoomId).set({
+        "lastMessage": lastmsg,
+        'ids': [currentUserId, receiverId]
+      });
+    } catch (e) {
+      showToastMessage(message: e.toString());
+    }
   }
 
   @override
@@ -52,5 +58,15 @@ class MessageRepositoryImpl extends MessageRepository {
         .collection('messages')
         .orderBy('messageTime', descending: false)
         .snapshots();
+  }
+
+  showToastMessage({required String message}) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }

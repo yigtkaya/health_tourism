@@ -60,28 +60,27 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 ],
               ),
             ),
-            BlocBuilder<MessageCubit, MessageState>(
-              builder: (context, state) {
-                if (state is MessageLoaded) {
-                  return Expanded(
-                    child: _buildMessageListView(state),
+            Expanded(
+              child: BlocBuilder<MessageCubit, MessageState>(
+                builder: (context, state) {
+                  if (state is MessageLoaded) {
+                    return _buildMessageListView(state);
+                  }
+                  if (state is MessageError) {
+                    return Center(
+                      child: HTText(
+                        label: state.message,
+                        color: Colors.white,
+                        style: htLabelStyle,
+                      ),
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                }
-                if (state is MessageError) {
-                  return Center(
-                    child: HTText(
-                      label: state.message,
-                      color: Colors.white,
-                      style: htLabelStyle,
-                    ),
-                  );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+                },
+              ),
             ),
-            const Spacer(),
             _buildMessageInputField(widget.receiverId),
           ],
         ),

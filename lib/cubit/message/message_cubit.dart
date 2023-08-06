@@ -15,7 +15,7 @@ class MessageCubit extends Cubit<MessageState> {
     try {
       await repository.sendMessage(receiverId: receiverId, message: message);
     } catch (e) {
-      emit(MessageError(e.toString()));
+      emit(MessageSentError(e.toString()));
     }
   }
 
