@@ -9,9 +9,7 @@ import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/cubit/chat_cubit/chat_cubit.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
-import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/theme/styles.dart';
-
 import '../../core/constants/vertical_space.dart';
 import '../../cubit/chat_cubit/chat_state.dart';
 
