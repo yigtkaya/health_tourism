@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/chat_bubble.dart';
+import 'package:health_tourism/core/components/chat_input.dart';
 import 'package:health_tourism/cubit/message/message_cubit.dart';
 import 'package:health_tourism/cubit/message/message_state.dart';
 import '../../core/components/ht_icon.dart';
@@ -81,7 +82,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 },
               ),
             ),
-            _buildMessageInputField(widget.receiverId),
+            ChatInputField(receiverId: widget.receiverId),
           ],
         ),
       ),
@@ -106,6 +107,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             child: CircularProgressIndicator(),
           );
         }
+
         return ListView(
           children: snapshot.data!.docs
               .map((document) => _buildMessageBubble(document))
@@ -159,64 +161,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               message: message,
               boxDecoration: boxDecoration,
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMessageInputField(String receiverId) {
-    final messageController = TextEditingController();
-
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: const BoxDecoration(
-          color: Color(0xff3d4354),
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Color(0xff9398a7),
-                shape: BoxShape.circle,
-              ),
-              child: HTIcon(
-                iconName: AssetConstants.icons.cameraIcon,
-                width: 24,
-                height: 24,
-              ),
-            ),
-            const HorizontalSpace(spaceAmount: 8),
-            Expanded(
-              child: TextField(
-                controller: messageController,
-                style: htLabelStyle,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Message",
-                  hintStyle: htHintTextStyle,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: HTIcon(
-                iconName: AssetConstants.icons.sendIcon,
-                width: 24,
-                height: 24,
-                onPress: () {
-                  context.read<MessageCubit>().sendMessage(
-                        receiverId: receiverId,
-                        message: messageController.text,
-                      );
-                  messageController.clear();
-                },
-              ),
-            )
           ],
         ),
       ),
