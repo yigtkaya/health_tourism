@@ -11,6 +11,7 @@ import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
+import '../../core/constants/vertical_space.dart';
 import '../../product/theme/styles.dart';
 
 class ChatRoomView extends StatefulWidget {
@@ -128,27 +129,33 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         data['senderId'] == FirebaseAuth.instance.currentUser!.uid
             ? const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  bottomRight: Radius.circular(32),
-                  bottomLeft: Radius.circular(32),
+                  topLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                  bottomLeft: Radius.circular(12),
                 ),
                 color: Color(0xff373e4e),
               )
             : const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
-                  bottomRight: Radius.circular(32),
+                  bottomLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
                 ),
                 color: Color(0xff7a8194),
               );
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 6),
       child: Container(
+        color: Colors.transparent,
         alignment: alignment,
         child: Column(
+          crossAxisAlignment: alignment == Alignment.centerLeft
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.end,
           children: [
+            const HTText(label: "label", style: htSmallLabelStyle),
+            const VerticalSpace(spaceAmount: 4),
             ChatBubble(
               message: message,
               boxDecoration: boxDecoration,

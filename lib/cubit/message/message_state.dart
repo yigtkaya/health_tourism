@@ -21,12 +21,16 @@ class MessageLoading extends MessageState {
 class MessageLoaded extends MessageState {
   final Stream<QuerySnapshot> messages;
 
-  MessageLoaded(this.messages);
+  MessageLoaded(this.messages,);
 }
 
-class MessageSent extends MessageState {
+class MessageSentError extends MessageState {
+  final String message;
+
+  MessageSentError(this.message);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [message];
 }
 
 class MessageError extends MessageState {

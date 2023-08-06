@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/cubit/message/message_state.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
 
@@ -22,9 +23,7 @@ class MessageCubit extends Cubit<MessageState> {
     emit(MessageLoading());
     Future.value(repository.getChat(chatRoomId: chatRoomId))
         .then((value) => emit(MessageLoaded(value)))
-        .onError((error, stackTrace) => {
-              emit(MessageError(stackTrace.toString())),
-      print(error.toString())
-    });
+        .onError((error, stackTrace) =>
+            {emit(MessageError(error.toString())), print(error.toString())});
   }
 }
