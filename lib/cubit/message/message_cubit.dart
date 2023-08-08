@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/cubit/message/message_state.dart';
@@ -11,9 +13,13 @@ class MessageCubit extends Cubit<MessageState> {
   MessageCubit() : super(MessageInitial());
 
   void sendMessage(
-      {required String receiverId, required String message}) async {
+       String receiverId, String message, String? imageUrl) async {
     try {
-      await repository.sendMessage(receiverId: receiverId, message: message);
+      if(imageUrl != null) {
+        await repository.sendMessage(receiverId: receiverId, message: message, imageUrl: imageUrl);
+      } else {
+        await repository.sendMessage(receiverId: receiverId, message: message);
+      }
     } catch (e) {
       emit(MessageSentError(e.toString()));
     }

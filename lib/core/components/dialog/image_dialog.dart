@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../../../cubit/message/message_cubit.dart';
+import '../../../product/navigation/route_paths.dart';
 
 class ImagePickerDialog extends StatefulWidget {
-  const ImagePickerDialog({super.key});
+  final String receiverId;
+
+  const ImagePickerDialog({super.key, required this.receiverId});
 
   @override
   State<ImagePickerDialog> createState() => _ImagePickerDialogState();
@@ -31,7 +31,6 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
             leading: Icon(Icons.camera),
             title: Text("Camera"),
             onTap: () {
-              context.pop();
               _getFromCamera();
             },
           ),
@@ -39,7 +38,6 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
             leading: Icon(Icons.photo_library),
             title: Text("Gallery"),
             onTap: () {
-              context.pop();
               _getFromGallery();
             },
           ),
@@ -61,9 +59,12 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
       });
     }
 
-    repo.uploadImageToFirebase(imageFile).then((value) =>
-        context.read<MessageCubit>().sendImage(value, imageFile.path)
-    );
+    if(mounted) {
+      context.pushNamed(RoutePath.sendImage, queryParameters: {
+        "receiverId": widget.receiverId,
+        "imageFile": xfile?.path,
+      });
+    }
   }
 
   /// Get from Camera
@@ -77,6 +78,12 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
     if (xfile != null) {
       setState(() {
         imageFile = File(xfile.path);
+      });
+    }
+    if(mounted) {
+      context.pushNamed(RoutePath.sendImage, queryParameters: {
+        "receiverId": widget.receiverId,
+        "imageFile": xfile?.path,
       });
     }
   }

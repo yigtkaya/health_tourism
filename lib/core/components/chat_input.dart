@@ -1,10 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
-import 'package:health_tourism/product/navigation/router.dart';
-
 import '../../cubit/message/message_cubit.dart';
 import '../../product/theme/styles.dart';
 import '../constants/asset.dart';
@@ -13,8 +13,9 @@ import 'ht_icon.dart';
 
 class ChatInputField extends StatefulWidget {
   final String receiverId;
+  final File? imageFile;
 
-  const ChatInputField({super.key, required this.receiverId});
+  const ChatInputField({super.key, required this.receiverId, this.imageFile});
 
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();
@@ -26,6 +27,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
   void initState() {
     super.initState();
   }
+
   @override
   void dispose() {
     _messageController.dispose();
@@ -56,8 +58,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 height: 24,
                 onPress: () {
                   // show image picker dialog
-                  pushTo(path: RoutePath.imagePickerDialog);
-
+                  context
+                      .pushNamed(RoutePath.imagePickerDialog, queryParameters: {
+                    "receiverId": widget.receiverId,
+                  });
                 },
               ),
             ),
@@ -81,9 +85,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 height: 24,
                 onPress: () {
                   context.read<MessageCubit>().sendMessage(
-                    receiverId: widget.receiverId,
-                    message: _messageController.text,
-                  );
+                      widget.receiverId, _messageController.text, null);
                   _messageController.clear();
                 },
               ),

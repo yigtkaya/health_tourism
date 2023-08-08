@@ -16,6 +16,7 @@ import 'package:health_tourism/view/splash/splash_view.dart';
 
 import '../../cubit/message/message_cubit.dart';
 import '../../view/chats/chat_room_view.dart';
+import '../../view/chats/send_image_view.dart';
 import '../../view/onboarding/onboarding_view.dart';
 import '../../view/sign_up/sign_up_view.dart';
 import '../models/buyer.dart';
@@ -33,6 +34,16 @@ final GoRouter router = GoRouter(
       path: RoutePath.onBoarding,
       builder: (context, state) {
         return const OnBoardingView();
+      },
+    ),
+    GoRoute(
+      path: RoutePath.sendImage,
+      name: RoutePath.sendImage,
+      builder: (context, state) {
+        return SendImageView(
+          imagePath: state.queryParameters['imageFile'] ?? '',
+          receiverId: state.queryParameters['receiverId'] ?? '',
+        );
       },
     ),
     GoRoute(
@@ -104,8 +115,11 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: RoutePath.imagePickerDialog,
+      name: RoutePath.imagePickerDialog,
       builder: (context, state) {
-        return const ImagePickerDialog();
+        return ImagePickerDialog(
+          receiverId: state.queryParameters['receiverId'] ?? '',
+        );
       },
     ),
     GoRoute(

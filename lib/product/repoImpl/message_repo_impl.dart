@@ -20,33 +20,64 @@ class MessageRepositoryImpl extends MessageRepository {
 
   @override
   Future<void> sendMessage(
-      {required String receiverId, required String message}) async {
+      {required String receiverId, required String message, String? imageUrl}) async {
     try {
-      Message msg = Message(
-        senderId: currentUserId,
-        receiverId: receiverId,
-        message: message,
-        messageTime: Timestamp.now(),
-      );
+      if(imageUrl != null) {
+        Message msg = Message(
+          senderId: currentUserId,
+          receiverId: receiverId,
+          message: message,
+          messageTime: Timestamp.now(),
+        );
 
-      final lastmsg = {
-        "lastMessageTime": msg.messageTime,
-        "message": msg.message,
-        "senderId": msg.senderId
-      };
-      final chatRoomId = listJoiner(receiverId);
+        final lastmsg = {
+          "lastMessageTime": msg.messageTime,
+          "message": msg.message,
+          "senderId": msg.senderId
+        };
+        final chatRoomId = listJoiner(receiverId);
 
-      await _firestore
-          .collection('chatRooms')
-          .doc(chatRoomId)
-          .collection('messages')
-          .add(msg.toMap());
+        await _firestore
+            .collection('chatRooms')
+            .doc(chatRoomId)
+            .collection('messages')
+            .add(msg.toMap());
 
-      // update last message
-      await _firestore.collection('chatRooms').doc(chatRoomId).set({
-        "lastMessage": lastmsg,
-        'ids': [currentUserId, receiverId]
-      });
+        // update last message
+        await _firestore.collection('chatRooms').doc(chatRoomId).set({
+          "lastMessage": lastmsg,
+          'ids': [currentUserId, receiverId]
+        });
+      }
+       else {
+        Message msg = Message(
+          senderId: currentUserId,
+          receiverId: receiverId,
+          message: message,
+          imageUrl: imageUrl,
+          messageTime: Timestamp.now(),
+        );
+
+        final lastmsg = {
+          "lastMessageTime": msg.messageTime,
+          "message": msg.message,
+          "senderId": msg.senderId
+        };
+
+        final chatRoomId = listJoiner(receiverId);
+
+        await _firestore
+            .collection('chatRooms')
+            .doc(chatRoomId)
+            .collection('messages')
+            .add(msg.toMap());
+
+        // update last message
+        await _firestore.collection('chatRooms').doc(chatRoomId).set({
+          "lastMessage": lastmsg,
+          'ids': [currentUserId, receiverId]
+        });
+      }
     } catch (e) {
       showToastMessage(message: e.toString());
     }
@@ -62,12 +93,12 @@ class MessageRepositoryImpl extends MessageRepository {
         .snapshots();
   }
 
-  Future<String> uploadImageToFirebase(File file) async {
+  Future<String> uploadImageToFirebase(File file, String chatRoomId) async {
     String fileUrl = '';
     try {
       String fileName = Path.basename(file.path);
       var reference =
-          FirebaseStorage.instance.ref().child('chatImages/$fileName');
+          FirebaseStorage.instance.ref().child('chatImages/$chatRoomId/$fileName');
       UploadTask uploadTask = reference.putFile(file);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       await taskSnapshot.ref
