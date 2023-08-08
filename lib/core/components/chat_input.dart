@@ -51,6 +51,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 iconName: AssetConstants.icons.cameraIcon,
                 width: 24,
                 height: 24,
+                onPress: () {
+
+                },
               ),
             ),
             const HorizontalSpace(spaceAmount: 8),
