@@ -85,7 +85,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 height: 24,
                 onPress: () {
                   context.read<MessageCubit>().sendMessage(
-                      widget.receiverId, _messageController.text, null);
+                      widget.receiverId, _messageController.text, '');
                   _messageController.clear();
                 },
               ),

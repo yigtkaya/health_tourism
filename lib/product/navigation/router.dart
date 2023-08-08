@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/dialog/image_dialog.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
+import 'package:health_tourism/view/chats/fullsecreen_image.dart';
 import 'package:health_tourism/view/forgot_password/forgot_password.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
 import 'package:health_tourism/view/login/login_view.dart';
@@ -37,10 +38,18 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      path: RoutePath.fullscreenImage,
+      name: RoutePath.fullscreenImage,
+      builder: (context, state) {
+        return FullScreenImageViewer(state.queryParameters['imageUrl'] ?? '');
+      },
+    ),
+    GoRoute(
       path: RoutePath.sendImage,
       name: RoutePath.sendImage,
       builder: (context, state) {
-        return BlocProvider( create: (context) => MessageCubit(),
+        return BlocProvider(
+          create: (context) => MessageCubit(),
           child: SendImageView(
             imagePath: state.queryParameters['imageFile'] ?? '',
             receiverId: state.queryParameters['receiverId'] ?? '',

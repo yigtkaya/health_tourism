@@ -124,21 +124,24 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
+    String imageUrl = data['imageUrl'];
     String message = data['message'];
+    DateTime t = data['messageTime'].toDate();
+    String formattedTime = '${t.hour}:${t.minute}';
 
     var boxDecoration =
         data['senderId'] == FirebaseAuth.instance.currentUser!.uid
             ? const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12),
-                  bottomRight: Radius.circular(12),
+                  topRight: Radius.circular(12),
                   bottomLeft: Radius.circular(12),
                 ),
                 color: Color(0xff373e4e),
               )
             : const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(12),
+                  topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
                   bottomRight: Radius.circular(12),
                 ),
@@ -160,6 +163,8 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             ChatBubble(
               message: message,
               boxDecoration: boxDecoration,
+              imageUrl: imageUrl,
+              time: formattedTime,
             ),
           ],
         ),

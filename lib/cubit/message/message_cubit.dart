@@ -15,11 +15,7 @@ class MessageCubit extends Cubit<MessageState> {
   void sendMessage(
        String receiverId, String message, String? imageUrl) async {
     try {
-      if(imageUrl != null) {
         await repository.sendMessage(receiverId: receiverId, message: message, imageUrl: imageUrl);
-      } else {
-        await repository.sendMessage(receiverId: receiverId, message: message);
-      }
     } catch (e) {
       emit(MessageSentError(e.toString()));
     }

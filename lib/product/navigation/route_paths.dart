@@ -14,5 +14,6 @@ class RoutePath {
   static const String chatRoom = '/chatRoom';
   static const String imagePickerDialog = '/imagePickerDialog';
   static const String sendImage = '/sendImage';
+  static const String fullscreenImage = '/fullscreenImage';
 }
 

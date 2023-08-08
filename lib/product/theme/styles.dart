@@ -31,7 +31,12 @@ const htSmallLabelStyle = TextStyle(
   fontFamily: 'OpenSans',
   fontSize: 10
 );
-
+const htClockLabelStyle = TextStyle(
+    color: Colors.blue,
+    fontWeight: FontWeight.normal,
+    fontFamily: 'OpenSans',
+    fontSize: 10
+);
 const htTitleStyle =  TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
