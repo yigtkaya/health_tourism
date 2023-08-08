@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:health_tourism/product/navigation/route_paths.dart';
+import 'package:health_tourism/product/navigation/router.dart';
 
 import '../../cubit/message/message_cubit.dart';
 import '../../product/theme/styles.dart';
@@ -52,6 +55,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 width: 24,
                 height: 24,
                 onPress: () {
+                  // show image picker dialog
+                  pushTo(path: RoutePath.imagePickerDialog);
 
                 },
               ),

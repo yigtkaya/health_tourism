@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/core/components/dialog/image_dialog.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
 import 'package:health_tourism/view/forgot_password/forgot_password.dart';
@@ -99,6 +100,12 @@ final GoRouter router = GoRouter(
       path: RoutePath.payment,
       builder: (context, state) {
         return PaymentView(null, null, null);
+      },
+    ),
+    GoRoute(
+      path: RoutePath.imagePickerDialog,
+      builder: (context, state) {
+        return const ImagePickerDialog();
       },
     ),
     GoRoute(

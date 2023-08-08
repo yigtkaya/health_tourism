@@ -26,4 +26,8 @@ class MessageCubit extends Cubit<MessageState> {
         .onError((error, stackTrace) =>
             {emit(MessageError(error.toString())), print(error.toString())});
   }
+
+  void sendImage (File file, String message) {
+
+  }
 }

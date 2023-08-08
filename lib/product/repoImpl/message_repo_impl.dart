@@ -62,27 +62,30 @@ class MessageRepositoryImpl extends MessageRepository {
         .snapshots();
   }
 
-  @override
-  Future<void> sendImage(File file, String message) async {
-    String imageUrl = await uploadImageToFirebase(file);
-
-    Map<String, dynamic> data = {
-      'type' :
-    }
-  }
-
-
   Future<String> uploadImageToFirebase(File file) async {
     String fileUrl = '';
-    String fileName = Path.basename(file.path);
-    var reference =
-        FirebaseStorage.instance.ref().child('chatImages/$fileName');
-    UploadTask uploadTask = reference.putFile(file);
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-    await taskSnapshot.ref.getDownloadURL().then((value) => {fileUrl = value});
+    try {
+      String fileName = Path.basename(file.path);
+      var reference =
+          FirebaseStorage.instance.ref().child('chatImages/$fileName');
+      UploadTask uploadTask = reference.putFile(file);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      await taskSnapshot.ref
+          .getDownloadURL()
+          .then((value) => {fileUrl = value});
+    } catch (e) {
+      showToastMessage(message: e.toString());
+    }
+
     print('URL: $fileUrl');
     return fileUrl;
   }
+
+  @override
+  Future<void> sendImageMessage(File file, String message) async {
+
+  }
+
   showToastMessage({required String message}) {
     Fluttertoast.showToast(
         msg: message,
