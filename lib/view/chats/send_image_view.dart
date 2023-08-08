@@ -1,17 +1,14 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
-
 import '../../core/constants/horizontal_space.dart';
 import '../../cubit/message/message_cubit.dart';
-import '../../product/theme/styles.dart';
 
 class SendImageView extends StatefulWidget {
   String imagePath;
@@ -45,7 +42,20 @@ class _SendImageViewState extends State<SendImageView> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // show image
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -84,7 +94,7 @@ class _SendImageViewState extends State<SendImageView> {
                           imageFile, chatRoomId);
 
                       if (mounted) {
-                        context.read<MessageCubit>().sendMessage(
+                        BlocProvider.of<MessageCubit>(context).sendMessage(
                             widget.receiverId,
                             _messageController.text,
                             imageUrl);

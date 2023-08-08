@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../product/navigation/route_paths.dart';
@@ -57,13 +58,15 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
       setState(() {
         imageFile = File(xfile.path);
       });
-    }
 
-    if(mounted) {
-      context.pushNamed(RoutePath.sendImage, queryParameters: {
-        "receiverId": widget.receiverId,
-        "imageFile": xfile?.path,
-      });
+      if(mounted) {
+        context.pushNamed(RoutePath.sendImage, queryParameters: {
+          "receiverId": widget.receiverId,
+          "imageFile": xfile.path,
+        });
+      }
+    } else {
+      goBack();
     }
   }
 
@@ -79,12 +82,15 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
       setState(() {
         imageFile = File(xfile.path);
       });
-    }
-    if(mounted) {
-      context.pushNamed(RoutePath.sendImage, queryParameters: {
-        "receiverId": widget.receiverId,
-        "imageFile": xfile?.path,
-      });
+      if(mounted) {
+        context.pushNamed(RoutePath.sendImage, queryParameters: {
+          "receiverId": widget.receiverId,
+          "imageFile": xfile.path,
+        });
+      }
+    } else {
+      goBack();
     }
   }
 }
+

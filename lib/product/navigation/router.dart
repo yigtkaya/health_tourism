@@ -40,9 +40,11 @@ final GoRouter router = GoRouter(
       path: RoutePath.sendImage,
       name: RoutePath.sendImage,
       builder: (context, state) {
-        return SendImageView(
-          imagePath: state.queryParameters['imageFile'] ?? '',
-          receiverId: state.queryParameters['receiverId'] ?? '',
+        return BlocProvider( create: (context) => MessageCubit(),
+          child: SendImageView(
+            imagePath: state.queryParameters['imageFile'] ?? '',
+            receiverId: state.queryParameters['receiverId'] ?? '',
+          ),
         );
       },
     ),

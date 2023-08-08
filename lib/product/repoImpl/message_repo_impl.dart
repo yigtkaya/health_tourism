@@ -22,7 +22,7 @@ class MessageRepositoryImpl extends MessageRepository {
   Future<void> sendMessage(
       {required String receiverId, required String message, String? imageUrl}) async {
     try {
-      if(imageUrl != null) {
+      if(imageUrl == null) {
         Message msg = Message(
           senderId: currentUserId,
           receiverId: receiverId,
@@ -95,7 +95,6 @@ class MessageRepositoryImpl extends MessageRepository {
 
   Future<String> uploadImageToFirebase(File file, String chatRoomId) async {
     String fileUrl = '';
-    try {
       String fileName = Path.basename(file.path);
       var reference =
           FirebaseStorage.instance.ref().child('chatImages/$chatRoomId/$fileName');
@@ -104,9 +103,6 @@ class MessageRepositoryImpl extends MessageRepository {
       await taskSnapshot.ref
           .getDownloadURL()
           .then((value) => {fileUrl = value});
-    } catch (e) {
-      showToastMessage(message: e.toString());
-    }
 
     print('URL: $fileUrl');
     return fileUrl;
