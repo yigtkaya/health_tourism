@@ -65,7 +65,7 @@ dependencies:
   path:
   shared_preferences:
   flutter_local_notifications:
-
+  permission_handler:
   #navigation
   go_router:
 

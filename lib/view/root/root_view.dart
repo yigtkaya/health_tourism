@@ -19,7 +19,7 @@ class RootView extends StatelessWidget {
           if (state is Authenticated) {
             return ChatsView();
           }
-          return const ChatsView();
+          return const LoginView();
         });
   }
 }
