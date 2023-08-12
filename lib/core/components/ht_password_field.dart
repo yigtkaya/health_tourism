@@ -10,6 +10,7 @@ import 'package:health_tourism/cubit/validation/validation_state.dart';
 
 import '../../product/theme/styles.dart';
 import '../constants/asset.dart';
+import '../constants/dimen.dart';
 import '../constants/horizontal_space.dart';
 import '../constants/vertical_space.dart';
 import 'ht_icon.dart';
@@ -39,87 +40,56 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ValidationCubit, ValidationState>(
-      builder:(context, state) {
-        return Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: const Color(0xFF9EB9D2),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6,horizontal: 16.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    //lock logo here
-                    const Icon(
-                      Icons.lock,
-                      color: Colors.white70,
-                    ),
-                    const HorizontalSpace(
-                      spaceAmount: 12,
-                    ),
-                    //divider svg
-                    HTIcon(iconName: AssetConstants.icons.verticalDivider, width: 20, height: 20 , color: Colors.white70,),
-                    const HorizontalSpace(
-                      spaceAmount: 16,
-                    ),
-                    //password textField
-                    Expanded(
-                      child:TextField(
-                        maxLines: 1,
-                        onChanged: widget.validation ? (value) {
-                            widget.onChanged(value);
-                        } : (value) {
-                          widget.onChanged(value);
-                        },
-                        cursorColor: Colors.white70,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: _isSecure,
-                        style: htLabelStyle,
-                        decoration: InputDecoration(
-                            suffixIcon: _isSecure ?  IconButton(
-                              icon: const Icon(
-                                Icons.visibility_off,
-                                color: Colors.white70,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isSecure = !_isSecure;
-                                });
-                              },
-
-                            ) : IconButton(
-                              icon: const Icon(
-                                Icons.visibility,
-                                color: Colors.white70,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isSecure = !_isSecure;
-                                });
-                              },
-                            ),
-                            hintText: widget.hintText,
-                            hintStyle: htHintTextStyle,
-                            border: InputBorder.none),
-                      ),
-                    ),
-                  ],
-                ),
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(DimenConstant.SMALL),
+        border: Border.all(color: const Color(0xFFD3E3F1), width: 1.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            //email address textField
+            Expanded(
+              child: TextFormField(
+                maxLines: 1,
+                onChanged: (value) {
+                  widget.onChanged(value);
+                },
+                cursorColor: Colors.white70,
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: _isSecure,
+                style: htLabelStyle,
+                decoration: const InputDecoration(
+                    hintText: "••••••••",
+                    hintStyle: htHintTextStyle,
+                    border: InputBorder.none),
               ),
             ),
-            const VerticalSpace(),
-            !widget.validation ? const SizedBox.shrink() : ValidationContainer(
-                isPasswordLongEnough: context.read<ValidationCubit>().state.isPasswordLongEnough,
-                isPasswordContainsNumber: context.read<ValidationCubit>().state.hasOneNumber,
-                isPasswordContainsUpperCase: context.read<ValidationCubit>().state.hasOneUpperCase,)
+            _isSecure
+                ? HTIcon(
+              iconName: AssetConstants.icons.visibilityOn,
+              onPress: () {
+                _togglePasswordView();
+              },
+            )
+                : HTIcon(
+              iconName: AssetConstants.icons.visibilityOff,
+              onPress: () {
+                _togglePasswordView();
+              },
+            ),
           ],
-        );
-      },
+        ),
+      ),
     );
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isSecure = !_isSecure;
+    });
   }
 }

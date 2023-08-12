@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
+import 'package:health_tourism/core/constants/dimen.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 
 import '../../product/theme/styles.dart';
@@ -30,28 +31,14 @@ class _HTEmailFieldState extends State<HTEmailField> {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: const Color(0xFF9EB9D2),
+        borderRadius: BorderRadius.circular(DimenConstant.SMALL),
+        border: Border.all(color: const Color(0xFFD3E3F1), width: 1.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6,horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            //mail icon
-            Icon(
-              widget.iconName,
-              color: Colors.white70,
-            ),
-            const HorizontalSpace(
-              spaceAmount: 10,
-            ),
-            //divider svg
-            HTIcon(iconName: AssetConstants.icons.verticalDivider, width: 20, height: 20 , color: Colors.white70,),
-            const SizedBox(
-              width: 16,
-            ),
-
             //email address textField
             Expanded(
               child: TextFormField(
@@ -62,8 +49,8 @@ class _HTEmailFieldState extends State<HTEmailField> {
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.emailAddress,
                 style: htLabelStyle,
-                decoration: InputDecoration(
-                    hintText: widget.hintText,
+                decoration: const InputDecoration(
+                    hintText: "example@mail.com",
                     hintStyle: htHintTextStyle,
                     border: InputBorder.none),
               ),

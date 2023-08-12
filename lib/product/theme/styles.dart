@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 const htHintTextStyle = TextStyle(
-  color: Colors.white54,
-  letterSpacing: 1.3,
+  color: Color(0xFF123258),
+  letterSpacing: 1.2,
+  fontSize: 14,
   fontFamily: 'OpenSans',
 );
 
@@ -31,11 +32,18 @@ const htSmallLabelStyle = TextStyle(
   fontFamily: 'OpenSans',
   fontSize: 10
 );
-const htClockLabelStyle = TextStyle(
-    color: Colors.blue,
+const htBlueTitleLabelStyle = TextStyle(
+    color: Color(0xFF123258), //Color(0xFFFE9879
+    fontWeight: FontWeight.bold,
+    fontFamily: 'Domine',
+    fontSize: 32
+);
+
+const htBlueLabelStyle = TextStyle(
+    color: Color(0xFF4C6780), //Color(0xFFFE9879
     fontWeight: FontWeight.normal,
-    fontFamily: 'OpenSans',
-    fontSize: 10
+    fontFamily: 'NunitoSans',
+    fontSize: 16
 );
 const htTitleStyle =  TextStyle(
   color: Colors.white,
@@ -48,7 +56,7 @@ const htTitleStyle2 =  TextStyle(
   fontFamily: 'OpenSansbold',
 );
 
-final HTBoxDecorationStyle = BoxDecoration(
+final htBoxDecorationStyle = BoxDecoration(
   color: const Color(0xFF6CA8F1),
   borderRadius: BorderRadius.circular(10.0),
   boxShadow: const [

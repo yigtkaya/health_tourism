@@ -15,4 +15,6 @@ class HTIcons {
   final String cameraIcon = AssetConstants.toIcon("camera_icon");
   final String sendIcon = AssetConstants.toIcon("send_icon");
   final String verticalDivider = AssetConstants.toIcon("vertical_divider_icon");
+  final String visibilityOn = AssetConstants.toIcon("visibility");
+  final String visibilityOff = AssetConstants.toIcon("visibility_off");
 }

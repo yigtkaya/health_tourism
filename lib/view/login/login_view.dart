@@ -79,70 +79,62 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 3,
-                child: loginTitle(),
-              ),
-              const Expanded(
-                  flex: 1,
-                  child: HTText(
-                      label: "Continue with email for sign in App",
-                      style: htLabelStyle)),
+              const HTText(label: "Welcome Back!", style: htBlueTitleLabelStyle),
+              const HTText(
+                  label: "Sign in to continue", style: htBlueLabelStyle),
               // email address textField
-              Expanded(
-                  flex: 4,
-                  child: Column(
+              Column(
+                children: [
+                  HTEmailField(
+                      onChanged: (value) {
+                        updateEmail(value);
+                      },
+                      textController: emailController,
+                      hintText: "Enter your email address",
+                      iconName: Icons.mail_rounded),
+                  const VerticalSpace(),
+                  HTPasswordField(
+                      onChanged: (value) {
+                        updatePassword(value);
+                      },
+                      textController: passController,
+                      validation: false,
+                      hintText: "Enter your password",
+                      iconName: Icons.lock),
+                  const VerticalSpace(),
+                  Row(
                     children: [
-                      HTEmailField(
-                          onChanged: (value) {
-                            updateEmail(value);
-                          },
-                          textController: emailController,
-                          hintText: "Enter your email address",
-                          iconName: Icons.mail_rounded),
-                      const VerticalSpace(),
-                      HTPasswordField(
-                          onChanged: (value) {
-                            updatePassword(value);
-                          },
-                          textController: passController,
-                          validation: false,
-                          hintText: "Enter your password",
-                          iconName: Icons.lock),
-                      const VerticalSpace(),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isChecked = !isChecked;
-                              });
-                            },
-                            child: HTCheckBox(
-                              checkboxText: "Remember me",
-                              isChecked: isChecked,
-                            ),
-                          ),
-                          const Spacer(),
-                          Text.rich(
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isChecked = !isChecked;
+                          });
+                        },
+                        child: HTCheckBox(
+                          checkboxText: "Remember me",
+                          isChecked: isChecked,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text.rich(
+                        TextSpan(
+                          style: htLabelStyle,
+                          children: [
                             TextSpan(
+                              text: 'Forgot Password?',
                               style: htLabelStyle,
-                              children: [
-                                TextSpan(
-                                  text: 'Forgot Password?',
-                                  style: htLabelStyle,
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      goTo(path: RoutePath.forgotPassword);
-                                    },
-                                ),
-                              ],
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  goTo(path: RoutePath.forgotPassword);
+                                },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
-                  )),
+                  ),
+                ],
+              ),
               Expanded(
                   flex: 2,
                   child: Column(
@@ -182,36 +174,19 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
-Widget loginTitle() {
-  return Text.rich(
-    TextSpan(
-      style: GoogleFonts.inter(
-        fontSize: 24,
-        color: Colors.white,
-        letterSpacing: 1.8,
-      ),
-      children: const [
-        TextSpan(
-          text: 'LOGIN',
-          style: htTitleStyle,
-        ),
-        TextSpan(text: 'PAGE', style: htTitleStyle2),
-      ],
-    ),
-  );
-}
-
 Widget signInButton(Size size) {
   return Container(
     alignment: Alignment.center,
-    height: size.height / 13,
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10.0),
-      color: const Color(0xFFEF8733),
+      borderRadius: BorderRadius.circular(20.0),
+      color: const Color(0xFF58A2EB),
     ),
-    child: const Text(
-      'Sign in',
-      style: htBoldLabelStyle,
+    child: const Padding(
+      padding: EdgeInsets.symmetric(vertical: 13.0),
+      child: HTText(
+        label: "Sign In",
+        style: htLabelStyle,
+      ),
     ),
   );
 }
@@ -225,9 +200,7 @@ Widget buildContinueText(BuildContext context) {
           child: Divider(
         color: Colors.white,
       )),
-      Expanded(
-        child: HTText.labelMedium("Or Continue with", context: context)
-      ),
+      Expanded(child: HTText.labelMedium("Or Continue with", context: context)),
       const Expanded(
           child: Divider(
         color: Color(0xFFE5E5E5),
