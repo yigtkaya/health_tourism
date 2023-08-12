@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
@@ -26,6 +27,7 @@ class HTEmailField extends StatefulWidget {
 }
 
 class _HTEmailFieldState extends State<HTEmailField> {
+  bool _isValid = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +37,7 @@ class _HTEmailFieldState extends State<HTEmailField> {
         border: Border.all(color: const Color(0xFFD3E3F1), width: 1.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12.0),
+        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -45,19 +47,42 @@ class _HTEmailFieldState extends State<HTEmailField> {
                 maxLines: 1,
                 onChanged: (value) {
                   widget.onChanged(value);
+                  checkEmailValidation(value);
                 },
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.emailAddress,
                 style: htLabelStyle,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     hintText: "example@mail.com",
                     hintStyle: htHintTextStyle,
                     border: InputBorder.none),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: _isValid
+                  ? HTIcon(
+                  iconName: AssetConstants.icons.checkMark,
+                  width: 22,
+                  height: 22,
+                  color: const Color(0xFF123258))
+                  : const SizedBox.shrink(),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void checkEmailValidation(String email) {
+     if (EmailValidator.validate(email)) {
+      setState(() {
+        _isValid = true;
+      });
+     } else {
+       setState(() {
+        _isValid = false;
+      });
+     }
   }
 }

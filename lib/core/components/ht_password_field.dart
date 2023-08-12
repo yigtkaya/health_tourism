@@ -47,7 +47,7 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
         border: Border.all(color: const Color(0xFFD3E3F1), width: 1.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12.0),
+        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -62,24 +62,32 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: _isSecure,
                 style: htLabelStyle,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     hintText: "••••••••",
                     hintStyle: htHintTextStyle,
                     border: InputBorder.none),
               ),
             ),
-            _isSecure
-                ? HTIcon(
-              iconName: AssetConstants.icons.visibilityOn,
-              onPress: () {
-                _togglePasswordView();
-              },
-            )
-                : HTIcon(
-              iconName: AssetConstants.icons.visibilityOff,
-              onPress: () {
-                _togglePasswordView();
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: _isSecure
+                  ? HTIcon(
+                      iconName: AssetConstants.icons.visibilityOff,
+                      width: 24,
+                      height: 24,
+                      color: const Color(0xFF123258),
+                      onPress: () {
+                        _togglePasswordView();
+                      },
+                    )
+                  : HTIcon(
+                      iconName: AssetConstants.icons.visibilityOn,
+                      width: 24,
+                      height: 24,
+                      onPress: () {
+                        _togglePasswordView();
+                      },
+                    ),
             ),
           ],
         ),

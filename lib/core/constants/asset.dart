@@ -17,4 +17,5 @@ class HTIcons {
   final String verticalDivider = AssetConstants.toIcon("vertical_divider_icon");
   final String visibilityOn = AssetConstants.toIcon("visibility");
   final String visibilityOff = AssetConstants.toIcon("visibility_off");
+  final String checkMark = AssetConstants.toIcon("check_mark");
 }

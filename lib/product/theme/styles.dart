@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const htHintTextStyle = TextStyle(
-  color: Color(0xFF123258),
+var htHintTextStyle = TextStyle(
+  color: Color(0xFF123258).withOpacity(0.3),
   letterSpacing: 1.2,
   fontSize: 14,
   fontFamily: 'OpenSans',
