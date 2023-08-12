@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>725006118544-rfndbg9mu39350f5lunsiml02p334epn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.725006118544-rfndbg9mu39350f5lunsiml02p334epn</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>725006118544-4f6v85nhml5oj2a36eb0r12mn2vsev8q.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB6oXC_0Qbq7L_rAgvSenlE_nsCob2Amjc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>725006118544</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.health.voyesthetic</string>
+	<key>PROJECT_ID</key>
+	<string>health-tourism-cc878</string>
+	<key>STORAGE_BUCKET</key>
+	<string>health-tourism-cc878.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:725006118544:ios:a928b62b69dd69a8c7f215</string>
+	<key>DATABASE_URL</key>
+	<string>https://health-tourism-cc878-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>

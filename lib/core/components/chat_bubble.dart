@@ -48,27 +48,31 @@ class _ChatBubbleState extends State<ChatBubble> {
         children: [
           isImage
               ? GestureDetector(
-            onTap: () {
-              context.pushNamed(RoutePath.fullscreenImage, queryParameters: {
-                "imageUrl": widget.imageUrl,
-              });
-            },
-                child: Container(
-                    height: height * 0.3,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
+                  onTap: () {
+                    context
+                        .pushNamed(RoutePath.fullscreenImage, queryParameters: {
+                      "imageUrl": widget.imageUrl,
+                    });
+                  },
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxWidth: width - 150, maxHeight: height * 0.3),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Image(
-                        image: NetworkImage(widget.imageUrl),
-                      ),
+                      child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          child: Image.network(
+                            widget.imageUrl,
+                            fit: BoxFit.cover,
+                          )),
                     ),
                   ),
-              )
+                )
               : const SizedBox.shrink(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 6),
