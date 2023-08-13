@@ -6,9 +6,6 @@ import 'package:health_tourism/core/components/ht_email_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
-import 'package:health_tourism/product/theme/theme_manager.dart';
-import '../../product/navigation/route_paths.dart';
-import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
 import '../../product/theme/styles.dart';
@@ -95,12 +92,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     spaceAmount: 30,
                   ),
                   HTEmailField(
-                      onChanged: (value) {
-                        updateEmail(value);
-                      },
-                      textController: emailController,
-                      hintText: "Enter your email address",
-                      iconName: Icons.mail_rounded),
+                    onChanged: (value) {
+                      updateEmail(value);
+                    },
+                    textController: emailController,
+                  ),
                   const VerticalSpace(
                     spaceAmount: 30,
                   ),
@@ -120,25 +116,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       )),
     );
   }
-}
-
-Widget loginTitle() {
-  return Text.rich(
-    TextSpan(
-      style: GoogleFonts.inter(
-        fontSize: 24,
-        color: Colors.white,
-        letterSpacing: 1.8,
-      ),
-      children: const [
-        TextSpan(
-          text: 'RESET',
-          style: htTitleStyle,
-        ),
-        TextSpan(text: 'PAGE', style: htTitleStyle2),
-      ],
-    ),
-  );
 }
 
 Widget sendButton(Size size) {

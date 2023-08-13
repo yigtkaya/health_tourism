@@ -75,108 +75,109 @@ class _LoginViewState extends State<LoginView> {
       backgroundColor: Colors.white,
       body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [ // email address textField
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                    height: size.height * 0.025,
-                    width: size.width * 0.025,
-                  ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // email address textField
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
                 ),
-                const Spacer(),
-                Column(
+                height: size.height * 0.025,
+                width: size.width * 0.025,
+              ),
+            ),
+            const Spacer(),
+            Column(
+              children: [
+                HTText(label: "Welcome Back!", style: htTitleStyle2),
+                const VerticalSpace(spaceAmount: 20),
+                HTText(label: "Sign in to continue", style: htBlueLabelStyle),
+                const VerticalSpace(spaceAmount: 30),
+                HTEmailField(
+                  onChanged: (value) {
+                    updateEmail(value);
+                  },
+                  textController: emailController,
+                ),
+                const VerticalSpace(),
+                HTPasswordField(
+                    onChanged: (value) {
+                      updatePassword(value);
+                    },
+                    textController: passController,
+                    validation: false,
+                    hintText: "Enter your password",
+                    iconName: Icons.lock),
+                const VerticalSpace(
+                  spaceAmount: 20,
+                ),
+                Row(
                   children: [
-                    HTText(
-                        label: "Welcome Back!", style: htBlueTitleLabelStyle),
-                    const VerticalSpace(spaceAmount: 20),
-                    HTText(
-                        label: "Sign in to continue", style: htBlueLabelStyle),
-                    const VerticalSpace(spaceAmount: 30),
-                    HTEmailField(
-                        onChanged: (value) {
-                          updateEmail(value);
-                        },
-                        textController: emailController,
-                        hintText: "Enter your email address",
-                        iconName: Icons.mail_rounded),
-                    const VerticalSpace(),
-                    HTPasswordField(
-                        onChanged: (value) {
-                          updatePassword(value);
-                        },
-                        textController: passController,
-                        validation: false,
-                        hintText: "Enter your password",
-                        iconName: Icons.lock),
-                    const VerticalSpace(spaceAmount: 20,),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isChecked = !isChecked;
-                            });
-                          },
-                          child: HTCheckBox(
-                            checkboxText: "Remember me",
-                            isChecked: isChecked,
-                          ),
-                        ),
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            pushTo(path: RoutePath.forgotPassword);
-                          },
-                          child: HTText(
-                            label: "Forgot Password?",
-                            style: htDarkBlueLargeStyle,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const VerticalSpace(spaceAmount: 40),
                     GestureDetector(
-                        onTap: () {
-                          // check email is valid and password is not empty then sign in
-                          BlocProvider.of<AuthCubit>(context)
-                              .signInWithEmailAndPassword(email, password);
-                          print("object");
-                        },
-                        child: signInButton(size)),
-                    const VerticalSpace(spaceAmount: 30),
-                    buildFooter(context),
+                      onTap: () {
+                        setState(() {
+                          isChecked = !isChecked;
+                        });
+                      },
+                      child: HTCheckBox(
+                        checkboxText: "Remember me",
+                        isChecked: isChecked,
+                      ),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        pushTo(path: RoutePath.forgotPassword);
+                      },
+                      child: HTText(
+                        label: "Forgot Password?",
+                        style: htDarkBlueLargeStyle,
+                      ),
+                    ),
                   ],
                 ),
-                const Spacer(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildContinueText(context),
-                    const VerticalSpace(
-                      spaceAmount: 20,
+                const VerticalSpace(spaceAmount: 40),
+                GestureDetector(
+                    onTap: () {
+                      // check email is valid and password is not empty then sign in
+                      BlocProvider.of<AuthCubit>(context)
+                          .signInWithEmailAndPassword(email, password);
+                      print("object");
+                    },
+                    child: signInButton(size)),
+                const VerticalSpace(spaceAmount: 30),
+                buildFooter(context),
+              ],
+            ),
+            const Spacer(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buildContinueText(context),
+                const VerticalSpace(
+                  spaceAmount: 20,
+                ),
+                signInAlternatives(size, authCubit),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      color: const Color(0xFF123258),
                     ),
-                    signInAlternatives(size, authCubit),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100.0),
-                            color: const Color(0xFF123258),
-                          ),
-                          height: size.height * 0.006,
-                          width: size.width * 0.4,
-                        ),),
-                  ],
+                    height: size.height * 0.006,
+                    width: size.width * 0.4,
+                  ),
                 ),
               ],
             ),
-          )),
+          ],
+        ),
+      )),
     );
   }
 }

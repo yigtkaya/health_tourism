@@ -1,27 +1,25 @@
-import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/dimen.dart';
 import 'package:health_tourism/product/theme/theme_manager.dart';
 
-import '../../product/theme/styles.dart';
+import '../../../product/theme/styles.dart';
 
-class HTEmailField extends StatefulWidget {
+class HTCustomTextField extends StatefulWidget {
   final TextEditingController textController;
-  final Function(String) onChanged;
 
-  const HTEmailField({
+  const HTCustomTextField({
     Key? key,
     required this.textController,
-    required this.onChanged,
   }) : super(key: key);
 
   @override
-  State<HTEmailField> createState() => _HTEmailFieldState();
+  State<HTCustomTextField> createState() => _HTCustomTextFieldState();
 }
 
-class _HTEmailFieldState extends State<HTEmailField> {
+class _HTCustomTextFieldState extends State<HTCustomTextField> {
   bool _isValid = false;
   @override
   Widget build(BuildContext context) {
@@ -41,15 +39,14 @@ class _HTEmailFieldState extends State<HTEmailField> {
               child: TextFormField(
                 maxLines: 1,
                 onChanged: (value) {
-                  widget.onChanged(value);
-                  checkEmailValidation(value);
+                  checkIfEmpty(value);
                 },
-                cursorColor: ThemeManager
-                    .instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+                cursorColor: ThemeManager.instance?.getCurrentTheme.colorTheme
+                    .darkBlueTextColor,
                 keyboardType: TextInputType.emailAddress,
                 style: htDarkBlueNormalStyle,
                 decoration: InputDecoration(
-                    hintText: "example@mail.com",
+                    hintText: "John Doe",
                     hintStyle: htHintTextStyle,
                     border: InputBorder.none),
               ),
@@ -58,12 +55,12 @@ class _HTEmailFieldState extends State<HTEmailField> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: _isValid
                   ? HTIcon(
-                      iconName: AssetConstants.icons.checkMark,
-                      width: 22,
-                      height: 22,
-                      color: ThemeManager.instance?.getCurrentTheme.colorTheme
-                          .darkBlueTextColor,
-                    )
+                iconName: AssetConstants.icons.checkMark,
+                width: 22,
+                height: 22,
+                color: ThemeManager.instance?.getCurrentTheme.colorTheme
+                    .darkBlueTextColor,
+              )
                   : const SizedBox.shrink(),
             ),
           ],
@@ -72,8 +69,8 @@ class _HTEmailFieldState extends State<HTEmailField> {
     );
   }
 
-  void checkEmailValidation(String email) {
-    if (EmailValidator.validate(email)) {
+  void checkIfEmpty(String text) {
+    if (text.isNotEmpty) {
       setState(() {
         _isValid = true;
       });
