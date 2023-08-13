@@ -61,7 +61,7 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: _isSecure,
-                style: htLabelStyle,
+                style: htDarkBlueNormalStyle,
                 decoration: InputDecoration(
                     hintText: "••••••••",
                     hintStyle: htHintTextStyle,

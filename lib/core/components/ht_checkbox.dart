@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:health_tourism/core/components/ht_icon.dart';
+import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 
 import '../../product/theme/styles.dart';
@@ -10,7 +11,9 @@ class HTCheckBox extends StatefulWidget {
   final String checkboxText;
   final bool isChecked;
 
-  const HTCheckBox({Key? key, required this.checkboxText, required this.isChecked}) : super(key: key);
+  const HTCheckBox(
+      {Key? key, required this.checkboxText, required this.isChecked})
+      : super(key: key);
 
   @override
   State<HTCheckBox> createState() => _HTCheckBoxState();
@@ -29,18 +32,27 @@ class _HTCheckBoxState extends State<HTCheckBox> {
           height: 17.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.0),
-            color: const Color(0xFF9AD5D1),
-          ),
-          child: widget.isChecked ? const SizedBox() : const Icon(
-            Icons.check,
-            size: 12.0,
+            border: Border.all(
+              color: const Color(0xFFDDE3F1),
+              width: 1.0,
+            ),
             color: Colors.white,
           ),
+          child: widget.isChecked
+              ? const SizedBox()
+              : HTIcon(
+                  iconName: AssetConstants.icons.checkMark,
+                  width: 14,
+                  height: 14,
+                  color: const Color(0xFF123258),
+                ),
         ),
-        const HorizontalSpace(spaceAmount: 7,),
+        const HorizontalSpace(
+          spaceAmount: 7,
+        ),
         Text(
           widget.checkboxText,
-          style: htLabelStyle,
+          style: htDarkBlueNormalStyle,
         ),
       ],
     );

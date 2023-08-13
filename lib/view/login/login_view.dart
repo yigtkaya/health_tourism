@@ -116,19 +116,13 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       const Spacer(),
-                      Text.rich(
-                        TextSpan(
-                          style: htLabelStyle,
-                          children: [
-                            TextSpan(
-                              text: 'Forgot Password?',
-                              style: htLabelStyle,
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  goTo(path: RoutePath.forgotPassword);
-                                },
-                            ),
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          pushTo(path: RoutePath.forgotPassword);
+                        },
+                        child: const HTText(
+                          label: "Forgot Password?",
+                          style: htDarkBlueLargeStyle,
                         ),
                       ),
                     ],
@@ -185,7 +179,7 @@ Widget signInButton(Size size) {
       padding: EdgeInsets.symmetric(vertical: 13.0),
       child: HTText(
         label: "Sign In",
-        style: htLabelStyle,
+        style: htDarkBlueNormalStyle,
       ),
     ),
   );
@@ -244,7 +238,7 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
                 //google txt
                 const Text(
                   'Google',
-                  style: htLabelStyle,
+                  style: htDarkBlueNormalStyle,
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -284,7 +278,7 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
                 const Text(
                   'Facebook',
                   textAlign: TextAlign.center,
-                  style: htLabelStyle,
+                  style: htDarkBlueNormalStyle,
                 ),
               ],
             ),
@@ -298,7 +292,7 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
 Widget buildFooter(BuildContext context) {
   return Text.rich(
     TextSpan(
-      style: htLabelStyle,
+      style: htDarkBlueNormalStyle,
       children: [
         TextSpan(
           text: 'Don’t have account? ',

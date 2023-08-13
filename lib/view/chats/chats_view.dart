@@ -54,7 +54,7 @@ class _ChatsViewState extends State<ChatsView> {
               child: const HTText(
                 label: "Chats",
                 color: Colors.white,
-                style: htLabelStyle,
+                style: htDarkBlueNormalStyle,
               ),
             ),
           ),
@@ -78,7 +78,7 @@ class _ChatsViewState extends State<ChatsView> {
                       child: HTText(
                         label: "Something went wrong",
                         color: Colors.white,
-                        style: htLabelStyle,
+                        style: htDarkBlueNormalStyle,
                       ),
                     );
                   }
@@ -169,7 +169,7 @@ class _ChatsViewState extends State<ChatsView> {
                   HTText(
                     label: receiverId,
                     color: Colors.white,
-                    style: htLabelStyle,
+                    style: htDarkBlueNormalStyle,
                   ),
                   const VerticalSpace(
                     spaceAmount: 6,
@@ -177,7 +177,7 @@ class _ChatsViewState extends State<ChatsView> {
                   HTText(
                     label: lastMessage,
                     color: Colors.white,
-                    style: htLabelStyle,
+                    style: htDarkBlueNormalStyle,
                   ),
                 ],
               ),

@@ -72,7 +72,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                       child: HTText(
                         label: state.message,
                         color: Colors.white,
-                        style: htLabelStyle,
+                        style: htDarkBlueNormalStyle,
                       ),
                     );
                   }
@@ -98,7 +98,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             child: HTText(
               label: "Something went wrong",
               color: Colors.white,
-              style: htLabelStyle,
+              style: htDarkBlueNormalStyle,
             ),
           );
         }

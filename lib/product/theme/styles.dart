@@ -7,11 +7,18 @@ var htHintTextStyle = TextStyle(
   fontFamily: 'OpenSans',
 );
 
-const htLabelStyle =  TextStyle(
-  color: Colors.white,
-  fontWeight: FontWeight.normal,
-  fontFamily: 'OpenSans',
+const htDarkBlueNormalStyle =  TextStyle(
+  color: Color(0xFF123258),
+  fontWeight: FontWeight.w300,
+  fontFamily: 'NunitoSans',
   fontSize: 14
+);
+
+const htDarkBlueLargeStyle =  TextStyle(
+    color: Color(0xFF123258),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'NunitoSans',
+    fontSize: 16
 );
 const htLabelBlackStyle =  TextStyle(
   color: Colors.black,

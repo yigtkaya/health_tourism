@@ -84,7 +84,7 @@ class _SignUpViewState extends State<SignUpView> {
                   flex: 1,
                   child: HTText(
                       label: "Continue with email for sign up App",
-                      style: htLabelStyle)),
+                      style: htDarkBlueNormalStyle)),
               // email address textField
               Expanded(
                   flex: 6,
@@ -205,7 +205,7 @@ Widget buildContinueText() {
       Expanded(
         child: Text(
           'Or Continue with',
-          style: htLabelStyle,
+          style: htDarkBlueNormalStyle,
           textAlign: TextAlign.center,
         ),
       ),
@@ -249,7 +249,7 @@ Widget signInGoogleFacebookButton(Size size) {
             //google txt
             const Text(
               'Google',
-              style: htLabelStyle,
+              style: htDarkBlueNormalStyle,
               textAlign: TextAlign.center,
             ),
           ],
@@ -287,7 +287,7 @@ Widget signInGoogleFacebookButton(Size size) {
             const Text(
               'Facebook',
               textAlign: TextAlign.center,
-              style: htLabelStyle,
+              style: htDarkBlueNormalStyle,
             ),
           ],
         ),
@@ -299,7 +299,7 @@ Widget signInGoogleFacebookButton(Size size) {
 Widget buildFooter(BuildContext context) {
   return Text.rich(
     TextSpan(
-      style: htLabelStyle,
+      style: htDarkBlueNormalStyle,
       children: [
         TextSpan(
           text: 'Already have account? ',

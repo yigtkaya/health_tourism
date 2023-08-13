@@ -69,7 +69,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
             Expanded(
               child: TextField(
                 controller: _messageController,
-                style: htLabelStyle,
+                style: htDarkBlueNormalStyle,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: "Message",

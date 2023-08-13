@@ -51,7 +51,7 @@ class _HTEmailFieldState extends State<HTEmailField> {
                 },
                 cursorColor: Colors.white70,
                 keyboardType: TextInputType.emailAddress,
-                style: htLabelStyle,
+                style: htDarkBlueNormalStyle,
                 decoration: InputDecoration(
                     hintText: "example@mail.com",
                     hintStyle: htHintTextStyle,

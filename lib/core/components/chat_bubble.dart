@@ -79,7 +79,7 @@ class _ChatBubbleState extends State<ChatBubble> {
             child: HTText(
               label: widget.message,
               color: Colors.white,
-              style: htLabelStyle,
+              style: htDarkBlueNormalStyle,
             ),
           ),
         ],
