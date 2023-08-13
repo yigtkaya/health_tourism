@@ -67,7 +67,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       context.pop();
                     },
                   ),
-                  const Expanded(
+                  Expanded(
                       child: Align(
                     alignment: Alignment.center,
                     child: HTText(
@@ -126,7 +126,7 @@ Widget sendButton(Size size) {
       ),
       width: double.infinity,
       height: size.height * 0.06,
-      child: const Center(
+      child: Center(
         child: HTText(
           label: "Send",
           style: htBoldLabelStyle,

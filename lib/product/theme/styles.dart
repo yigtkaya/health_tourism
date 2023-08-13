@@ -5,36 +5,36 @@ import 'package:health_tourism/product/theme/theme_manager.dart';
 
 var colours = AppColors();
 
-var htHintTextStyle = TextStyle(
+var htHintTextStyle = GoogleFonts.nunitoSans(
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor
       ?.withOpacity(0.5),
   letterSpacing: 1.2,
   fontSize: 16,
   fontWeight: FontWeight.w400,
-  fontFamily: 'NunitoSans',
 );
 
-final htDarkBlueNormalStyle = TextStyle(
-    color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
-    fontWeight: FontWeight.w400,
-    fontFamily: 'NunitoSans',
-    fontSize: 14);
+final htDarkBlueNormalStyle = GoogleFonts.nunitoSans(
+  fontSize: 14.0,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+  fontWeight: FontWeight.w400,
+);
 
-final htDarkBlueLargeStyle = TextStyle(
-    color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
-    fontWeight: FontWeight.w400,
-    fontFamily: 'NunitoSans',
-    fontSize: 16);
+final htDarkBlueLargeStyle = GoogleFonts.nunitoSans(
+  fontSize: 16.0,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+  fontWeight: FontWeight.w400,
+);
 const htLabelBlackStyle = TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.normal,
     fontFamily: 'OpenSans',
     fontSize: 14);
-const htBoldLabelStyle = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontFamily: 'OpenSans',
-    fontSize: 16);
+
+final htBoldLabelStyle = GoogleFonts.nunitoSans(
+  fontSize: 16.0,
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+);
 
 const htSmallLabelStyle = TextStyle(
     color: Colors.white,

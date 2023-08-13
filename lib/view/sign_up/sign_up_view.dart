@@ -181,8 +181,8 @@ Widget signUpButton(Size size) {
       borderRadius: BorderRadius.circular(20.0),
       color: const Color(0xFF58A2EB),
     ),
-    child: const Padding(
-      padding: EdgeInsets.symmetric(vertical: 13.0),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 13.0),
       child: HTText(
         label: "Sign up",
         style: htBoldLabelStyle,
@@ -263,6 +263,8 @@ Widget signInAlternatives(Size size, AuthCubit authCubit) {
                 iconName: AssetConstants.icons.twitter,
                 width: 20,
                 height: 20,
+                color: ThemeManager.instance?.getCurrentTheme.colorTheme
+                    .darkBlueTextColor,
               ),
             ),
           ),
