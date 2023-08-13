@@ -141,7 +141,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ],
                     ),
-                    const VerticalSpace(spaceAmount: 30),
+                    const VerticalSpace(spaceAmount: 40),
                     GestureDetector(
                         onTap: () {
                           // check email is valid and password is not empty then sign in
@@ -150,7 +150,7 @@ class _LoginViewState extends State<LoginView> {
                           print("object");
                         },
                         child: signInButton(size)),
-                    const VerticalSpace(spaceAmount: 20),
+                    const VerticalSpace(spaceAmount: 30),
                     buildFooter(context),
                   ],
                 ),
