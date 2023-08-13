@@ -35,7 +35,7 @@ class _HTCheckBoxState extends State<HTCheckBox> {
             borderRadius: BorderRadius.circular(4.0),
             border: Border.all(
               color: const Color(0xFFDDE3F1),
-              width: 1.0,
+              width: 2.0,
             ),
             color: Colors.white,
           ),
@@ -45,7 +45,7 @@ class _HTCheckBoxState extends State<HTCheckBox> {
                   iconName: AssetConstants.icons.checkMark,
                   width: 14,
                   height: 14,
-                  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkTextColor,
+                  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
                 ),
         ),
         const HorizontalSpace(
@@ -53,7 +53,7 @@ class _HTCheckBoxState extends State<HTCheckBox> {
         ),
         Text(
           widget.checkboxText,
-          style: htDarkBlueNormalStyle,
+          style: htBlueLabelStyle,
         ),
       ],
     );

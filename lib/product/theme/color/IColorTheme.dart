@@ -7,8 +7,8 @@ abstract class IColorTheme {
   Color? primaryScaffoldBackground;
   Color? secondaryScaffoldBackground;
   Color? primaryColor;
-  Color? textColor;
-  Color? darkTextColor;
+  Color? openBlueTextColor;
+  Color? darkBlueTextColor;
   Color? outlinedTextColor;
   Color? buttonColor;
   Color? cardColor;

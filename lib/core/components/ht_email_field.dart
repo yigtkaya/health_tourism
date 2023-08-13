@@ -5,6 +5,7 @@ import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/dimen.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
+import 'package:health_tourism/product/theme/theme_manager.dart';
 
 import '../../product/theme/styles.dart';
 
@@ -49,7 +50,8 @@ class _HTEmailFieldState extends State<HTEmailField> {
                   widget.onChanged(value);
                   checkEmailValidation(value);
                 },
-                cursorColor: Colors.white70,
+                cursorColor: ThemeManager.instance?.getCurrentTheme.colorTheme
+                    .darkBlueTextColor,
                 keyboardType: TextInputType.emailAddress,
                 style: htDarkBlueNormalStyle,
                 decoration: InputDecoration(
@@ -62,10 +64,12 @@ class _HTEmailFieldState extends State<HTEmailField> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: _isValid
                   ? HTIcon(
-                  iconName: AssetConstants.icons.checkMark,
-                  width: 22,
-                  height: 22,
-                  color: const Color(0xFF123258))
+                      iconName: AssetConstants.icons.checkMark,
+                      width: 22,
+                      height: 22,
+                      color: ThemeManager.instance?.getCurrentTheme.colorTheme
+                          .darkBlueTextColor,
+                    )
                   : const SizedBox.shrink(),
             ),
           ],
@@ -75,14 +79,14 @@ class _HTEmailFieldState extends State<HTEmailField> {
   }
 
   void checkEmailValidation(String email) {
-     if (EmailValidator.validate(email)) {
+    if (EmailValidator.validate(email)) {
       setState(() {
         _isValid = true;
       });
-     } else {
-       setState(() {
+    } else {
+      setState(() {
         _isValid = false;
       });
-     }
+    }
   }
 }

@@ -9,6 +9,7 @@ import 'package:health_tourism/cubit/validation/validation_cubit.dart';
 import 'package:health_tourism/cubit/validation/validation_state.dart';
 
 import '../../product/theme/styles.dart';
+import '../../product/theme/theme_manager.dart';
 import '../constants/asset.dart';
 import '../constants/dimen.dart';
 import '../constants/horizontal_space.dart';
@@ -58,7 +59,8 @@ class _HTPasswordFieldState extends State<HTPasswordField> {
                 onChanged: (value) {
                   widget.onChanged(value);
                 },
-                cursorColor: Colors.white70,
+                cursorColor: ThemeManager.instance?.getCurrentTheme.colorTheme
+                    .darkBlueTextColor,
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: _isSecure,
                 style: htDarkBlueNormalStyle,

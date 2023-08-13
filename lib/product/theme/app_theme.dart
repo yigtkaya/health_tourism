@@ -76,7 +76,7 @@ abstract class AppThemeBuilder {
           labelMedium: theme.textTheme.labelMedium,
           labelLarge: theme.textTheme.labelLarge,
           displaySmall: theme.textTheme.inputHintText,
-        ).apply(displayColor: theme.colorTheme.textColor),
+        ).apply(displayColor: theme.colorTheme.openBlueTextColor),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: theme.colorTheme.secondaryScaffoldBackground,
         ),

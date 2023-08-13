@@ -20,7 +20,7 @@ class DarkColor implements IColorTheme {
   Color? primaryColor;
 
   @override
-  Color? textColor;
+  Color? openBlueTextColor;
 
   @override
   Color? buttonColor;
@@ -67,7 +67,7 @@ class DarkColor implements IColorTheme {
     warningColor = colors.lima;
     infoColor = colors.carnation;
     errorColor = colors.azureRadiance;
-    textColor = colors.white;
+    openBlueTextColor = colors.lightBlue;
     primaryColor = colors.azureRadiance;
     buttonColor = colors.sunGlow;
     outlinedTextColor = colors.azureRadiance;
@@ -76,7 +76,7 @@ class DarkColor implements IColorTheme {
     menuItemGradientEnd = colors.paleSlate;
     bottomNavigationBackground = colors.darkPurple;
     disableButtonColor = colors.fiord;
-    darkTextColor = colors.darkBlue;
+    darkBlueTextColor = colors.darkBlue;
     primaryScaffoldBackground = colors.lightPurple;
   }
 
@@ -108,5 +108,5 @@ class DarkColor implements IColorTheme {
   Color? bottomNavigationBackground;
 
   @override
-  Color? darkTextColor;
+  Color? darkBlueTextColor;
 }

@@ -10,6 +10,7 @@ import 'package:health_tourism/core/components/ht_email_field.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
+import 'package:health_tourism/product/theme/theme_manager.dart';
 import '../../product/navigation/route_paths.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
@@ -69,101 +70,114 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xFF81A1C8),
+      backgroundColor: Colors.white,
       body: SafeArea(
-          child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const HTText(label: "Welcome Back!", style: htBlueTitleLabelStyle),
-              const HTText(
-                  label: "Sign in to continue", style: htBlueLabelStyle),
-              // email address textField
-              Column(
-                children: [
-                  HTEmailField(
-                      onChanged: (value) {
-                        updateEmail(value);
-                      },
-                      textController: emailController,
-                      hintText: "Enter your email address",
-                      iconName: Icons.mail_rounded),
-                  const VerticalSpace(),
-                  HTPasswordField(
-                      onChanged: (value) {
-                        updatePassword(value);
-                      },
-                      textController: passController,
-                      validation: false,
-                      hintText: "Enter your password",
-                      iconName: Icons.lock),
-                  const VerticalSpace(),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isChecked = !isChecked;
-                          });
-                        },
-                        child: HTCheckBox(
-                          checkboxText: "Remember me",
-                          isChecked: isChecked,
-                        ),
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          pushTo(path: RoutePath.forgotPassword);
-                        },
-                        child: HTText(
-                          label: "Forgot Password?",
-                          style: htDarkBlueLargeStyle,
-                        ),
-                      ),
-                    ],
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [ // email address textField
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    height: size.height * 0.025,
+                    width: size.width * 0.025,
                   ),
-                ],
-              ),
-              Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            // check email is valid and password is not empty then sign in
-                            BlocProvider.of<AuthCubit>(context)
-                                .signInWithEmailAndPassword(email, password);
-                            print("object");
-                          },
-                          child: signInButton(size)),
-                      const VerticalSpace(
-                        spaceAmount: DimenConstant.VERY_LARGE,
-                      ),
-                      buildContinueText(context),
-                    ],
-                  )),
-              Expanded(
-                  flex: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                const Spacer(),
+                Column(
+                  children: [
+                    HTText(
+                        label: "Welcome Back!", style: htBlueTitleLabelStyle),
+                    const VerticalSpace(spaceAmount: 20),
+                    HTText(
+                        label: "Sign in to continue", style: htBlueLabelStyle),
+                    const VerticalSpace(spaceAmount: 30),
+                    HTEmailField(
+                        onChanged: (value) {
+                          updateEmail(value);
+                        },
+                        textController: emailController,
+                        hintText: "Enter your email address",
+                        iconName: Icons.mail_rounded),
+                    const VerticalSpace(),
+                    HTPasswordField(
+                        onChanged: (value) {
+                          updatePassword(value);
+                        },
+                        textController: passController,
+                        validation: false,
+                        hintText: "Enter your password",
+                        iconName: Icons.lock),
+                    const VerticalSpace(spaceAmount: 20,),
+                    Row(
                       children: [
-                        signInGoogleFacebookButton(size, authCubit),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isChecked = !isChecked;
+                            });
+                          },
+                          child: HTCheckBox(
+                            checkboxText: "Remember me",
+                            isChecked: isChecked,
+                          ),
+                        ),
                         const Spacer(),
-                        buildFooter(context),
+                        GestureDetector(
+                          onTap: () {
+                            pushTo(path: RoutePath.forgotPassword);
+                          },
+                          child: HTText(
+                            label: "Forgot Password?",
+                            style: htDarkBlueLargeStyle,
+                          ),
+                        ),
                       ],
                     ),
-                  )),
-            ],
-          ),
-        ),
-      )),
+                    const VerticalSpace(spaceAmount: 30),
+                    GestureDetector(
+                        onTap: () {
+                          // check email is valid and password is not empty then sign in
+                          BlocProvider.of<AuthCubit>(context)
+                              .signInWithEmailAndPassword(email, password);
+                          print("object");
+                        },
+                        child: signInButton(size)),
+                    const VerticalSpace(spaceAmount: 20),
+                    buildFooter(context),
+                  ],
+                ),
+                const Spacer(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildContinueText(context),
+                    const VerticalSpace(
+                      spaceAmount: 20,
+                    ),
+                    signInAlternatives(size, authCubit),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100.0),
+                            color: const Color(0xFF123258),
+                          ),
+                          height: size.height * 0.006,
+                          width: size.width * 0.4,
+                        ),),
+                  ],
+                ),
+              ],
+            ),
+          )),
     );
   }
 }
@@ -175,112 +189,96 @@ Widget signInButton(Size size) {
       borderRadius: BorderRadius.circular(20.0),
       color: const Color(0xFF58A2EB),
     ),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 13.0),
+    child: const Padding(
+      padding: EdgeInsets.symmetric(vertical: 13.0),
       child: HTText(
         label: "Sign In",
-        style: htDarkBlueNormalStyle,
+        style: htBoldLabelStyle,
       ),
     ),
   );
 }
 
 Widget buildContinueText(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: <Widget>[
-      const Expanded(
-          child: Divider(
-        color: Colors.white,
-      )),
-      Expanded(child: HTText.labelMedium("Or Continue with", context: context)),
-      const Expanded(
-          child: Divider(
-        color: Color(0xFFE5E5E5),
-      )),
-    ],
+  return HTText(
+    label: "Sign in with social networks:",
+    style: htBlueLabelStyle,
   );
 }
 
-Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
+Widget signInAlternatives(Size size, AuthCubit authCubit) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
       //sign in google button
-      GestureDetector(
-        onTap: () {
-          authCubit.signInWithGoogle();
-          print("sign in google button tapped");
-        },
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-              width: 1.0,
-              color: Colors.white,
+      Expanded(
+        child: GestureDetector(
+          onTap: () {
+            authCubit.signInWithGoogle();
+            print("sign in google button tapped");
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFEAF0F5),
+              borderRadius: BorderRadius.circular(6.0),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //icon of google
-                HTIcon(
-                  iconName: AssetConstants.icons.googleIcon,
-                  width: 28,
-                  height: 28,
-                ),
-                const HorizontalSpace(),
-                //google txt
-                Text(
-                  'Google',
-                  style: htDarkBlueNormalStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+              child: HTIcon(
+                iconName: AssetConstants.icons.googleIconPlus,
+                width: 20,
+                height: 20,
+              ),
             ),
           ),
         ),
       ),
       const HorizontalSpace(),
       //sign in facebook button
-      GestureDetector(
-        onTap: () {
-          authCubit.signInWithFacebook();
-          print("sign in facebook button tapped");
-        },
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-              width: 1.0,
-              color: Colors.white,
+      Expanded(
+        child: GestureDetector(
+          onTap: () {
+            authCubit.signInWithFacebook();
+            print("sign in facebook button tapped");
+          },
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: const Color(0xFFEAF0F5),
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+              child: HTIcon(
+                iconName: AssetConstants.icons.facebookIconSimple,
+                width: 20,
+                height: 20,
+              ),
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //facebook icon
-                HTIcon(
-                  iconName: AssetConstants.icons.facebookIcon,
-                  width: 28,
-                  height: 28,
-                ),
-                const HorizontalSpace(),
-                //facebook txt
-                Text(
-                  'Facebook',
-                  textAlign: TextAlign.center,
-                  style: htDarkBlueNormalStyle,
-                ),
-              ],
+        ),
+      ),
+      const HorizontalSpace(),
+      Expanded(
+        child: GestureDetector(
+          onTap: () {},
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: const Color(0xFFEAF0F5),
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+              child: HTIcon(
+                iconName: AssetConstants.icons.twitter,
+                width: 20,
+                height: 20,
+              ),
             ),
           ),
         ),
@@ -296,8 +294,11 @@ Widget buildFooter(BuildContext context) {
       children: [
         TextSpan(
           text: 'Don’t have account? ',
-          style: GoogleFonts.nunito(
-            fontWeight: FontWeight.w600,
+          style: GoogleFonts.nunitoSans(
+            fontSize: 14.0,
+            color: ThemeManager
+                .instance?.getCurrentTheme.colorTheme.openBlueTextColor,
+            fontWeight: FontWeight.w400,
           ),
         ),
         TextSpan(
@@ -306,9 +307,11 @@ Widget buildFooter(BuildContext context) {
             ..onTap = () {
               goTo(path: RoutePath.register);
             },
-          style: GoogleFonts.nunito(
-            color: const Color(0xFFEF8733),
-            fontWeight: FontWeight.w600,
+          style: GoogleFonts.nunitoSans(
+            fontSize: 16.0,
+            color: ThemeManager
+                .instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ],

@@ -5,21 +5,22 @@ import 'package:health_tourism/product/theme/theme_manager.dart';
 var colours = AppColors();
 
 var htHintTextStyle = TextStyle(
-  color: Color(0xFF123258).withOpacity(0.3),
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor?.withOpacity(0.5),
   letterSpacing: 1.2,
-  fontSize: 14,
-  fontFamily: 'OpenSans',
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+  fontFamily: 'NunitoSans',
 );
 
 final htDarkBlueNormalStyle =  TextStyle(
-  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkTextColor,
-  fontWeight: FontWeight.w300,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+  fontWeight: FontWeight.w400,
   fontFamily: 'NunitoSans',
   fontSize: 14
 );
 
 final htDarkBlueLargeStyle =  TextStyle(
-    color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkTextColor,
+    color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
     fontWeight: FontWeight.w400,
     fontFamily: 'NunitoSans',
     fontSize: 16
@@ -43,19 +44,21 @@ const htSmallLabelStyle = TextStyle(
   fontFamily: 'OpenSans',
   fontSize: 10
 );
-const htBlueTitleLabelStyle = TextStyle(
-    color: Color(0xFF123258), //Color(0xFFFE9879
+final htBlueTitleLabelStyle = TextStyle(
+    color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor, //Color(0xFFFE9879
     fontWeight: FontWeight.bold,
     fontFamily: 'Domine',
     fontSize: 32
 );
 
-const htBlueLabelStyle = TextStyle(
-    color: Color(0xFF4C6780), //Color(0xFFFE9879
+final htBlueLabelStyle = TextStyle(
+    color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor, //Color(0xFFFE9879
     fontWeight: FontWeight.normal,
     fontFamily: 'NunitoSans',
     fontSize: 16
 );
+
+
 const htTitleStyle =  TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,

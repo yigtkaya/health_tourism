@@ -20,7 +20,7 @@ class LightColor implements IColorTheme {
   Color? primaryColor;
 
   @override
-  Color? textColor;
+  Color? openBlueTextColor;
 
   @override
   Color? buttonColor;
@@ -77,7 +77,8 @@ class LightColor implements IColorTheme {
     primaryScaffoldBackground = colors.lightPurple;
     secondaryScaffoldBackground = colors.satinLinen;
     primaryColor = colors.lima;
-    textColor = colors.outerSpace;
+    openBlueTextColor = colors.lightBlue;
+    darkBlueTextColor = colors.darkBlue;
     buttonColor = colors.lima;
     inputBorder = colors.fiord;
     brightness = Brightness.light;
@@ -115,5 +116,5 @@ class LightColor implements IColorTheme {
   Color? bottomNavigationBackground;
 
   @override
-  Color? darkTextColor;
+  Color? darkBlueTextColor;
 }

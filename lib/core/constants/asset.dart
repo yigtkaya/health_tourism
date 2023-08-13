@@ -9,7 +9,10 @@ class AssetConstants {
 
 class HTIcons {
   final String googleIcon = AssetConstants.toIcon("google_icon");
+  final String googleIconPlus = AssetConstants.toIcon("google_plus");
   final String facebookIcon = AssetConstants.toIcon("facebook_icon");
+  final String facebookIconSimple = AssetConstants.toIcon("facebook");
+  final String twitter = AssetConstants.toIcon("twitter");
   final String backIcon = AssetConstants.toIcon("back");
   final String infoIcon = AssetConstants.toIcon("info_icon");
   final String cameraIcon = AssetConstants.toIcon("camera_icon");
