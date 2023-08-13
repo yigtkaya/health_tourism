@@ -80,7 +80,7 @@ class _SignUpViewState extends State<SignUpView> {
                 flex: 3,
                 child: loginTitle(),
               ),
-              const Expanded(
+              Expanded(
                   flex: 1,
                   child: HTText(
                       label: "Continue with email for sign up App",
@@ -194,11 +194,11 @@ Widget signUpButton(Size size) {
 }
 
 Widget buildContinueText() {
-  return const Row(
+  return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
-      Expanded(
+      const Expanded(
           child: Divider(
         color: Colors.white,
       )),
@@ -209,7 +209,7 @@ Widget buildContinueText() {
           textAlign: TextAlign.center,
         ),
       ),
-      Expanded(
+      const Expanded(
           child: Divider(
         color: Color(0xFFE5E5E5),
       )),
@@ -247,7 +247,7 @@ Widget signInGoogleFacebookButton(Size size) {
               width: 16,
             ),
             //google txt
-            const Text(
+            Text(
               'Google',
               style: htDarkBlueNormalStyle,
               textAlign: TextAlign.center,
@@ -284,7 +284,7 @@ Widget signInGoogleFacebookButton(Size size) {
               width: 16,
             ),
             //facebook txt
-            const Text(
+            Text(
               'Facebook',
               textAlign: TextAlign.center,
               style: htDarkBlueNormalStyle,

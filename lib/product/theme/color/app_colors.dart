@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 @immutable
 class AppColors {
+  final darkBlue = const Color(0xff123258);
   final lima = const Color(0xff7fb713);
   final outerSpace = const Color(0xff263238);
   final satinLinen = const Color(0xffeeefe2);

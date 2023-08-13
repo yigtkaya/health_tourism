@@ -94,7 +94,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
       stream: state.messages,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Center(
+          return Center(
             child: HTText(
               label: "Something went wrong",
               color: Colors.white,

@@ -120,7 +120,7 @@ class _LoginViewState extends State<LoginView> {
                         onTap: () {
                           pushTo(path: RoutePath.forgotPassword);
                         },
-                        child: const HTText(
+                        child: HTText(
                           label: "Forgot Password?",
                           style: htDarkBlueLargeStyle,
                         ),
@@ -175,8 +175,8 @@ Widget signInButton(Size size) {
       borderRadius: BorderRadius.circular(20.0),
       color: const Color(0xFF58A2EB),
     ),
-    child: const Padding(
-      padding: EdgeInsets.symmetric(vertical: 13.0),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 13.0),
       child: HTText(
         label: "Sign In",
         style: htDarkBlueNormalStyle,
@@ -236,7 +236,7 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
                 ),
                 const HorizontalSpace(),
                 //google txt
-                const Text(
+                Text(
                   'Google',
                   style: htDarkBlueNormalStyle,
                   textAlign: TextAlign.center,
@@ -275,7 +275,7 @@ Widget signInGoogleFacebookButton(Size size, AuthCubit authCubit) {
                 ),
                 const HorizontalSpace(),
                 //facebook txt
-                const Text(
+                Text(
                   'Facebook',
                   textAlign: TextAlign.center,
                   style: htDarkBlueNormalStyle,

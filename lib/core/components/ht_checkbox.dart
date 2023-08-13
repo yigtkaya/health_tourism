@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
+import 'package:health_tourism/product/theme/theme_manager.dart';
 
 import '../../product/theme/styles.dart';
 
@@ -44,7 +45,7 @@ class _HTCheckBoxState extends State<HTCheckBox> {
                   iconName: AssetConstants.icons.checkMark,
                   width: 14,
                   height: 14,
-                  color: const Color(0xFF123258),
+                  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkTextColor,
                 ),
         ),
         const HorizontalSpace(

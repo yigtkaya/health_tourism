@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:health_tourism/product/theme/color/app_colors.dart';
+import 'package:health_tourism/product/theme/theme_manager.dart';
+
+var colours = AppColors();
 
 var htHintTextStyle = TextStyle(
   color: Color(0xFF123258).withOpacity(0.3),
@@ -7,15 +11,15 @@ var htHintTextStyle = TextStyle(
   fontFamily: 'OpenSans',
 );
 
-const htDarkBlueNormalStyle =  TextStyle(
-  color: Color(0xFF123258),
+final htDarkBlueNormalStyle =  TextStyle(
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkTextColor,
   fontWeight: FontWeight.w300,
   fontFamily: 'NunitoSans',
   fontSize: 14
 );
 
-const htDarkBlueLargeStyle =  TextStyle(
-    color: Color(0xFF123258),
+final htDarkBlueLargeStyle =  TextStyle(
+    color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkTextColor,
     fontWeight: FontWeight.w400,
     fontFamily: 'NunitoSans',
     fontSize: 16

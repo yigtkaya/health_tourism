@@ -51,7 +51,7 @@ class _ChatsViewState extends State<ChatsView> {
             padding: const EdgeInsets.all(16.0),
             child: Container(
               alignment: Alignment.topLeft,
-              child: const HTText(
+              child: HTText(
                 label: "Chats",
                 color: Colors.white,
                 style: htDarkBlueNormalStyle,
@@ -74,7 +74,7 @@ class _ChatsViewState extends State<ChatsView> {
                     return _buildChatListView(state);
                   }
                   if (state is ChatError) {
-                    return const Center(
+                    return Center(
                       child: HTText(
                         label: "Something went wrong",
                         color: Colors.white,

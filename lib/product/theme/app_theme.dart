@@ -33,10 +33,7 @@ abstract class AppThemeBuilder {
   static ThemeData createTheme(IAppTheme theme) {
     return ThemeData(
         scaffoldBackgroundColor: theme.colorTheme.primaryScaffoldBackground,
-        backgroundColor: theme.colorTheme.secondaryScaffoldBackground,
         primaryColor: theme.colorTheme.primaryColor,
-        selectedRowColor: theme.colorTheme.selectedRowColor,
-        errorColor: theme.colorTheme.errorColor,
         indicatorColor: theme.colorTheme.warningColor,
         listTileTheme: const ListTileThemeData(contentPadding: EdgeInsets.zero),
         splashColor: theme.colorTheme.successColor,
@@ -52,10 +49,7 @@ abstract class AppThemeBuilder {
                 borderRadius: BorderRadius.circular(8.0))),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-              onPrimary: theme.colorTheme.primaryColor,
-              primary: theme.colorTheme.buttonColor,
               textStyle: theme.textTheme.longButtonText,
-              onSurface: theme.colorTheme.disableButtonColor,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))),
         ),
         textButtonTheme: TextButtonThemeData(
@@ -103,11 +97,10 @@ abstract class AppThemeBuilder {
           surfaceTintColor: theme.colorTheme.appbarTertiary,
         ),
         dividerColor: theme.colorTheme.dividerColor,
-        colorScheme: theme.colorTheme.colorScheme,
         tabBarTheme: TabBarTheme(
           indicator: const BoxDecoration(),
           labelColor: theme.colorTheme.primaryColor,
           unselectedLabelColor: theme.colorTheme.primaryColor,
-        ));
+        ), colorScheme: theme.colorTheme.colorScheme?.copyWith(background: theme.colorTheme.secondaryScaffoldBackground));
   }
 }
