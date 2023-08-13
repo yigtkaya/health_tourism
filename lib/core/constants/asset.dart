@@ -21,4 +21,5 @@ class HTIcons {
   final String visibilityOn = AssetConstants.toIcon("visibility");
   final String visibilityOff = AssetConstants.toIcon("visibility_off");
   final String checkMark = AssetConstants.toIcon("check_mark");
+  final String chevronLeft = AssetConstants.toIcon("chevron_left");
 }
