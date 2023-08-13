@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_email_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
@@ -49,69 +50,74 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       backgroundColor: Colors.white,
       body: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xff2D9CDB),
-                ),
-                height: size.height * 0.08,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      HTIcon(iconName: AssetConstants.icons.chevronLeft),
-                      const Expanded(
-                          child: Align(
-                        alignment: Alignment.center,
-                        child: HTText(
-                            label: "Forgot Password", style: htBoldLabelStyle),
-                      )),
-                    ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: Color(0xff2D9CDB),
+            ),
+            height: size.height * 0.08,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  HTIcon(
+                    iconName: AssetConstants.icons.chevronLeft,
+                    onPress: () {
+                      context.pop();
+                    },
                   ),
-                ),
+                  const Expanded(
+                      child: Align(
+                    alignment: Alignment.center,
+                    child: HTText(
+                        label: "Forgot Password", style: htBoldLabelStyle),
+                  )),
+                ],
               ),
-              const Spacer(),
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    children: [
-                      HTText(
-                          label:
-                              " Please enter your email address. You will receive a link to create a new password via email.",
-                          style: htBlueLabelStyle),
-                      const VerticalSpace(
-                        spaceAmount: 30,
-                      ),
-                      HTEmailField(
-                          onChanged: (value) {
-                            updateEmail(value);
-                          },
-                          textController: emailController,
-                          hintText: "Enter your email address",
-                          iconName: Icons.mail_rounded),
-                      const VerticalSpace(
-                        spaceAmount: 30,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // check email is valid and password is not empty then sign in
-                          BlocProvider.of<AuthCubit>(context)
-                              .passwordResetSubmit(email);
-                        },
-                        child: sendButton(size),
-                      ),
-                    ],
+            ),
+          ),
+          const Spacer(),
+          Expanded(
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  HTText(
+                      label:
+                          " Please enter your email address. You will receive a link to create a new password via email.",
+                      style: htBlueLabelStyle),
+                  const VerticalSpace(
+                    spaceAmount: 30,
                   ),
-                ),
+                  HTEmailField(
+                      onChanged: (value) {
+                        updateEmail(value);
+                      },
+                      textController: emailController,
+                      hintText: "Enter your email address",
+                      iconName: Icons.mail_rounded),
+                  const VerticalSpace(
+                    spaceAmount: 30,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // check email is valid and password is not empty then sign in
+                      BlocProvider.of<AuthCubit>(context)
+                          .passwordResetSubmit(email);
+                    },
+                    child: sendButton(size),
+                  ),
+                ],
               ),
-            ],
-          )),
+            ),
+          ),
+        ],
+      )),
     );
   }
 }
