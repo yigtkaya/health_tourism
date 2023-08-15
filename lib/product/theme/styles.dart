@@ -48,17 +48,21 @@ final htBlueTitleLabelStyle = TextStyle(
     fontFamily: 'Domine',
     fontSize: 32);
 
-final htBlueLabelStyle = TextStyle(
-    color: ThemeManager.instance?.getCurrentTheme.colorTheme
-        .openBlueTextColor, //Color(0xFFFE9879
-    fontWeight: FontWeight.normal,
-    fontFamily: 'NunitoSans',
-    fontSize: 16);
+final htBlueLabelStyle = GoogleFonts.nunitoSans(
+  fontSize: 16.0,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,
+  fontWeight: FontWeight.normal,
+);
 
-const htTitleStyle = TextStyle(
-  color: Colors.white,
+final htOnboardingSubTitle = GoogleFonts.domine(
+  fontSize: 18.0,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,
+  fontWeight: FontWeight.normal,
+);
+final htTitleStyle = GoogleFonts.domine(
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
   fontWeight: FontWeight.bold,
-  fontFamily: 'OpenSansbold',
+  fontSize: 22,
 );
 final htTitleStyle2 = GoogleFonts.domine(
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,

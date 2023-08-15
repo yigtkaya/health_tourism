@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
 import 'package:health_tourism/view/login/login_view.dart';
+import 'package:health_tourism/view/onboarding/onboarding_view.dart';
 import 'package:health_tourism/view/payment/payment_view.dart';
 import 'package:health_tourism/view/payment/webview.dart';
 import '../../cubit/auth/AuthState.dart';
@@ -17,9 +18,9 @@ class RootView extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is Authenticated) {
-            return const LoginView();
+            return const OnBoardingView();
           }
-          return const LoginView();
+          return const OnBoardingView();
         });
   }
 }
