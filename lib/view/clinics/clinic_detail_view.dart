@@ -3,12 +3,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
-import 'package:path/path.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
+import '../../core/components/review_card.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../product/navigation/route_paths.dart';
@@ -29,6 +28,11 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     "https://www.fue-hlc.com/wp-content/uploads/2018/01/unnamed-5-1-425x200.jpg",
     "https://drfatihkoroglu.com/wp-content/uploads/2022/09/clinica-para-injerto-capilar.jpg",
     "https://iadsb.tmgrup.com.tr/29d1f0/1200/627/0/147/1800/1087?u=https://idsb.tmgrup.com.tr/2019/03/03/high-quality-low-cost-drives-hair-transplant-sector-1551645283861.jpg"
+  ];
+  final reviews = [
+    ReviewCard(),
+    ReviewCard(),
+    ReviewCard(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -63,6 +67,19 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: buildIndicator(),
                 ),
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: HTIcon(
+                    iconName: AssetConstants.icons.chevronLeft,
+                    width: 20,
+                    height: 20,
+                    color: Colors.white,
+                    onPress: () {
+                      context.pop();
+                    },
+                  ),
+                ),
               ],
             ),
             const VerticalSpace(),
@@ -91,14 +108,47 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                     ],
                   ),
                   const VerticalSpace(),
-                  HTText(label: "Istanbul, Türkiye", style: htBlueLabelStyle),
+                  Row(
+                    children: [
+                      HTText(
+                          label: "Istanbul, Türkiye", style: htBlueLabelStyle),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          // route to contact create chat room and start chatting
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xffd3e9ff),
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 3),
+                            child: Row(
+                              children: [
+                                HTText(label: "Contact", style: htSubTitle),
+                                const HorizontalSpace(
+                                  spaceAmount: 3,
+                                ),
+                                HTIcon(
+                                  iconName: AssetConstants.icons.chatBubble,
+                                  color: const Color(0xff94b6eb),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
             const VerticalSpace(),
             const Divider(
               height: 1,
-              thickness: 2,
+              thickness: 1,
               color: Color(0x33000000),
             ),
             const VerticalSpace(),
@@ -111,11 +161,11 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
 
   Widget buildInformation(Size size) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HTText(label: "About", style: htDarkBlueLargeStyle),
+          HTText(label: "About", style: htSubTitle),
           const VerticalSpace(),
           const ReadMoreText(
               "placehoplaceholderplac"
@@ -132,9 +182,13 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               trimMode: TrimMode.Line,
               trimCollapsedText: 'Read more',
               trimExpandedText: ' show less'),
-          const VerticalSpace(),
-          HTText(label: "Operations", style: htDarkBlueLargeStyle),
-          const VerticalSpace(),
+          const VerticalSpace(
+            spaceAmount: 20,
+          ),
+          HTText(label: "Operations", style: htSubTitle),
+          const VerticalSpace(
+            spaceAmount: 12,
+          ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Center(
@@ -147,18 +201,30 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   ImageHolder(size),
                   const HorizontalSpace(),
                   ImageHolder(size),
+                  const HorizontalSpace(),
+                  ImageHolder(size),
+                  const HorizontalSpace(),
+                  ImageHolder(size),
                 ],
               ),
             ),
           ),
-          const VerticalSpace(),
-          HTText(label: "Packages", style: htDarkBlueLargeStyle),
-          const VerticalSpace(),
+          const VerticalSpace(
+            spaceAmount: 20,
+          ),
+          HTText(label: "Packages", style: htSubTitle),
+          const VerticalSpace(
+            spaceAmount: 12,
+          ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                createPackages(size),
+                const HorizontalSpace(),
+                createPackages(size),
+                const HorizontalSpace(),
                 createPackages(size),
                 const HorizontalSpace(),
                 createPackages(size),
@@ -170,7 +236,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           ),
           Row(
             children: [
-              HTText(label: "Reviews(18)", style: htTitleStyle),
+              HTText(label: "Reviews (18)", style: htTitleStyle),
               const Spacer(),
               GestureDetector(
                 onTap: () {
@@ -184,7 +250,17 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               const HorizontalSpace(),
               HTIcon(iconName: AssetConstants.icons.chevronRight)
             ],
-          )
+          ),
+          const VerticalSpace(
+            spaceAmount: 12,
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: reviews.length,
+            itemBuilder: (context, index) {
+              return reviews[index];
+            },
+          ),
         ],
       ),
     );
@@ -199,13 +275,13 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
         width: size.width * 0.43,
         decoration: const BoxDecoration(
           color: Color(0xffd3e9ff),
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
               child: Center(
                   child: HTText(
                       label: "PackageTitle", style: htDarkBlueLargeStyle)),

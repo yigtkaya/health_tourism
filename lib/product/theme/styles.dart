@@ -47,12 +47,11 @@ final htSmallLabelStyle = GoogleFonts.nunitoSans(
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,
   fontWeight: FontWeight.normal,
 );
-final htBlueTitleLabelStyle = TextStyle(
-    color: ThemeManager.instance?.getCurrentTheme.colorTheme
-        .darkBlueTextColor, //Color(0xFFFE9879
-    fontWeight: FontWeight.bold,
-    fontFamily: 'Domine',
-    fontSize: 32);
+final htBlueTitleLabelStyle = GoogleFonts.domine(
+  fontSize: 132.0,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,
+  fontWeight: FontWeight.bold,
+);
 
 final htBlueLabelStyle = GoogleFonts.nunitoSans(
   fontSize: 16.0,
@@ -64,6 +63,11 @@ final htOnboardingSubTitle = GoogleFonts.domine(
   fontSize: 18.0,
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,
   fontWeight: FontWeight.normal,
+);
+final htSubTitle = GoogleFonts.domine(
+  fontSize: 18.0,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+  fontWeight: FontWeight.bold,
 );
 final htTitleStyle = GoogleFonts.domine(
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
