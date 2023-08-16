@@ -15,6 +15,7 @@ import 'cubit/bottom_navigation/bottom_navigation_cubit.dart';
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Color(0xff2D9CDB),
+    statusBarBrightness: Brightness.dark,
   ));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

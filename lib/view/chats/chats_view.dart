@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
@@ -25,35 +27,27 @@ class _ChatsViewState extends State<ChatsView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xff2D9CDB),
+        elevation: 0,
+        leadingWidth: 32,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: HTIcon(
+            iconName: AssetConstants.icons.burger,
+            onPress: () => context.pop(),
+          ),
+        ),
+        title: HTText(
+          label: "Reviews",
+          style: htToolBarLabel,
+        ),
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
+        top: false,
           child: Column(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Color(0xff2D9CDB),
-            ),
-            height: size.height * 0.07,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  HTIcon(
-                    iconName: AssetConstants.icons.burger,
-                    onPress: () => context.pop(),
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: HTText(label: "Reviews", style: htToolBarLabel),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
           const VerticalSpace(),
           Expanded(
             flex: 3,
@@ -116,8 +110,23 @@ class _ChatsViewState extends State<ChatsView> {
                       "receiverName": receiverId,
                     });
                   },
-                  child: _buildLineItem(
-                      lastMessage, receiverId, chatRoomId, formattedDate));
+                  child: Slidable(
+                    endActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        extentRatio: 1 / 6,
+                        children: [
+                          SlidableAction(
+                            flex: 1,
+                            onPressed: (context) {
+                              context.read<ChatCubit>().deleteChat(chatRoomId);
+                            },
+                            backgroundColor: Colors.red,
+                            icon: Icons.delete_sharp,
+                          ),
+                        ]),
+                    child: _buildLineItem(
+                        lastMessage, receiverId, chatRoomId, formattedDate),
+                  ));
             },
           );
         } else {
@@ -131,16 +140,17 @@ class _ChatsViewState extends State<ChatsView> {
 
   Widget _buildLineItem(String lastMessage, String receiverId,
       String chatRoomId, String formattedDate) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18, top: 10),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 18.0, right: 18),
+      child: Column(
+        children: [
+          Row(
             children: [
               Container(
                 width: 50,
                 height: 50,
                 decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
                   image: DecorationImage(
                     image: NetworkImage(
                         "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
@@ -174,12 +184,12 @@ class _ChatsViewState extends State<ChatsView> {
               ),
             ],
           ),
-        ),
-        const Divider(
-          color: Color(0xffd3e3f1),
-          thickness: 1,
-        ),
-      ],
+          const Divider(
+            color: Color(0xffd3e3f1),
+            thickness: 1,
+          ),
+        ],
+      ),
     );
   }
 }
