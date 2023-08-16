@@ -41,22 +41,20 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
         onTap: () {
           context.push(RoutePath.payment);
         },
         child: Container(
-          height: size.height * 0.06,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: const Color(0xff58a2eb)
-          ),
-          child: Center(
-            child: HTText(label: 'Make An Appointment', style: htBoldLabelStyle),
-          )
-        ),
+            height: size.height * 0.06,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: const Color(0xff58a2eb)),
+            child: Center(
+              child:
+                  HTText(label: 'Make An Appointment', style: htBoldLabelStyle),
+            )),
       ),
       body: SafeArea(
           child: SingleChildScrollView(
