@@ -33,6 +33,7 @@ class _HTBottomNavState extends State<HTBottomNav> {
             ),
             extendBody: true,
             body: PageView(
+              physics: const NeverScrollableScrollPhysics(),
               controller: cubit.pageController,
               onPageChanged: (index) {
                 cubit.changeBottomNavBar(index);

@@ -23,70 +23,57 @@ class ChatsView extends StatefulWidget {
 class _ChatsViewState extends State<ChatsView> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color(0xff1b202d),
+      backgroundColor: Colors.white,
       body: SafeArea(
           child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                HTText.title(
-                  context: context,
-                  label: "Messages",
-                  color: Colors.white,
-                ),
-                const Spacer(),
-                HTIcon(
-                  iconName: AssetConstants.icons.infoIcon,
-                  color: Colors.white,
-                  width: 24,
-                  height: 24,
-                ),
-              ],
+          Container(
+            decoration: const BoxDecoration(
+              color: Color(0xff2D9CDB),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              alignment: Alignment.topLeft,
-              child: HTText(
-                label: "Chats",
-                color: Colors.white,
-                style: htDarkBlueNormalStyle,
+            height: size.height * 0.07,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  HTIcon(
+                    iconName: AssetConstants.icons.burger,
+                    onPress: () => context.pop(),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: HTText(label: "Reviews", style: htToolBarLabel),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
+          const VerticalSpace(),
           Expanded(
             flex: 3,
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
-                color: Color(0xff292f3f),
-              ),
-              child: BlocBuilder<ChatCubit, ChatState>(
-                builder: (context, state) {
-                  if (state is ChatLoaded) {
-                    return _buildChatListView(state);
-                  }
-                  if (state is ChatError) {
-                    return Center(
-                      child: HTText(
-                        label: "Something went wrong",
-                        color: Colors.white,
-                        style: htDarkBlueNormalStyle,
-                      ),
-                    );
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
+            child: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                if (state is ChatLoaded) {
+                  return _buildChatListView(state);
+                }
+                if (state is ChatError) {
+                  return Center(
+                    child: HTText(
+                      label: "Something went wrong",
+                      style: htDarkBlueNormalStyle,
+                    ),
                   );
-                },
-              ),
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           ),
         ],
@@ -114,6 +101,8 @@ class _ChatsViewState extends State<ChatsView> {
               if (data['lastMessage']['senderId'] != currentUserId) {
                 lastMessage =
                     "${data['lastMessage']['senderId']}: $lastMessage";
+              } else {
+                lastMessage = "You: $lastMessage";
               }
               DateTime t = data['lastMessage']['lastMessageTime'].toDate();
               // check if the message is sent today or yesterday or before
@@ -151,9 +140,8 @@ class _ChatsViewState extends State<ChatsView> {
               Container(
                 width: 50,
                 height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  image: const DecorationImage(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
                     image: NetworkImage(
                         "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
                     fit: BoxFit.cover,
@@ -168,30 +156,28 @@ class _ChatsViewState extends State<ChatsView> {
                 children: [
                   HTText(
                     label: receiverId,
-                    color: Colors.white,
-                    style: htDarkBlueNormalStyle,
+                    style: htSubTitle,
                   ),
                   const VerticalSpace(
                     spaceAmount: 6,
                   ),
                   HTText(
                     label: lastMessage,
-                    color: Colors.white,
-                    style: htDarkBlueNormalStyle,
+                    style: htBlueLabelStyle,
                   ),
                 ],
               ),
               const Spacer(),
               HTText(
                 label: formattedDate,
-                color: Colors.white,
                 style: htSmallLabelStyle,
               ),
             ],
           ),
         ),
         const Divider(
-          color: Colors.white,
+          color: Color(0xffd3e3f1),
+          thickness: 1,
         ),
       ],
     );

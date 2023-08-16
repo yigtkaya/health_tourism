@@ -68,6 +68,7 @@ dependencies:
   permission_handler:
   scroll_to_hide:
   carousel_slider:
+  flutter_slidable:
   readmore:
   #navigation
   go_router:

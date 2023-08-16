@@ -48,7 +48,7 @@ final htSmallLabelStyle = GoogleFonts.nunitoSans(
   fontWeight: FontWeight.normal,
 );
 final htBlueTitleLabelStyle = GoogleFonts.domine(
-  fontSize: 132.0,
+  fontSize: 32.0,
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,
   fontWeight: FontWeight.bold,
 );

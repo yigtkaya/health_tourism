@@ -34,4 +34,5 @@ class HTIcons {
   final String sort = AssetConstants.toIcon("sort_icon");
   final String star = AssetConstants.toIcon("star");
   final String chatBubble = AssetConstants.toIcon("chat_bubble");
+  final String burger = AssetConstants.toIcon("burger");
 }
