@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 import 'package:health_tourism/product/theme/theme_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../product/navigation/route_paths.dart';
 
@@ -18,6 +18,7 @@ class OnBoardingView extends StatefulWidget {
 class _OnBoardingViewState extends State<OnBoardingView> {
   late PageController pageController;
   int currentIndex = 0;
+  late bool seen;
 
   List pages = [
     const OnboardingContentWithLogo(
@@ -44,6 +45,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   void dispose() {
     pageController.dispose();
     super.dispose();
+  }
+
+  _storeOnboardingInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onBoard', true);
   }
 
   @override
@@ -73,6 +79,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
           GestureDetector(
             onTap: currentIndex == 2
                 ? () {
+                    _storeOnboardingInfo();
                     goTo(path: RoutePath.signIn);
                   }
                 : () => pageController.nextPage(

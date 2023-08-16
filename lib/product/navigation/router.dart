@@ -14,6 +14,7 @@ import 'package:health_tourism/view/payment/payment_view.dart';
 import 'package:health_tourism/view/profile_view/profile_view.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../cubit/message/message_cubit.dart';
 import '../../view/chats/chat_room_view.dart';
@@ -168,3 +169,4 @@ void goToWithWait({required String path}) {
 void goBack() {
   router.pop();
 }
+
