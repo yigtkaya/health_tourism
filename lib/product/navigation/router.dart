@@ -12,6 +12,7 @@ import 'package:health_tourism/view/landing/landing_view.dart';
 import 'package:health_tourism/view/login/login_view.dart';
 import 'package:health_tourism/view/payment/payment_view.dart';
 import 'package:health_tourism/view/profile_view/profile_view.dart';
+import 'package:health_tourism/view/reviews/reviews.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,6 +52,13 @@ final GoRouter router = GoRouter(
       name: RoutePath.clinicDetail,
       builder: (context, state) {
         return ClinicDetailView(clinicId: state.queryParameters['clinicId'] ?? '',);
+      },
+    ),
+    GoRoute(
+      path: RoutePath.reviews,
+      name: RoutePath.reviews,
+      builder: (context, state) {
+        return const ReviewsView();
       },
     ),
     GoRoute(

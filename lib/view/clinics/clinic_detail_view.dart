@@ -267,7 +267,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  // TODO: Navigate to reviews page
+                  context.push(RoutePath.reviews);
                 },
                 child: SizedBox(
                   child:

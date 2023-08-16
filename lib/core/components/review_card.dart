@@ -70,7 +70,7 @@ class _ReviewCardState extends State<ReviewCard> {
           ),
           const VerticalSpace(),
           const Divider(
-            color: Color(0xff7a8194),
+            color: Color(0xffd3e3f1),
             thickness: 1,
           ),
         ],

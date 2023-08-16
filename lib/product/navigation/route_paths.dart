@@ -16,5 +16,6 @@ class RoutePath {
   static const String sendImage = '/sendImage';
   static const String fullscreenImage = '/fullscreenImage';
   static const String clinicDetail = '/clinicDetail';
+  static const String reviews = '/reviews';
 }
 
