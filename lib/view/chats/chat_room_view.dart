@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:health_tourism/core/components/chat_bubble.dart';
-import 'package:health_tourism/core/components/chat_input.dart';
+import 'package:health_tourism/core/components/chat/chat_bubble.dart';
+import 'package:health_tourism/core/components/chat/chat_input.dart';
 import 'package:health_tourism/cubit/message/message_cubit.dart';
 import 'package:health_tourism/cubit/message/message_state.dart';
 import '../../core/components/ht_icon.dart';
@@ -158,7 +158,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               ? CrossAxisAlignment.start
               : CrossAxisAlignment.end,
           children: [
-            const HTText(label: "label", style: htSmallLabelStyle),
+            HTText(label: "label", style: htSmallLabelStyle),
             const VerticalSpace(spaceAmount: 4),
             ChatBubble(
               message: message,

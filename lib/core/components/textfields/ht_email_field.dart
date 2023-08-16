@@ -5,7 +5,7 @@ import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/dimen.dart';
 import 'package:health_tourism/product/theme/theme_manager.dart';
 
-import '../../product/theme/styles.dart';
+import '../../../product/theme/styles.dart';
 
 class HTEmailField extends StatefulWidget {
   final TextEditingController textController;

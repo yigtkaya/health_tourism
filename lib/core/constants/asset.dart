@@ -28,4 +28,8 @@ class HTIcons {
   final String messageUnSelected = AssetConstants.toIcon("message_unselected");
   final String profileSelected = AssetConstants.toIcon("profile_selected");
   final String profileUnSelected = AssetConstants.toIcon("profile_unselected");
+  final String search = AssetConstants.toIcon("search");
+  final String calendar = AssetConstants.toIcon("calendar");
+  final String sort = AssetConstants.toIcon("sort_icon");
+  final String star = AssetConstants.toIcon("star");
 }

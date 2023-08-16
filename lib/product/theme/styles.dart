@@ -36,11 +36,17 @@ final htBoldLabelStyle = GoogleFonts.nunitoSans(
   fontWeight: FontWeight.bold,
 );
 
-const htSmallLabelStyle = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.normal,
-    fontFamily: 'OpenSans',
-    fontSize: 10);
+final htToolBarLabel = GoogleFonts.nunitoSans(
+  fontSize: 20.0,
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+);
+
+final htSmallLabelStyle = GoogleFonts.nunitoSans(
+  fontSize: 12.0,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,
+  fontWeight: FontWeight.normal,
+);
 final htBlueTitleLabelStyle = TextStyle(
     color: ThemeManager.instance?.getCurrentTheme.colorTheme
         .darkBlueTextColor, //Color(0xFFFE9879

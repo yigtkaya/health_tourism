@@ -4,7 +4,7 @@ import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 
-import 'ht_text.dart';
+import '../ht_text.dart';
 
 class ChatBubble extends StatefulWidget {
   final String message;
