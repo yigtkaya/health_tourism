@@ -135,15 +135,20 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           const VerticalSpace(),
           HTText(label: "Operations", style: htDarkBlueLargeStyle),
           const VerticalSpace(),
-          Center(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ImageHolder(size),
-                ImageHolder(size),
-                ImageHolder(size),
-              ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Center(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ImageHolder(size),
+                  const HorizontalSpace(),
+                  ImageHolder(size),
+                  const HorizontalSpace(),
+                  ImageHolder(size),
+                ],
+              ),
             ),
           ),
           const VerticalSpace(),
@@ -159,6 +164,26 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                 createPackages(size),
               ],
             ),
+          ),
+          const VerticalSpace(
+            spaceAmount: 24,
+          ),
+          Row(
+            children: [
+              HTText(label: "Reviews(18)", style: htTitleStyle),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  // TODO: Navigate to reviews page
+                },
+                child: SizedBox(
+                  child:
+                      HTText(label: "View All", style: htDarkBlueNormalStyle),
+                ),
+              ),
+              const HorizontalSpace(),
+              HTIcon(iconName: AssetConstants.icons.chevronRight)
+            ],
           )
         ],
       ),
@@ -182,8 +207,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Center(
-                  child:
-                      HTText(label: "PackageTitle", style: htDarkBlueLargeStyle)),
+                  child: HTText(
+                      label: "PackageTitle", style: htDarkBlueLargeStyle)),
             ),
             const Divider(
               height: 1,
@@ -195,15 +220,14 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   HTText(
-                      label: "- Maximum Graft", style: htLabelBlackStyle),
-                   HTText(
+                  HTText(label: "- Maximum Graft", style: htLabelBlackStyle),
+                  HTText(
                       label: "- Gives 100% satisfaction guarantee",
                       style: htLabelBlackStyle),
-                   HTText(
+                  HTText(
                       label: "- 2 Nights stay in the Hotel",
                       style: htLabelBlackStyle),
-                   HTText(label: "- Checkup", style: htLabelBlackStyle),
+                  HTText(label: "- Checkup", style: htLabelBlackStyle),
                 ],
               ),
             )
@@ -214,10 +238,10 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
   }
 
   Widget ImageHolder(Size size) => Container(
-        height: size.height * 0.1,
-        width: size.width * 0.25,
+        height: size.height * 0.12,
+        width: size.width * 0.28,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(24),
           image: const DecorationImage(
               image: NetworkImage(
                   "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg"),
