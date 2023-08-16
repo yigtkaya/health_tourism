@@ -149,14 +149,7 @@ class _LandingViewState extends State<LandingView> {
               itemCount: cards.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    context.pushNamed(RoutePath.clinicDetail, queryParameters: {
-                      'clinicId': '${cards[index].clinicId}'
-                    });
-                  },
-                  child: cards[index],
-                );
+                return cards[index];
               }),
         )
       ],
@@ -165,6 +158,7 @@ class _LandingViewState extends State<LandingView> {
 
   List cards = [
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
@@ -173,6 +167,7 @@ class _LandingViewState extends State<LandingView> {
       reviewCount: 100,
     ),
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
@@ -181,6 +176,7 @@ class _LandingViewState extends State<LandingView> {
       reviewCount: 100,
     ),
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
@@ -189,6 +185,7 @@ class _LandingViewState extends State<LandingView> {
       reviewCount: 100,
     ),
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
@@ -197,6 +194,7 @@ class _LandingViewState extends State<LandingView> {
       reviewCount: 100,
     ),
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
@@ -205,6 +203,7 @@ class _LandingViewState extends State<LandingView> {
       reviewCount: 100,
     ),
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
@@ -213,6 +212,7 @@ class _LandingViewState extends State<LandingView> {
       reviewCount: 100,
     ),
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
@@ -221,6 +221,7 @@ class _LandingViewState extends State<LandingView> {
       reviewCount: 100,
     ),
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
@@ -229,6 +230,7 @@ class _LandingViewState extends State<LandingView> {
       reviewCount: 100,
     ),
     const ClinicCard(
+      clinicId: "1",
       imgUrl:
           "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
