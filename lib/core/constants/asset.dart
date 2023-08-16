@@ -23,9 +23,9 @@ class HTIcons {
   final String checkMark = AssetConstants.toIcon("check_mark");
   final String chevronLeft = AssetConstants.toIcon("chevron_left");
   final String homeSelected = AssetConstants.toIcon("home_selected");
-  final String homeUnselected = AssetConstants.toIcon("home_unselected");
+  final String homeUnSelected = AssetConstants.toIcon("home_unselected");
   final String messageSelected = AssetConstants.toIcon("message_selected");
-  final String messageUnselected = AssetConstants.toIcon("message_unselected");
+  final String messageUnSelected = AssetConstants.toIcon("message_unselected");
   final String profileSelected = AssetConstants.toIcon("profile_selected");
-  final String profileUnselected = AssetConstants.toIcon("profile_unselected");
+  final String profileUnSelected = AssetConstants.toIcon("profile_unselected");
 }

@@ -1,132 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:health_tourism/core/components/ht_icon.dart';
+import 'package:health_tourism/core/constants/asset.dart';
 
-class CustomBottomNavBarDash extends StatefulWidget {
+class CustomBottomNavBar extends StatefulWidget {
   final int defaultSelectedIndex;
   final Function(int) onChange;
-  final List<IconData> iconList;
-  final List<String> textList;
-  final Color backgroundColor;
-  final Color selectedColor;
-  final Color unselectedColor;
-  final bool showLabel;
 
-  const CustomBottomNavBarDash({
+  const CustomBottomNavBar({
     super.key,
     this.defaultSelectedIndex = 0,
     required this.onChange,
-    required this.iconList,
-    required this.textList,
-    this.backgroundColor = Colors.white,
-    this.selectedColor = Colors.red,
-    this.unselectedColor = Colors.grey,
-    this.showLabel = true,
   });
 
   @override
-  _CustomBottomNavBarDashState createState() => _CustomBottomNavBarDashState();
+  _CustomBottomNavBarState createState() => _CustomBottomNavBarState();
 }
 
-class _CustomBottomNavBarDashState extends State<CustomBottomNavBarDash> {
+class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   int _selectedIndex = 0;
-  List<IconData> _iconList = [];
-  List<String> _textList = [];
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.defaultSelectedIndex;
-    _iconList = widget.iconList;
-    _textList = widget.textList;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _navBarItemList = [];
-
-    for (var i = 0; i < _iconList.length; i++) {
-      _navBarItemList.add(buildNavBarItem(_iconList[i], i, _textList[i]));
-    }
-
+    final Size size = MediaQuery.of(context).size;
     return Container(
-      decoration: BoxDecoration(
-          color: widget.backgroundColor,
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(3),
-              topRight: Radius.circular(3))),
-      child: Row(
-        children: _navBarItemList,
-      ),
-    );
-  }
-
-  Widget buildNavBarItem(IconData icon, int index, String text) {
-    return GestureDetector(
-      onTap: () {
-        widget.onChange(index);
-        _selectedIndex = index;
-      },
-      child: Container(
-        decoration: const BoxDecoration(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width / _iconList.length,
-              padding: const EdgeInsets.only(bottom: 8, top: 16),
-              child: Icon(
-                icon,
-                size: 24,
-                color: _selectedIndex == index
-                    ? widget.selectedColor
-                    : widget.unselectedColor,
-              ),
-            ),
-            Visibility(
-              visible: widget.showLabel,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Text(
-                  '$text',
-                  style: TextStyle(
-                      height: 0,
-                      fontSize: 10,
-                      color: _selectedIndex == index
-                          ? widget.selectedColor
-                          : widget.unselectedColor),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(3), topRight: Radius.circular(3))),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    widget.onChange(0);
+                    setState(() {
+                      _selectedIndex = 0;
+                    });
+                  },
+                  child: _selectedIndex == 0
+                      ? HTIcon(iconName: AssetConstants.icons.homeSelected, width: 24, height: 24,)
+                      : HTIcon(iconName: AssetConstants.icons.homeUnSelected, width: 24, height: 24,),
                 ),
-              ),
+                GestureDetector(
+                  onTap: () {
+                    widget.onChange(1);
+                    setState(() {
+                      _selectedIndex = 1;
+                    });
+                  },
+                  child: _selectedIndex == 1
+                      ? HTIcon(iconName: AssetConstants.icons.messageSelected, width: 24, height: 24,)
+                      : HTIcon(iconName: AssetConstants.icons.messageUnSelected, width: 24, height: 24,),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    widget.onChange(2);
+                    setState(() {
+                      _selectedIndex = 2;
+                    });
+                  },
+                  child: _selectedIndex == 2
+                      ? HTIcon(iconName: AssetConstants.icons.profileSelected, width: 24, height: 24,)
+                      : HTIcon(iconName: AssetConstants.icons.profileUnSelected, width: 24, height: 24,),
+                ),
+              ],
             ),
-            _selectedIndex == index
-                ? selectedIndicator()
-                : unselectedIndicator(),
-          ],
-        ),
+
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100.0),
+                color: const Color(0xFF123258),
+              ),
+              height: size.height * 0.006,
+              width: size.width * 0.4,
+            ),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget selectedIndicator() {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      width: 40,
-      height: 3,
-      margin: const EdgeInsets.only(top: 4, bottom: 4),
-      decoration: BoxDecoration(
-          color: widget.selectedColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(3),
-            topRight: Radius.circular(3),
-          )),
-    );
-  }
-
-  Widget unselectedIndicator() {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      width: 40,
-      height: 0,
-      margin: const EdgeInsets.only(top: 7, bottom: 5),
-      color: Colors.transparent,
     );
   }
 }
