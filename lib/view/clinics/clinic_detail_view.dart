@@ -34,12 +34,30 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     ReviewCard(),
     ReviewCard(),
   ];
+
   @override
   Widget build(BuildContext context) {
     final controller = CarouselController();
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          context.push(RoutePath.payment);
+        },
+        child: Container(
+          height: size.height * 0.06,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            color: const Color(0xff58a2eb)
+          ),
+          child: Center(
+            child: HTText(label: 'Make An Appointment', style: htBoldLabelStyle),
+          )
+        ),
+      ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
@@ -153,6 +171,17 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             ),
             const VerticalSpace(),
             buildInformation(size),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100.0),
+                  color: const Color(0xFF123258),
+                ),
+                height: size.height * 0.006,
+                width: size.width * 0.4,
+              ),
+            ),
           ],
         ),
       )),
