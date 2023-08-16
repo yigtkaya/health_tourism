@@ -1,12 +1,8 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
-import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 
 class ClinicCard extends StatefulWidget {
@@ -87,15 +83,15 @@ class _ClinicCardState extends State<ClinicCard> {
                             HTText(
                                 label: widget.rating.toString(),
                                 style: htDarkBlueLargeStyle),
-                            const HorizontalSpace(),
+                            const HorizontalSpace(spaceAmount: 6,),
                             HTText(
                                 label: '(${widget.reviewCount.toString()})',
-                                style: htBlueLabelStyle),
+                                style: htSmallLabelStyle),
                           ],
                         ),
                         HTText(
                             label: widget.clinicAddress,
-                            style: htBlueLabelStyle),
+                            style: htSmallLabelStyle),
                       ],
                     ),
                   )

@@ -15,5 +15,6 @@ class RoutePath {
   static const String imagePickerDialog = '/imagePickerDialog';
   static const String sendImage = '/sendImage';
   static const String fullscreenImage = '/fullscreenImage';
+  static const String clinicDetail = '/clinicDetail';
 }
 

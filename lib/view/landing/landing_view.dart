@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
+import 'package:health_tourism/product/navigation/route_paths.dart';
 
 import '../../core/components/clinic_card.dart';
 import '../../core/components/ht_text.dart';
@@ -90,7 +91,8 @@ class _LandingViewState extends State<LandingView> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: const Color(0xffe8f3f1), width: 2),
+                    border:
+                        Border.all(color: const Color(0xffe8f3f1), width: 2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
@@ -117,7 +119,8 @@ class _LandingViewState extends State<LandingView> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: const Color(0xffe8f3f1), width: 2),
+                    border:
+                        Border.all(color: const Color(0xffe8f3f1), width: 2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
@@ -143,11 +146,18 @@ class _LandingViewState extends State<LandingView> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: cards.length,
-            shrinkWrap: true,
+              itemCount: cards.length,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
-            return cards[index];
-          }),
+                return GestureDetector(
+                  onTap: () {
+                    context.pushNamed(RoutePath.clinicDetail, queryParameters: {
+                      'clinicId': '${cards[index].clinicId}'
+                    });
+                  },
+                  child: cards[index],
+                );
+              }),
         )
       ],
     )));
@@ -155,21 +165,72 @@ class _LandingViewState extends State<LandingView> {
 
   List cards = [
     const ClinicCard(
-      imgUrl:"https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
       clinicAddress: "Istanbul, Turkey",
       rating: 4.5,
       reviewCount: 100,
     ),
     const ClinicCard(
-      imgUrl:"https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
       clinicAddress: "Istanbul, Turkey",
       rating: 4.5,
       reviewCount: 100,
     ),
     const ClinicCard(
-      imgUrl:"https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      clinicName: "Medico Clinic",
+      clinicAddress: "Istanbul, Turkey",
+      rating: 4.5,
+      reviewCount: 100,
+    ),
+    const ClinicCard(
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      clinicName: "Medico Clinic",
+      clinicAddress: "Istanbul, Turkey",
+      rating: 4.5,
+      reviewCount: 100,
+    ),
+    const ClinicCard(
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      clinicName: "Medico Clinic",
+      clinicAddress: "Istanbul, Turkey",
+      rating: 4.5,
+      reviewCount: 100,
+    ),
+    const ClinicCard(
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      clinicName: "Medico Clinic",
+      clinicAddress: "Istanbul, Turkey",
+      rating: 4.5,
+      reviewCount: 100,
+    ),
+    const ClinicCard(
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      clinicName: "Medico Clinic",
+      clinicAddress: "Istanbul, Turkey",
+      rating: 4.5,
+      reviewCount: 100,
+    ),
+    const ClinicCard(
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+      clinicName: "Medico Clinic",
+      clinicAddress: "Istanbul, Turkey",
+      rating: 4.5,
+      reviewCount: 100,
+    ),
+    const ClinicCard(
+      imgUrl:
+          "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
       clinicName: "Medico Clinic",
       clinicAddress: "Istanbul, Turkey",
       rating: 4.5,

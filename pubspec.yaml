@@ -66,6 +66,7 @@ dependencies:
   shared_preferences:
   flutter_local_notifications:
   permission_handler:
+  scroll_to_hide:
   #navigation
   go_router:
 

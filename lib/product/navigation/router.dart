@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../cubit/message/message_cubit.dart';
 import '../../view/chats/chat_room_view.dart';
 import '../../view/chats/send_image_view.dart';
+import '../../view/clinics/clinic_detail_view.dart';
 import '../../view/onboarding/onboarding_view.dart';
 import '../../view/sign_up/sign_up_view.dart';
 import '../models/buyer.dart';
@@ -43,6 +44,13 @@ final GoRouter router = GoRouter(
       name: RoutePath.fullscreenImage,
       builder: (context, state) {
         return FullScreenImageViewer(state.queryParameters['imageUrl'] ?? '');
+      },
+    ),
+    GoRoute(
+      path: RoutePath.clinicDetail,
+      name: RoutePath.clinicDetail,
+      builder: (context, state) {
+        return ClinicDetailView(clinicId: state.queryParameters['clinicId'] ?? '',);
       },
     ),
     GoRoute(
