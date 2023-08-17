@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
@@ -33,34 +34,30 @@ class _ReviewsViewState extends State<ReviewsView> {
       ReviewCard(),
     ];
     return Scaffold(
+        appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+          ),
+          backgroundColor: const Color(0xff2D9CDB),
+          elevation: 0,
+          centerTitle: true,
+          leadingWidth: 44,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: HTIcon(
+              iconName: AssetConstants.icons.chevronLeft,
+              onPress: () => context.pop(),
+            ),
+          ),
+          title: HTText(
+            label: "Reviews",
+            style: htToolBarLabel,
+          ),
+        ),
         body: SafeArea(
             child: Column(
       children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Color(0xff2D9CDB),
-          ),
-          height: size.height * 0.07,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                HTIcon(
-                  iconName: AssetConstants.icons.chevronLeft,
-                  onPress: () => context.pop(),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: HTText(label: "Reviews", style: htToolBarLabel),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
         const VerticalSpace(),
         Expanded(
           child: ListView.builder(

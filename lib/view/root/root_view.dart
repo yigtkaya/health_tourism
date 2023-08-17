@@ -20,7 +20,7 @@ class RootView extends StatelessWidget {
           if (state is Authenticated) {
             return HTBottomNav();
           }
-          return HTBottomNav();
+          return const LoginView();
         });
   }
 }

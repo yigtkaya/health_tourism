@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:readmore/readmore.dart';
@@ -56,133 +57,132 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   HTText(label: 'Make An Appointment', style: htBoldLabelStyle),
             )),
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
+      children: [
+        Stack(
+          alignment: Alignment.bottomCenter,
           children: [
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                CarouselSlider.builder(
-                    carouselController: controller,
-                    itemCount: clinicImages.length,
-                    itemBuilder: (context, index, realIndex) {
-                      final urlImage = clinicImages[index];
-                      return buildImage(urlImage, index, context);
-                    },
-                    options: CarouselOptions(
-                        height: 400,
-                        autoPlay: true,
-                        enableInfiniteScroll: false,
-                        autoPlayAnimationDuration: Duration(seconds: 2),
-                        viewportFraction: 1,
-                        enlargeCenterPage: false,
-                        onPageChanged: (index, reason) =>
-                            setState(() => activeIndex = index))),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: buildIndicator(),
-                ),
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: HTIcon(
-                    iconName: AssetConstants.icons.chevronLeft,
-                    width: 20,
-                    height: 20,
-                    color: Colors.white,
-                    onPress: () {
-                      context.pop();
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const VerticalSpace(),
+            CarouselSlider.builder(
+                carouselController: controller,
+                itemCount: clinicImages.length,
+                itemBuilder: (context, index, realIndex) {
+                  final urlImage = clinicImages[index];
+                  return buildImage(urlImage, index, context);
+                },
+                options: CarouselOptions(
+                    height: 400,
+                    autoPlay: true,
+                    enableInfiniteScroll: false,
+                    autoPlayAnimationDuration: Duration(seconds: 2),
+                    viewportFraction: 1,
+                    enlargeCenterPage: false,
+                    onPageChanged: (index, reason) =>
+                        setState(() => activeIndex = index))),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      HTText(label: "Vera Clinic", style: htTitleStyle),
-                      const Spacer(),
-                      HTIcon(
-                        iconName: AssetConstants.icons.star,
-                        width: 20,
-                        height: 20,
-                      ),
-                      const HorizontalSpace(
-                        spaceAmount: 3,
-                      ),
-                      HTText(label: "4.5", style: htBlueLabelStyle),
-                      const HorizontalSpace(
-                        spaceAmount: 6,
-                      ),
-                    ],
-                  ),
-                  const VerticalSpace(),
-                  Row(
-                    children: [
-                      HTText(
-                          label: "Istanbul, Türkiye", style: htBlueLabelStyle),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          // route to contact create chat room and start chatting
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xffd3e9ff),
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 3),
-                            child: Row(
-                              children: [
-                                HTText(label: "Contact", style: htSubTitle),
-                                const HorizontalSpace(
-                                  spaceAmount: 3,
-                                ),
-                                HTIcon(
-                                  iconName: AssetConstants.icons.chatBubble,
-                                  color: const Color(0xff94b6eb),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: buildIndicator(),
             ),
-            const VerticalSpace(),
-            const Divider(
-              height: 1,
-              thickness: 1,
-              color: Color(0x33000000),
-            ),
-            const VerticalSpace(),
-            buildInformation(size),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100.0),
-                  color: const Color(0xFF123258),
-                ),
-                height: size.height * 0.006,
-                width: size.width * 0.4,
+            Positioned(
+              top: 72,
+              left: 32,
+              child: HTIcon(
+                iconName: AssetConstants.icons.chevronLeft,
+                width: 20,
+                height: 20,
+                color: Colors.white,
+                onPress: () {
+                  context.pop();
+                },
               ),
             ),
           ],
         ),
-      )),
+        const VerticalSpace(),
+        Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  HTText(label: "Vera Clinic", style: htTitleStyle),
+                  const Spacer(),
+                  HTIcon(
+                    iconName: AssetConstants.icons.star,
+                    width: 20,
+                    height: 20,
+                  ),
+                  const HorizontalSpace(
+                    spaceAmount: 3,
+                  ),
+                  HTText(label: "4.5", style: htBlueLabelStyle),
+                  const HorizontalSpace(
+                    spaceAmount: 6,
+                  ),
+                ],
+              ),
+              const VerticalSpace(),
+              Row(
+                children: [
+                  HTText(
+                      label: "Istanbul, Türkiye", style: htBlueLabelStyle),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      // route to contact create chat room and start chatting
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xffd3e9ff),
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 3),
+                        child: Row(
+                          children: [
+                            HTText(label: "Contact", style: htSubTitle),
+                            const HorizontalSpace(
+                              spaceAmount: 3,
+                            ),
+                            HTIcon(
+                              iconName: AssetConstants.icons.chatBubble,
+                              color: const Color(0xff94b6eb),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+        const VerticalSpace(),
+        const Divider(
+          height: 1,
+          thickness: 1,
+          color: Color(0x33000000),
+        ),
+        const VerticalSpace(),
+        buildInformation(size),
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100.0),
+              color: const Color(0xFF123258),
+            ),
+            height: size.height * 0.006,
+            width: size.width * 0.4,
+          ),
+        ),
+      ],
+        ),
+      ),
     );
   }
 

@@ -38,8 +38,9 @@ class _ChatsViewState extends State<ChatsView> {
             onPress: () => context.pop(),
           ),
         ),
+        centerTitle: true,
         title: HTText(
-          label: "Reviews",
+          label: "Inbox",
           style: htToolBarLabel,
         ),
       ),

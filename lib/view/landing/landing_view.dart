@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
-import 'package:health_tourism/product/navigation/route_paths.dart';
 
 import '../../core/components/clinic_card.dart';
 import '../../core/components/ht_text.dart';
@@ -23,29 +23,22 @@ class _LandingViewState extends State<LandingView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+        ),
+        backgroundColor: const Color(0xff2D9CDB),
+        elevation: 0,
+        centerTitle: true,
+        title: HTText(
+          label: "VoyEsthetic",
+          style: htToolBarLabel,
+        ),
+      ),
         body: SafeArea(
             child: Column(
       children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Color(0xff2D9CDB),
-          ),
-          height: size.height * 0.07,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                    child: Align(
-                  alignment: Alignment.center,
-                  child: HTText(label: "VoyEsthetic", style: htToolBarLabel),
-                )),
-              ],
-            ),
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
           child: Container(

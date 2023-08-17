@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,6 +44,19 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+        backgroundColor: const Color(0xff2D9CDB),
+        elevation: 0,
+        centerTitle: true,
+        title: HTText(
+          label: "ForgotPassword",
+          style: htToolBarLabel,
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -50,33 +64,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Color(0xff2D9CDB),
-            ),
-            height: size.height * 0.08,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  HTIcon(
-                    iconName: AssetConstants.icons.chevronLeft,
-                    onPress: () {
-                      context.pop();
-                    },
-                  ),
-                  Expanded(
-                      child: Align(
-                    alignment: Alignment.center,
-                    child: HTText(
-                        label: "Forgot Password", style: htBoldLabelStyle),
-                  )),
-                ],
-              ),
-            ),
-          ),
           const Spacer(),
           Expanded(
             flex: 3,
