@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 
 import '../../core/components/ht_icon.dart';
@@ -7,6 +9,7 @@ import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../product/theme/styles.dart';
+import '../../product/theme/theme_manager.dart';
 
 class AppointmentsView extends StatefulWidget {
   final String title;
@@ -28,6 +31,18 @@ class _AppointmentsViewState extends State<AppointmentsView> {
           backgroundColor: const Color(0xff2D9CDB),
           elevation: 0,
           centerTitle: true,
+          leadingWidth: 42,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: HTIcon(
+              iconName: AssetConstants.icons.chevronLeft,
+              onPress: () {
+                context.pop();
+              },
+              width: 24,
+              height: 24,
+            ),
+          ),
           title: HTText(
             label: widget.title,
             style: htToolBarLabel,
@@ -40,26 +55,32 @@ class _AppointmentsViewState extends State<AppointmentsView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const VerticalSpace(),
+                const VerticalSpace(
+                  spaceAmount: 20,
+                ),
                 HTText(label: "Upcoming Appointments", style: htSubTitle),
                 const VerticalSpace(),
-                deneme(),
-                const VerticalSpace(),
+                upcomingAppointments(),
+                const VerticalSpace(spaceAmount: 40),
                 HTText(label: "Past Appointments", style: htSubTitle),
                 const VerticalSpace(),
                 pastAppointments(),
                 pastAppointments(),
                 pastAppointments(),
                 pastAppointments(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100.0),
-                      color: const Color(0xFF123258),
+                const Spacer(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100.0),
+                        color: const Color(0xFF123258),
+                      ),
+                      height: size.height * 0.006,
+                      width: size.width * 0.4,
                     ),
-                    height: size.height * 0.006,
-                    width: size.width * 0.4,
                   ),
                 ),
               ],
@@ -68,7 +89,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         ));
   }
 
-  Widget deneme() {
+  Widget upcomingAppointments() {
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -161,63 +182,6 @@ class _AppointmentsViewState extends State<AppointmentsView> {
     );
   }
 
-  Widget upcomingAppointments(Size size) {
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-              "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
-              width: 70,
-              height: 40,
-            ),
-            const HorizontalSpace(),
-            Column(
-              children: [
-                HTText(label: "Vera Clinic", style: htBoldDarkLabelStyle),
-                HTText(label: "Istanbul", style: htSmallLabelStyle),
-              ],
-            ),
-            const Spacer(),
-            HTIcon(
-              iconName: AssetConstants.icons.vector,
-              height: 12,
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            HTText(label: "Confirmed", style: htDarkBlueNormalStyle),
-            const HorizontalSpace(
-              spaceAmount: 4,
-            ),
-            HTIcon(iconName: AssetConstants.icons.checkMark),
-            const Spacer(),
-            Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF123258),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
-                child: Row(
-                  children: [
-                    HTIcon(iconName: AssetConstants.icons.chatBubble),
-                    const HorizontalSpace(
-                      spaceAmount: 4,
-                    ),
-                    HTText(label: "Chat", style: htWhiteLabelStyle),
-                  ],
-                ),
-              ),
-            )
-          ],
-        )
-      ],
-    );
-  }
-
   Widget pastAppointments() {
     return Column(
       children: [
@@ -258,6 +222,59 @@ class _AppointmentsViewState extends State<AppointmentsView> {
             GestureDetector(
               onTap: () {
                 // open details dialog.
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10.0)), //this right here
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.network(
+                                    "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  const HorizontalSpace(),
+                                  Column(
+                                    children: [
+                                      HTText(
+                                          label: "Vera Clinic",
+                                          style: htBoldDarkLabelStyle),
+                                      HTText(
+                                          label: "Hair Transplant",
+                                          style: htSmallLabelStyle),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  HTText(
+                                      label: "£24",
+                                      style: htBoldDarkLabelStyle),
+                                ],
+                              ),
+                              const VerticalSpace(),
+                              const Divider(
+                                color: Color(0xffd3e3f1),
+                                thickness: 2,
+                              ),
+                              const Column(
+                                children: [
+
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    });
               },
               child: Container(
                   decoration: const BoxDecoration(
