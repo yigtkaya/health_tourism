@@ -43,7 +43,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                 const VerticalSpace(),
                 HTText(label: "Upcoming Appointments", style: htSubTitle),
                 const VerticalSpace(),
-                upcomingAppointments(size),
+                deneme(),
                 const VerticalSpace(),
                 HTText(label: "Past Appointments", style: htSubTitle),
                 const VerticalSpace(),
@@ -75,14 +75,14 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            flex: 1,
+            flex: 2,
             child: Container(
               decoration: const BoxDecoration(
                 color: Color(0xFF0B4F93),
               ),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -97,7 +97,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
             ),
           ),
           Flexible(
-            flex: 1,
+            flex: 6,
             fit: FlexFit.tight,
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -105,7 +105,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
@@ -113,14 +113,26 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       width: 70,
                       height: 40,
                     ),
-                    HTText(label: "Vera Clinic", style: htDarkBlueLargeStyle),
+                    Column(
+                      children: [
+                        HTText(
+                            label: "Vera Clinic", style: htDarkBlueLargeStyle),
+                        HTText(label: "İstanbul", style: htBlueLabelStyle),
+                      ],
+                    ),
+                    const Spacer(),
                     HTIcon(iconName: AssetConstants.icons.vector),
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     HTText(label: "Confirmed", style: htDarkBlueNormalStyle),
+                    const HorizontalSpace(
+                      spaceAmount: 4,
+                    ),
+                    HTIcon(iconName: AssetConstants.icons.checkMark),
+                    const Spacer(),
                     Container(
                       decoration: const BoxDecoration(
                         color: Color(0xFF123258),
