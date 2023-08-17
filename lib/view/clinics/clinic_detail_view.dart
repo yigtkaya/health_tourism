@@ -138,22 +138,18 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                     },
                     child: Container(
                       decoration: const BoxDecoration(
-                        color: Color(0xffd3e9ff),
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        color: Color(0xFF123258),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 3),
+                            horizontal: 12.0, vertical: 2),
                         child: Row(
                           children: [
-                            HTText(label: "Contact", style: htSubTitle),
+                            HTIcon(iconName: AssetConstants.icons.chatBubble),
                             const HorizontalSpace(
-                              spaceAmount: 3,
+                              spaceAmount: 4,
                             ),
-                            HTIcon(
-                              iconName: AssetConstants.icons.chatBubble,
-                              color: const Color(0xff94b6eb),
-                            ),
+                            HTText(label: "Chat", style: htWhiteLabelStyle),
                           ],
                         ),
                       ),

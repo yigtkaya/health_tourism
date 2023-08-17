@@ -24,6 +24,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarIconBrightness: Brightness.light,
@@ -61,6 +62,10 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                 HTText(label: "Upcoming Appointments", style: htSubTitle),
                 const VerticalSpace(),
                 upcomingAppointments(),
+                const Divider(
+                  color: Color(0xFFD3E3F1),
+                  thickness: 1,
+                ),
                 const VerticalSpace(spaceAmount: 40),
                 HTText(label: "Past Appointments", style: htSubTitle),
                 const VerticalSpace(),
@@ -148,7 +153,10 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    HTText(label: "Confirmed", style: htDarkBlueNormalStyle),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 6.0),
+                      child: HTText(label: "Confirmed", style: htDarkBlueNormalStyle),
+                    ),
                     const HorizontalSpace(
                       spaceAmount: 4,
                     ),
@@ -160,7 +168,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 2),
+                            horizontal: 12.0, vertical: 2),
                         child: Row(
                           children: [
                             HTIcon(iconName: AssetConstants.icons.chatBubble),
@@ -173,7 +181,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -183,6 +191,9 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   }
 
   Widget pastAppointments() {
+    final TextEditingController _commentController = TextEditingController();
+    final Size size = MediaQuery.of(context).size;
+
     return Column(
       children: [
         Row(
@@ -207,12 +218,102 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            GestureDetector(
-              onTap: () {
-                // leave a comment for clinic.
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(6.0),
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  "assets/images/review_dialog.png",
+                                  width: size.width * 0.8,
+                                  height: size.height * 0.2,
+                                ),
+                                const VerticalSpace(
+                                  spaceAmount: 24,
+                                ),
+                                Text(
+                                  "Please Rate The Quality of Service!",
+                                  style: htTitleStyle,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const VerticalSpace(
+                                  spaceAmount: 16,
+                                ),
+                                // yıldızlar buraya gelecek.
+                                Text(
+                                    "Your comments and suggestions help us improve the service quality better!",
+                                    style: htBlueLabelStyle,
+                                    textAlign: TextAlign.center),
+                                const VerticalSpace(
+                                  spaceAmount: 24,
+                                ),
+                                Container(
+                                  height: size.height * 0.2,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(
+                                      color: const Color(0xFFD3E3F1)
+                                          .withOpacity(0.5),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(left: 16.0),
+                                    child: TextField(
+                                      maxLines: 5,
+                                      controller: _commentController,
+                                      style: htDarkBlueNormalStyle,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Enter your comment",
+                                        hintStyle: htHintTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const VerticalSpace(
+                                  spaceAmount: 16,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF58A2EB),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: HTText(
+                                        label: "Submit",
+                                        style: htBoldLabelStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ), //this right here
+                      );
+                    },
+                  );
+                },
                 child: HTText(
                   label: "Leave a review",
                   style: htDarkBlueNormalStyle,
@@ -406,7 +507,9 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                                 ),
                               ],
                             ),
-                            const VerticalSpace(spaceAmount: 16,),
+                            const VerticalSpace(
+                              spaceAmount: 16,
+                            ),
                             Center(
                               child: GestureDetector(
                                   onTap: () {
