@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
+import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
 import 'package:health_tourism/product/models/customer.dart';
@@ -37,7 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.light,
         ),
         backgroundColor: const Color(0xff2D9CDB),
         elevation: 0,
@@ -53,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const VerticalSpace(
-              spaceAmount: 24,
+              spaceAmount: 30,
             ),
             userInfo(),
             const VerticalSpace(
@@ -64,7 +66,22 @@ class _ProfileViewState extends State<ProfileView> {
                   shrinkWrap: true,
                   itemCount: settings.length,
                   itemBuilder: (context, index) {
-                    return getSettings(iconList[index], settings[index]);
+                    return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: index == 5
+                            ? () {
+                                context.read<AuthCubit>().signOut();
+                              }
+                            : () {
+                                context.pushNamed(
+                                    '/${settings[index].toString().replaceAll(" ", "")}',
+                                    queryParameters: {
+                                      'title': settings[index]
+                                    });
+                                print("object");
+                              },
+                        child: getSettings(
+                            iconList[index], settings[index], index));
                   }),
             ),
           ],
@@ -74,7 +91,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   List settings = [
-    "My Profile",
+    "Personal Info",
     "My Appointments",
     "My Favorites",
     "Payment Methods",
@@ -113,7 +130,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget getSettings(String iconName, String label) {
+  Widget getSettings(String iconName, String label, int index) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 26.0, vertical: 16),
       child: Column(
@@ -127,7 +144,15 @@ class _ProfileViewState extends State<ProfileView> {
                 color: const Color(0xff123258),
               ),
               const HorizontalSpace(spaceAmount: 16),
-              HTText(label: label, style: htSubTitle),
+              HTText(label: label, style: htDarkBlueBoldLargeStyle),
+              const Spacer(),
+              index == 5
+                  ? const SizedBox.shrink()
+                  : HTIcon(
+                      iconName: AssetConstants.icons.chevronRight,
+                      color: const Color(0xff123258),
+                      width: 16,
+                      height: 16),
             ],
           ),
           const Divider(

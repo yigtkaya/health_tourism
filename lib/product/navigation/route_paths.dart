@@ -17,5 +17,11 @@ class RoutePath {
   static const String fullscreenImage = '/fullscreenImage';
   static const String clinicDetail = '/clinicDetail';
   static const String reviews = '/reviews';
+  static const String appointment = '/MyAppointments';
+  static const String myFavorites = '/MyFavorites';
+  static const String personalInfo = '/PersonalInfo';
+  static const String changePassword = '/ChangePassword';
+  static const String paymentMethods = '/PaymentMethods';
+  static const String help = '/Help';
 }
 

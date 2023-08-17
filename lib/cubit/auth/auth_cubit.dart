@@ -41,9 +41,6 @@ class AuthCubit extends Cubit<AuthState> {
       await _authRepository.signInWithEmailAndPassword(
           email: email, password: password);
       emit(Authenticated(firebaseAuth.currentUser!));
-      Future.delayed(const Duration(seconds: 2), () {
-        goTo(path: RoutePath.bottomNavigation);
-      });
     } catch (e) {
       emit(AuthError(e.toString()));
     }

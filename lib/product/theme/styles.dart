@@ -24,6 +24,11 @@ final htDarkBlueLargeStyle = GoogleFonts.nunitoSans(
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
   fontWeight: FontWeight.w400,
 );
+final htDarkBlueBoldLargeStyle = GoogleFonts.nunitoSans(
+  fontSize: 16.0,
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+  fontWeight: FontWeight.w600,
+);
 const htLabelBlackStyle = TextStyle(
     color: Colors.black,
     fontWeight: FontWeight.normal,

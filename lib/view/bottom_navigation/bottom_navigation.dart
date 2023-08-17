@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/view/bottom_navigation/nav_bar_dot.dart';
 import 'package:health_tourism/view/chats/chats_view.dart';
-import 'package:health_tourism/view/clinics/clinics.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
-import 'package:health_tourism/view/profile_view/profile_view.dart';
-import 'package:health_tourism/view/splash/splash_view.dart';
 import '../../cubit/bottom_navigation/bottom_navigation_cubit.dart';
 import '../../cubit/bottom_navigation/bottom_navigation_state.dart';
+import '../profile/profile_view.dart';
 
 class HTBottomNav extends StatefulWidget {
   @override
