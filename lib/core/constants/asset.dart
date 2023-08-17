@@ -40,4 +40,5 @@ class HTIcons {
   final String emptyStar = AssetConstants.toIcon("empty_star");
   final String appointment = AssetConstants.toIcon("appointment");
   final String payment = AssetConstants.toIcon("payment");
+  final String vector = AssetConstants.toIcon("vector");
 }

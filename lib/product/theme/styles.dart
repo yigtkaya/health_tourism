@@ -35,12 +35,26 @@ const htLabelBlackStyle = TextStyle(
     fontFamily: 'OpenSans',
     fontSize: 14);
 
+final htBoldDarkLabelStyle = GoogleFonts.nunitoSans(
+  fontSize: 14.0,
+  color: const Color(0xff123258),
+  fontWeight: FontWeight.w700,
+);
 final htBoldLabelStyle = GoogleFonts.nunitoSans(
   fontSize: 16.0,
   color: Colors.white,
   fontWeight: FontWeight.bold,
 );
-
+final htWhiteLabelStyle = GoogleFonts.nunitoSans(
+  fontSize: 16.0,
+  color: Colors.white,
+  fontWeight: FontWeight.normal,
+);
+final htWhiteSmallLabelStyle = GoogleFonts.nunitoSans(
+  fontSize: 12.0,
+  color: Colors.white,
+  fontWeight: FontWeight.normal,
+);
 final htToolBarLabel = GoogleFonts.nunitoSans(
   fontSize: 20.0,
   color: Colors.white,
