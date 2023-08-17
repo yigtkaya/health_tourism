@@ -21,7 +21,6 @@ class _LandingViewState extends State<LandingView> {
   final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(

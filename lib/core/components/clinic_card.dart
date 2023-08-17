@@ -84,8 +84,8 @@ class _ClinicCardState extends State<ClinicCard> {
                               const Spacer(),
                               HTIcon(
                                 iconName: AssetConstants.icons.star,
-                                width: 20,
-                                height: 20,
+                                width: 16,
+                                height: 16,
                               ),
                               const HorizontalSpace(
                                 spaceAmount: 3,
