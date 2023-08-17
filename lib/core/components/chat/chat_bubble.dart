@@ -11,12 +11,14 @@ class ChatBubble extends StatefulWidget {
   final BoxDecoration boxDecoration;
   final String imageUrl;
   final String time;
+  final Color? messageColor;
 
   const ChatBubble(
       {super.key,
       required this.message,
       required this.boxDecoration,
       required this.imageUrl,
+      required this.messageColor,
       required this.time});
 
   @override
@@ -78,7 +80,7 @@ class _ChatBubbleState extends State<ChatBubble> {
             padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 6),
             child: HTText(
               label: widget.message,
-              color: Colors.white,
+              color: widget.messageColor,
               style: htDarkBlueNormalStyle,
             ),
           ),

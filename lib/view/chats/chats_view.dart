@@ -25,7 +25,6 @@ class ChatsView extends StatefulWidget {
 class _ChatsViewState extends State<ChatsView> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff2D9CDB),
@@ -148,8 +147,8 @@ class _ChatsViewState extends State<ChatsView> {
           Row(
             children: [
               Container(
-                width: 50,
-                height: 50,
+                width: 46,
+                height: 46,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(

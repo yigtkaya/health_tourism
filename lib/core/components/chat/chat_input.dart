@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
+import 'package:health_tourism/product/theme/theme_manager.dart';
 import '../../../cubit/message/message_cubit.dart';
 import '../../../product/theme/styles.dart';
 import '../../constants/asset.dart';
@@ -36,53 +37,64 @@ class _ChatInputFieldState extends State<ChatInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: const BoxDecoration(
-          color: Color(0xff3d4354),
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: const Color(0xFFD3E3F1),
+          width: 1,
         ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Color(0xff9398a7),
-                shape: BoxShape.circle,
-              ),
-              child: HTIcon(
-                iconName: AssetConstants.icons.cameraIcon,
-                width: 24,
-                height: 24,
-                onPress: () {
-                  // show image picker dialog
-                  context
-                      .pushNamed(RoutePath.imagePickerDialog, queryParameters: {
-                    "receiverId": widget.receiverId,
-                  });
-                },
-              ),
+            HTIcon(
+              iconName: AssetConstants.icons.cameraIcon,
+              width: 26,
+              height: 26,
+              color: ThemeManager
+                  .instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+              onPress: () {
+                // show image picker dialog
+                context
+                    .pushNamed(RoutePath.imagePickerDialog, queryParameters: {
+                  "receiverId": widget.receiverId,
+                });
+              },
             ),
-            const HorizontalSpace(spaceAmount: 8),
+            const HorizontalSpace(
+              spaceAmount: 16,
+            ),
             Expanded(
-              child: TextField(
-                controller: _messageController,
-                style: htDarkBlueNormalStyle,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Message",
-                  hintStyle: htHintTextStyle,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    controller: _messageController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Message",
+                      hintStyle: htHintTextStyle,
+                    ),
+                  ),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: const EdgeInsets.only(right: 8.0, left: 8.0),
               child: HTIcon(
                 iconName: AssetConstants.icons.sendIcon,
-                width: 24,
-                height: 24,
+                width: 26,
+                height: 26,
+                color: ThemeManager
+                    .instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
                 onPress: () {
                   context.read<MessageCubit>().sendMessage(
                       widget.receiverId, _messageController.text, '');
