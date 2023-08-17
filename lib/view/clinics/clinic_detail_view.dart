@@ -47,15 +47,18 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
         onTap: () {
           context.push(RoutePath.payment);
         },
-        child: Container(
-            height: size.height * 0.06,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: const Color(0xff58a2eb)),
-            child: Center(
-              child:
-                  HTText(label: 'Make An Appointment', style: htBoldLabelStyle),
-            )),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Container(
+              height: size.height * 0.06,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: const Color(0xff58a2eb)),
+              child: Center(
+                child:
+                    HTText(label: 'Make An Appointment', style: htBoldLabelStyle),
+              )),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -84,7 +87,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               child: buildIndicator(),
             ),
             Positioned(
-              top: 72,
+              top: 52,
               left: 32,
               child: HTIcon(
                 iconName: AssetConstants.icons.chevronLeft,
