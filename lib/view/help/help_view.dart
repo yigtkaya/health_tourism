@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
+import '../../core/constants/asset.dart';
 import '../../core/constants/vertical_space.dart';
 import '../../product/theme/styles.dart';
 
 class HelpView extends StatefulWidget {
-  final String title;
-  const HelpView({super.key, required this.title});
+  const HelpView({super.key});
 
   @override
   State<HelpView> createState() => _HelpViewState();
@@ -25,10 +27,23 @@ class _HelpViewState extends State<HelpView> {
         elevation: 0,
         centerTitle: true,
         title: HTText(
-          label: widget.title,
+          label: "Help",
           style: htToolBarLabel,
         ),
+        leadingWidth: 42,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: HTIcon(
+            iconName: AssetConstants.icons.chevronLeft,
+            onPress: () {
+              context.pop();
+            },
+            width: 24,
+            height: 24,
+          ),
+        ),
       ),
+
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

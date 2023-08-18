@@ -14,8 +14,7 @@ import '../../product/theme/styles.dart';
 import '../../product/theme/theme_manager.dart';
 
 class AppointmentsView extends StatefulWidget {
-  final String title;
-  const AppointmentsView({super.key, required this.title});
+  const AppointmentsView({super.key});
 
   @override
   State<AppointmentsView> createState() => _AppointmentsViewState();
@@ -47,7 +46,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
             ),
           ),
           title: HTText(
-            label: widget.title,
+            label: "Appointments",
             style: htToolBarLabel,
           ),
         ),

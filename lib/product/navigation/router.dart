@@ -11,8 +11,9 @@ import 'package:health_tourism/view/forgot_password/forgot_password.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
 import 'package:health_tourism/view/login/login_view.dart';
 import 'package:health_tourism/view/payment/payment_view.dart';
-import 'package:health_tourism/view/profile/appointments_view.dart';
-import 'package:health_tourism/view/profile/help_view.dart';
+import 'package:health_tourism/view/appointment/appointments_view.dart';
+import 'package:health_tourism/view/help/help_view.dart';
+import 'package:health_tourism/view/personal_information/personal_info.dart';
 import 'package:health_tourism/view/reviews/reviews.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
@@ -40,17 +41,24 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      path: RoutePath.personalInfo,
+      name: RoutePath.personalInfo,
+      builder: (context, state) {
+        return const PersonalInfoView();
+      },
+    ),
+    GoRoute(
       path: RoutePath.help,
       name: RoutePath.help,
       builder: (context, state) {
-        return HelpView(title: state.queryParameters['title'] ?? '');
+        return const HelpView();
       },
     ),
     GoRoute(
       path: RoutePath.appointment,
       name: RoutePath.appointment,
       builder: (context, state) {
-        return AppointmentsView(title: state.queryParameters['title'] ?? '');
+        return const AppointmentsView();
       },
     ),
     GoRoute(
