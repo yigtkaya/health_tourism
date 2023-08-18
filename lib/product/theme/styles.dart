@@ -13,6 +13,13 @@ var htHintTextStyle = GoogleFonts.nunitoSans(
   fontWeight: FontWeight.w400,
 );
 
+var htHintTextDarkStyle = GoogleFonts.nunitoSans(
+  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor
+      ?.withOpacity(0.8),
+  letterSpacing: 1.2,
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+);
 final htDarkBlueNormalStyle = GoogleFonts.nunitoSans(
   fontSize: 14.0,
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,

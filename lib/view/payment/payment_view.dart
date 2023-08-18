@@ -2,30 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_credit_card/credit_card_form.dart';
-import 'package:flutter_credit_card/credit_card_model.dart';
-import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/core/components/payment_field.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
-import 'package:health_tourism/cubit/payment/payment_state.dart';
-import 'package:health_tourism/product/models/package.dart';
-
-import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../core/constants/vertical_space.dart';
-import '../../product/models/buyer.dart';
-import '../../product/navigation/route_paths.dart';
 import '../../product/theme/styles.dart';
 
 class PaymentView extends StatefulWidget {
-  Buyer? buyer;
-  Package? package;
-  double? price;
-
-  PaymentView(this.buyer, this.package, this.price, {super.key});
+  PaymentView({super.key});
 
   @override
   State<PaymentView> createState() => _PaymentViewState();
@@ -35,11 +23,28 @@ class _PaymentViewState extends State<PaymentView> {
   List<bool> isSelected = [true, false];
   DateTime? date = DateTime.now();
   String dateText = "Select a Date";
+  String cardNumber = '';
+  String expiryDate = '';
+  String cardHolderName = '';
+  String cvvCode = '';
+  bool isCvvFocused = false;
+
+  final cardHolderNameController = TextEditingController();
+  final cardNumberController = TextEditingController();
+  final expiryDateController = TextEditingController();
+  final cvvCodeController = TextEditingController();
+  final cityController = TextEditingController();
+  final countryController = TextEditingController();
+  final addressController = TextEditingController();
+  final postalCodeController = TextEditingController();
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarIconBrightness: Brightness.light,
@@ -67,59 +72,84 @@ class _PaymentViewState extends State<PaymentView> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              showSelectedClinic(),
-              const VerticalSpace(
-                spaceAmount: 24,
-              ),
-              HTText(label: "Packages", style: htTitleStyle),
-              const VerticalSpace(
-                spaceAmount: 12,
-              ),
-              togglePackages(),
-              const VerticalSpace(
-                spaceAmount: 24,
-              ),
-              HTText(label: "Choose Date", style: htSubTitle),
-              const VerticalSpace(),
-              // create date picker
-              datePicker(),
-              const VerticalSpace(
-                spaceAmount: 32,
-              ),
-              HTText(label: "Payment Details", style: htSubTitle),
-              const VerticalSpace(),
-              paymentDetail(),
-              const VerticalSpace(),
-              const Divider(
-                color: Color(0xffD3E3F1),
-                thickness: 1,
-              ),
-              const Spacer(),
-              totalButtonRow(),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100.0),
-                      color: const Color(0xFF123258),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                showSelectedClinic(),
+                const VerticalSpace(
+                  spaceAmount: 24,
+                ),
+                HTText(label: "Packages", style: htTitleStyle),
+                const VerticalSpace(
+                  spaceAmount: 20,
+                ),
+                togglePackages(),
+                const VerticalSpace(
+                  spaceAmount: 24,
+                ),
+                HTText(label: "Choose Date", style: htSubTitle),
+                const VerticalSpace(
+                  spaceAmount: 20,
+                ),
+                // create date picker
+                datePicker(),
+                const VerticalSpace(),
+                const Divider(
+                  color: Color(0xffD3E3F1),
+                  thickness: 1,
+                ),
+                const VerticalSpace(
+                  spaceAmount: 32,
+                ),
+                PaymentField(
+                    cardHolderNameController: cardHolderNameController,
+                    cardNumberController: cardNumberController,
+                    expiryDateController: expiryDateController,
+                    cvvController: cvvCodeController,
+                    cityController: cityController,
+                    countryController: countryController,
+                    addressController: addressController,
+                  postalCodeController: postalCodeController,
+                ),
+                const VerticalSpace(),
+                const Divider(
+                  color: Color(0xffD3E3F1),
+                  thickness: 1,
+                ),
+                const VerticalSpace(
+                  spaceAmount: 24,
+                ),
+                HTText(label: "Payment Details", style: htSubTitle),
+                const VerticalSpace(
+                  spaceAmount: 16,
+                ),
+                paymentDetail(),
+                const VerticalSpace(
+                  spaceAmount: 24,
+                ),
+                totalButtonRow(),
+                const VerticalSpace(),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100.0),
+                        color: const Color(0xFF123258),
+                      ),
+                      height: size.height * 0.006,
+                      width: size.width * 0.4,
                     ),
-                    height: size.height * 0.006,
-                    width: size.width * 0.4,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-
-
 
   String monthFromInt(int index) {
     switch (index) {
@@ -150,42 +180,308 @@ class _PaymentViewState extends State<PaymentView> {
     }
   }
 
-  Widget totalButtonRow() {
-    return Row(
+  Widget checkoutColumn(Size size) {
+    final cardHolderNameController = TextEditingController();
+    final cardNumberController = TextEditingController();
+    final expiryDateController = TextEditingController();
+    final cvvCodeController = TextEditingController();
+    final cityController = TextEditingController();
+    final countryController = TextEditingController();
+    final addressController = TextEditingController();
+
+    return Column(
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HTText(label: "Total", style: htHintTextStyle),
-              const VerticalSpace(
-                spaceAmount: 4,
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  cardHolderName = value;
+                });
+              },
+              maxLines: 1,
+              controller: cardHolderNameController,
+              style: htDarkBlueNormalStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: "Name on Card",
+                hintStyle: htHintTextDarkStyle,
               ),
-              HTText(label: "\$24.8", style: htTitleStyle),
-            ],
+            ),
           ),
         ),
-        const HorizontalSpace(),
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              context.push(RoutePath.payment);
-            },
-            child: Container(
+        const VerticalSpace(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  cardNumber = value;
+                });
+              },
+              maxLines: 1,
+              controller: cardNumberController,
+              style: htDarkBlueNormalStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: "Card Number",
+                hintStyle: htHintTextDarkStyle,
+              ),
+            ),
+          ),
+        ),
+        const VerticalSpace(),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: const Color(0xff58a2eb)),
-                child: Padding(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 14.0),
-                  child: Center(
-                    child: HTText(
-                        label: 'Checkout', style: htBoldLabelStyle),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                    width: 2,
                   ),
-                )),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        expiryDate = value;
+                      });
+                    },
+                    maxLines: 1,
+                    controller: expiryDateController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Expiry Date",
+                      hintStyle: htHintTextDarkStyle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const HorizontalSpace(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        cvvCode = value;
+                      });
+                    },
+                    maxLines: 1,
+                    controller: cvvCodeController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "CCV",
+                      hintStyle: htHintTextDarkStyle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const VerticalSpace(),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        expiryDate = value;
+                      });
+                    },
+                    maxLines: 1,
+                    controller: cityController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "City",
+                      hintStyle: htHintTextDarkStyle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const HorizontalSpace(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        cvvCode = value;
+                      });
+                    },
+                    maxLines: 1,
+                    controller: countryController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Country",
+                      hintStyle: htHintTextDarkStyle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const VerticalSpace(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  cardNumber = value;
+                });
+              },
+              maxLines: 1,
+              controller: addressController,
+              style: htDarkBlueNormalStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: "Address",
+                hintStyle: htHintTextDarkStyle,
+              ),
+            ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget totalButtonRow() {
+    return GestureDetector(
+      onTap: () {
+        var expireMonth = expiryDate.split('/')[0];
+        var expireYear = '20${expiryDate.split('/')[1]}';
+        var firstName = cardHolderName.split(' ')[0];
+        var surName = cardHolderName.split(' ')[1];
+        var cardNum = cardNumber.replaceAll(' ', '');
+
+        var buyer = {
+          'id': '1',
+          'name': firstName,
+          'surname': surName,
+          'email': '',
+          'city': '',
+          'country': '',
+          'address': '',
+        };
+
+        var package = {
+          'id': "widget.package!.id",
+          'name': "widget.package!.name",
+          'category': "widget.package!.category",
+          'price': 24.5,
+        };
+
+        if (context.read<PaymentCubit>().isAmexCard(cardNumber)) {
+          if (context
+              .read<PaymentCubit>()
+              .isCreditCardExpireDateValid(expireMonth, expireYear)) {
+            context.read<PaymentCubit>().createPayment(
+                firstName,
+                surName,
+                1.2,
+                cardHolderName,
+                cardNumber,
+                expireMonth,
+                expireYear,
+                cvvCode);
+          }
+        } else {
+          if (context
+                  .read<PaymentCubit>()
+                  .isCreditCardExpireDateValid(expireMonth, expireYear) &&
+              context
+                  .read<PaymentCubit>()
+                  .isCreditCardNumberValid(cardNumber)) {
+            context.read<PaymentCubit>().createPayment(
+                firstName,
+                surName,
+                1.2,
+                cardHolderName,
+                cardNumber,
+                expireMonth,
+                expireYear,
+                cvvCode);
+          }
+        }
+      },
+      child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: const Color(0xff58a2eb)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14.0),
+            child: Center(
+              child: HTText(label: 'Checkout', style: htBoldLabelStyle),
+            ),
+          )),
     );
   }
 
@@ -206,7 +502,7 @@ class _PaymentViewState extends State<PaymentView> {
         } else {
           setState(() {
             dateText =
-            '${monthFromInt(date!.month.toInt())} ${date!.day}, ${date!.year}';
+                '${monthFromInt(date!.month.toInt())} ${date!.day}, ${date!.year}';
           });
         }
       },
@@ -245,7 +541,9 @@ class _PaymentViewState extends State<PaymentView> {
             HTText(label: "\$24.8".toString(), style: htDarkBlueNormalStyle),
           ],
         ),
-        const VerticalSpace(),
+        const VerticalSpace(
+          spaceAmount: 16,
+        ),
         Row(
           children: [
             HTText(label: "selectedPackageName", style: htDarkBlueNormalStyle),
@@ -253,7 +551,9 @@ class _PaymentViewState extends State<PaymentView> {
             HTText(label: "\$24.8", style: htDarkBlueNormalStyle),
           ],
         ),
-        const VerticalSpace(),
+        const VerticalSpace(
+          spaceAmount: 16,
+        ),
         Row(
           children: [
             HTText(label: "Total", style: htBoldDarkLabelStyle),

@@ -151,7 +151,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePath.payment,
       builder: (context, state) {
-        return PaymentView(null, null, null);
+        return PaymentView();
       },
     ),
     GoRoute(

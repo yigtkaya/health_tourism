@@ -10,7 +10,7 @@ class PaymentRepoImpl extends PaymentRepository {
   Future<void> createPayment(String surName, String firstName, double price, String cardHolderName, String cardNumber, String expireMonth, String expireYear, String cvc) async {
     // make request to firebase function with dio package
      final result = await dio.post(
-      'http://10.0.2.2:3000/api/iyzico/pay',
+      'https://dgpays-case.onrender.com//api/iyzico/pay',
       data: {
         'contactName': '$firstName $surName',
         'city': 'Istanbul',
