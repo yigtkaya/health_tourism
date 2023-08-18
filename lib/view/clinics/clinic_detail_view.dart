@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/components/review_card.dart';
@@ -55,131 +56,132 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   borderRadius: BorderRadius.circular(30),
                   color: const Color(0xff58a2eb)),
               child: Center(
-                child:
-                    HTText(label: 'Make An Appointment', style: htBoldLabelStyle),
+                child: HTText(
+                    label: 'Make An Appointment', style: htBoldLabelStyle),
               )),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
-      children: [
-        Stack(
-          alignment: Alignment.bottomCenter,
           children: [
-            CarouselSlider.builder(
-                carouselController: controller,
-                itemCount: clinicImages.length,
-                itemBuilder: (context, index, realIndex) {
-                  final urlImage = clinicImages[index];
-                  return buildImage(urlImage, index, context);
-                },
-                options: CarouselOptions(
-                    height: 400,
-                    autoPlay: true,
-                    enableInfiniteScroll: false,
-                    autoPlayAnimationDuration: Duration(seconds: 2),
-                    viewportFraction: 1,
-                    enlargeCenterPage: false,
-                    onPageChanged: (index, reason) =>
-                        setState(() => activeIndex = index))),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: buildIndicator(),
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CarouselSlider.builder(
+                    carouselController: controller,
+                    itemCount: clinicImages.length,
+                    itemBuilder: (context, index, realIndex) {
+                      final urlImage = clinicImages[index];
+                      return buildImage(urlImage, index, context);
+                    },
+                    options: CarouselOptions(
+                        height: 400,
+                        autoPlay: true,
+                        enableInfiniteScroll: false,
+                        autoPlayAnimationDuration: Duration(seconds: 2),
+                        viewportFraction: 1,
+                        enlargeCenterPage: false,
+                        onPageChanged: (index, reason) =>
+                            setState(() => activeIndex = index))),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: buildIndicator(),
+                ),
+                Positioned(
+                  top: 52,
+                  left: 32,
+                  child: HTIcon(
+                    iconName: AssetConstants.icons.chevronLeft,
+                    width: 20,
+                    height: 20,
+                    color: Colors.white,
+                    onPress: () {
+                      context.pop();
+                    },
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: 52,
-              left: 32,
-              child: HTIcon(
-                iconName: AssetConstants.icons.chevronLeft,
-                width: 20,
-                height: 20,
-                color: Colors.white,
-                onPress: () {
-                  context.pop();
-                },
+            const VerticalSpace(),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      HTText(label: "Vera Clinic", style: htTitleStyle),
+                      const Spacer(),
+                      HTIcon(
+                        iconName: AssetConstants.icons.star,
+                        width: 20,
+                        height: 20,
+                      ),
+                      const HorizontalSpace(
+                        spaceAmount: 3,
+                      ),
+                      HTText(label: "4.5", style: htBlueLabelStyle),
+                      const HorizontalSpace(
+                        spaceAmount: 6,
+                      ),
+                    ],
+                  ),
+                  const VerticalSpace(),
+                  Row(
+                    children: [
+                      HTText(
+                          label: "Istanbul, Türkiye", style: htBlueLabelStyle),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          // route to contact create chat room and start chatting
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF123258),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 2),
+                            child: Row(
+                              children: [
+                                HTIcon(
+                                    iconName: AssetConstants.icons.chatBubble),
+                                const HorizontalSpace(
+                                  spaceAmount: 4,
+                                ),
+                                HTText(label: "Chat", style: htWhiteLabelStyle),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            const VerticalSpace(),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              color: Color(0x33000000),
+            ),
+            const VerticalSpace(),
+            buildInformation(size),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100.0),
+                  color: const Color(0xFF123258),
+                ),
+                height: size.height * 0.006,
+                width: size.width * 0.4,
               ),
             ),
           ],
-        ),
-        const VerticalSpace(),
-        Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  HTText(label: "Vera Clinic", style: htTitleStyle),
-                  const Spacer(),
-                  HTIcon(
-                    iconName: AssetConstants.icons.star,
-                    width: 20,
-                    height: 20,
-                  ),
-                  const HorizontalSpace(
-                    spaceAmount: 3,
-                  ),
-                  HTText(label: "4.5", style: htBlueLabelStyle),
-                  const HorizontalSpace(
-                    spaceAmount: 6,
-                  ),
-                ],
-              ),
-              const VerticalSpace(),
-              Row(
-                children: [
-                  HTText(
-                      label: "Istanbul, Türkiye", style: htBlueLabelStyle),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      // route to contact create chat room and start chatting
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF123258),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 2),
-                        child: Row(
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.chatBubble),
-                            const HorizontalSpace(
-                              spaceAmount: 4,
-                            ),
-                            HTText(label: "Chat", style: htWhiteLabelStyle),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-        const VerticalSpace(),
-        const Divider(
-          height: 1,
-          thickness: 1,
-          color: Color(0x33000000),
-        ),
-        const VerticalSpace(),
-        buildInformation(size),
-        Padding(
-          padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100.0),
-              color: const Color(0xFF123258),
-            ),
-            height: size.height * 0.006,
-            width: size.width * 0.4,
-          ),
-        ),
-      ],
         ),
       ),
     );
@@ -222,15 +224,15 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ImageHolder(size),
+                  operationImageHolder(size),
                   const HorizontalSpace(),
-                  ImageHolder(size),
+                  operationImageHolder(size),
                   const HorizontalSpace(),
-                  ImageHolder(size),
+                  operationImageHolder(size),
                   const HorizontalSpace(),
-                  ImageHolder(size),
+                  operationImageHolder(size),
                   const HorizontalSpace(),
-                  ImageHolder(size),
+                  operationImageHolder(size),
                 ],
               ),
             ),
@@ -292,13 +294,26 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     );
   }
 
+  List details = [
+    "Maximum Graft",
+    "Gives 100% satisfaction guarantee",
+    "2 Nights stay in the Hotel",
+    "Checkup"
+  ];
   Widget createPackages(Size size) {
     return GestureDetector(
       onTap: () {
         /// TODO: Navigate to package detail page ??
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return PackageDetailDialog(
+                packageDetailList: details,
+              );
+            });
       },
       child: Container(
-        width: size.width * 0.43,
+        width: size.width * 0.45,
         decoration: const BoxDecoration(
           color: Color(0xffd3e9ff),
           borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -318,7 +333,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               color: Colors.black,
             ),
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(14.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -339,7 +354,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     );
   }
 
-  Widget ImageHolder(Size size) => Container(
+  Widget operationImageHolder(Size size) => Container(
         height: size.height * 0.12,
         width: size.width * 0.28,
         decoration: BoxDecoration(
