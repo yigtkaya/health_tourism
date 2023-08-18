@@ -13,7 +13,6 @@ import 'package:health_tourism/product/theme/theme_manager.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
-import '../../core/constants/horizontal_space.dart';
 import '../../core/constants/vertical_space.dart';
 import '../../product/theme/styles.dart';
 

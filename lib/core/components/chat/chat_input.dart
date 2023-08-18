@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/core/components/dialog/image_dialog.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/product/theme/theme_manager.dart';
 import '../../../cubit/message/message_cubit.dart';
@@ -58,10 +59,14 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   .instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
               onPress: () {
                 // show image picker dialog
-                context
-                    .pushNamed(RoutePath.imagePickerDialog, queryParameters: {
-                  "receiverId": widget.receiverId,
-                });
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ImagePickerDialog(
+                      receiverId: widget.receiverId,
+                    );
+                  },
+                );
               },
             ),
             const HorizontalSpace(
