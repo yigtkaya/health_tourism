@@ -71,7 +71,7 @@ class _PaymentViewState extends State<PaymentView> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12.0),
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +84,7 @@ class _PaymentViewState extends State<PaymentView> {
                 const VerticalSpace(
                   spaceAmount: 20,
                 ),
-                togglePackages(),
+                togglePackages(size),
                 const VerticalSpace(
                   spaceAmount: 24,
                 ),
@@ -103,13 +103,13 @@ class _PaymentViewState extends State<PaymentView> {
                   spaceAmount: 32,
                 ),
                 PaymentField(
-                    cardHolderNameController: cardHolderNameController,
-                    cardNumberController: cardNumberController,
-                    expiryDateController: expiryDateController,
-                    cvvController: cvvCodeController,
-                    cityController: cityController,
-                    countryController: countryController,
-                    addressController: addressController,
+                  cardHolderNameController: cardHolderNameController,
+                  cardNumberController: cardNumberController,
+                  expiryDateController: expiryDateController,
+                  cvvController: cvvCodeController,
+                  cityController: cityController,
+                  countryController: countryController,
+                  addressController: addressController,
                   postalCodeController: postalCodeController,
                 ),
                 const VerticalSpace(),
@@ -443,15 +443,8 @@ class _PaymentViewState extends State<PaymentView> {
           if (context
               .read<PaymentCubit>()
               .isCreditCardExpireDateValid(expireMonth, expireYear)) {
-            context.read<PaymentCubit>().createPayment(
-                firstName,
-                surName,
-                1.2,
-                cardHolderName,
-                cardNumber,
-                expireMonth,
-                expireYear,
-                cvvCode);
+            context.read<PaymentCubit>().createPayment(firstName, surName, 1.2,
+                cardHolderName, cardNumber, expireMonth, expireYear, cvvCode);
           }
         } else {
           if (context
@@ -460,15 +453,8 @@ class _PaymentViewState extends State<PaymentView> {
               context
                   .read<PaymentCubit>()
                   .isCreditCardNumberValid(cardNumber)) {
-            context.read<PaymentCubit>().createPayment(
-                firstName,
-                surName,
-                1.2,
-                cardHolderName,
-                cardNumber,
-                expireMonth,
-                expireYear,
-                cvvCode);
+            context.read<PaymentCubit>().createPayment(firstName, surName, 1.2,
+                cardHolderName, cardNumber, expireMonth, expireYear, cvvCode);
           }
         }
       },
@@ -565,45 +551,190 @@ class _PaymentViewState extends State<PaymentView> {
     );
   }
 
-  Widget togglePackages() {
+  Widget togglePackages(Size size) {
     return Center(
-      child: ToggleButtons(
-        isSelected: isSelected,
-        renderBorder: true,
-        borderColor: Colors.grey,
-        borderRadius: BorderRadius.circular(8.0),
-        selectedBorderColor: Colors.blue,
-        onPressed: (int newIndex) {
-          setState(() {
-            // looping through the list of booleans values
-            for (int index = 0; index < isSelected.length; index++) {
-              // checking for the index value
-              if (index == newIndex) {
-                // one button is always set to true
-                isSelected[index] = true;
-              } else {
-                // other two will be set to false and not selected
-                isSelected[index] = false;
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ToggleButtons(
+          isSelected: isSelected,
+          renderBorder: true,
+          borderColor: Colors.grey,
+          borderRadius: BorderRadius.circular(8.0),
+          selectedBorderColor: const Color(0xff08233b),
+          onPressed: (int newIndex) {
+            setState(() {
+              // looping through the list of booleans values
+              for (int index = 0; index < isSelected.length; index++) {
+                // checking for the index value
+                if (index == newIndex) {
+                  // one button is always set to true
+                  isSelected[index] = true;
+                } else {
+                  // other two will be set to false and not selected
+                  isSelected[index] = false;
+                }
               }
-            }
-          });
-        },
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: HTText(
-              label: "Regular Package",
-              style: htBlueLabelStyle,
+            });
+          },
+          children: [
+            Container(
+              width: size.width * 0.45,
+              decoration: const BoxDecoration(
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 6),
+                    child: Center(
+                        child: HTText(
+                            label: "PackageTitle",
+                            style: htDarkBlueLargeStyle)),
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    height: 1,
+                    color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(),
+                            Expanded(
+                              child: HTText(
+                                  label: "Maximum Graft",
+                                  style: htSmallLabelStyle),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(),
+                            Expanded(
+                              child: HTText(
+                                  label: "Gives 100% satisfaction guarantee",
+                                  style: htSmallLabelStyle),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(),
+                            Expanded(
+                              child: HTText(
+                                  label: "2 Nights stay in the Hotel",
+                                  style: htSmallLabelStyle),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(),
+                            Expanded(
+                              child: HTText(
+                                  label: "Checkup and Consultation",
+                                  style: htSmallLabelStyle),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: HTText(
-              label: "Exclusive Package",
-              style: htBlueLabelStyle,
+            Container(
+              width: size.width * 0.45,
+              decoration: const BoxDecoration(
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 6),
+                    child: Center(
+                        child: HTText(
+                            label: "PackageTitle",
+                            style: htDarkBlueLargeStyle)),
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    height: 1,
+                    color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(),
+                            Expanded(
+                              child: HTText(
+                                  label: "Maximum Graft",
+                                  style: htSmallLabelStyle),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(),
+                            Expanded(
+                              child: HTText(
+                                  label: "Gives 100% satisfaction guarantee",
+                                  style: htSmallLabelStyle),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(),
+                            Expanded(
+                              child: HTText(
+                                  label: "2 Nights stay in the Hotel",
+                                  style: htSmallLabelStyle),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(),
+                            Expanded(
+                              child: HTText(
+                                  label: "Checkup and Consultation",
+                                  style: htSmallLabelStyle),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
