@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/dialog/appointment_detail_dialog.dart';
 import 'package:health_tourism/core/components/dialog/leave_comment_dialog.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
-
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../product/theme/styles.dart';
-import '../../product/theme/theme_manager.dart';
 
 class AppointmentsView extends StatefulWidget {
   const AppointmentsView({super.key});
@@ -75,20 +72,6 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                 pastAppointments(),
                 pastAppointments(),
                 const Spacer(),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100.0),
-                        color: const Color(0xFF123258),
-                      ),
-                      height: size.height * 0.006,
-                      width: size.width * 0.4,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

@@ -294,6 +294,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                     "Hair Transplantation"),
                 const VerticalSpace(spaceAmount: 16,),
                 questionAndAnswer(supplements, "8.	Does the patient take any supplements or herbal products? Please provide details.", "Supplements"),
+                const VerticalSpace(spaceAmount: 16,),
               ],
             ),
           ),

@@ -16,7 +16,6 @@ import '../../product/navigation/route_paths.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/constants/asset.dart';
-import '../../core/constants/dimen.dart';
 import '../../product/theme/styles.dart';
 
 class LoginView extends StatefulWidget {
@@ -163,17 +162,6 @@ class _LoginViewState extends State<LoginView> {
                   spaceAmount: 20,
                 ),
                 signInAlternatives(size, authCubit),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100.0),
-                      color: const Color(0xFF123258),
-                    ),
-                    height: size.height * 0.006,
-                    width: size.width * 0.4,
-                  ),
-                ),
               ],
             ),
           ],
