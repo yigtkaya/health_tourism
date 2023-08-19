@@ -40,13 +40,12 @@ class _HTCheckBoxState extends State<HTCheckBox> {
             color: Colors.white,
           ),
           child: widget.isChecked
-              ? const SizedBox()
-              : HTIcon(
-                  iconName: AssetConstants.icons.checkMark,
-                  width: 14,
-                  height: 14,
-                  color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
-                ),
+              ? HTIcon(
+            iconName: AssetConstants.icons.checkMark,
+            width: 14,
+            height: 14,
+            color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+          ) : const SizedBox(),
         ),
         const HorizontalSpace(
           spaceAmount: 7,

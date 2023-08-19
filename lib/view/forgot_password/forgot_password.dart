@@ -53,7 +53,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         elevation: 0,
         centerTitle: true,
         title: HTText(
-          label: "ForgotPassword",
+          label: "Forgot Password",
           style: htToolBarLabel,
         ),
       ),
@@ -92,6 +92,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       // check email is valid and password is not empty then sign in
                       BlocProvider.of<AuthCubit>(context)
                           .passwordResetSubmit(email);
+
+                      emailController.clear();
                     },
                     child: sendButton(size),
                   ),

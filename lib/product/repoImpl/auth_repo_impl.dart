@@ -39,6 +39,8 @@ class AuthRepositoryImpl extends AuthRepository {
     // send reset password email
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
+      showToastMessage(
+          "Reset password email sent succesfully please check your mail.");
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
@@ -48,11 +50,13 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> signInWithEmailAndPassword({required String email, required String password}) async {
+  Future<void> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
     // sign in with email and password
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password).then((authUser) {
+      await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((authUser) {
         authUser.user!.reload();
 
         if (!authUser.user!.emailVerified) {
@@ -70,13 +74,14 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<void> signInWithFacebook() async {
     try {
-      final facebookLoginResult = await _facebookAuth.login(permissions: ['public_profile', 'email']);
+      final facebookLoginResult =
+          await _facebookAuth.login(permissions: ['public_profile', 'email']);
       final userData = await FacebookAuth.instance.getUserData();
 
-      final AuthCredential credential = FacebookAuthProvider.credential(facebookLoginResult.accessToken!.token);
+      final AuthCredential credential = FacebookAuthProvider.credential(
+          facebookLoginResult.accessToken!.token);
 
       await _firebaseAuth.signInWithCredential(credential);
-
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
@@ -89,7 +94,8 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -104,15 +110,15 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> signUpWithEmailAndPassword({required String email, required String password}) async {
+  Future<void> signUpWithEmailAndPassword(
+      {required String email, required String password}) async {
     // sign up with email and password
     try {
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((authUser) => authUser.user?.sendEmailVerification())
           .then((value) => showToastMessage(
-          "We have send you a verification email to verify your account"));
-
+              "We have send you a verification email to verify your account"));
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);

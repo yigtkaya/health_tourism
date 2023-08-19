@@ -147,6 +147,8 @@ class _LoginViewState extends State<LoginView> {
                       BlocProvider.of<AuthCubit>(context)
                           .signInWithEmailAndPassword(email, password);
                       print("object");
+                      emailController.clear();
+                      passController.clear();
                     },
                     child: signInButton(size)),
                 const VerticalSpace(spaceAmount: 30),

@@ -128,9 +128,16 @@ class _SignUpViewState extends State<SignUpView> {
                   GestureDetector(
                     onTap: () {
                       try {
+
                         context
                             .read<AuthCubit>()
                             .signUpWithEmailAndPassword(email, password);
+
+                        confPassController.clear();
+                        passController.clear();
+                        emailController.clear();
+                        nameController.clear();
+
                       } on Exception catch (e) {
                         print(e.toString());
                       }
@@ -153,17 +160,6 @@ class _SignUpViewState extends State<SignUpView> {
                     spaceAmount: 20,
                   ),
                   signInAlternatives(size, authCubit),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100.0),
-                        color: const Color(0xFF123258),
-                      ),
-                      height: size.height * 0.006,
-                      width: size.width * 0.4,
-                    ),
-                  ),
                 ],
               ),
             ],
