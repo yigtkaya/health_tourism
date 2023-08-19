@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/repositories/auth_repo.dart';
+import 'package:twitter_login/twitter_login.dart';
 import '../../cubit/auth/auth_exception_handler.dart';
 import '../navigation/route_paths.dart';
 
@@ -87,6 +88,31 @@ class AuthRepositoryImpl extends AuthRepository {
       showToastMessage(message);
     } catch (e) {
       showToastMessage(e.toString());
+    }
+  }
+
+  @override
+  Future<void> signInWithTwitter() async {
+    final twitterLogin = TwitterLogin(
+        apiKey: "D38vH6YDecit8Qmbo2ccEB7BY",
+        apiSecretKey: "h9KWLTZ6QMSrOJTxlrQfO3ndjOtDhChFrqG9lcN88gmD1mNiTa",
+        redirectURI: "https://health-tourism-cc878.firebaseapp.com/__/auth/handler");
+
+    final authResult = await twitterLogin.login();
+
+    if (authResult.status == TwitterLoginStatus.loggedIn) {
+      final AuthCredential credential = TwitterAuthProvider.credential(
+          accessToken: authResult.authToken!,
+          secret: authResult.authTokenSecret!);
+
+      await _firebaseAuth.signInWithCredential(credential);
+
+    } else if (authResult.status == TwitterLoginStatus.cancelledByUser) {
+      showToastMessage("Login cancelled by user");
+    } else if (authResult.status == TwitterLoginStatus.error) {
+      showToastMessage("Login error: ${authResult.errorMessage}");
+    } else {
+      showToastMessage("Login error: ${authResult.errorMessage}");
     }
   }
 

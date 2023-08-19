@@ -216,11 +216,11 @@ Widget signInAlternatives(Size size, AuthCubit authCubit) {
             ),
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
               child: HTIcon(
                 iconName: AssetConstants.icons.googleIconPlus,
-                width: 20,
-                height: 20,
+                width: 24,
+                height: 24,
               ),
             ),
           ),
@@ -242,35 +242,11 @@ Widget signInAlternatives(Size size, AuthCubit authCubit) {
             ),
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
               child: HTIcon(
                 iconName: AssetConstants.icons.facebookIconSimple,
-                width: 20,
-                height: 20,
-              ),
-            ),
-          ),
-        ),
-      ),
-      const HorizontalSpace(),
-      Expanded(
-        child: GestureDetector(
-          onTap: () {},
-          child: Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFFEAF0F5),
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-              child: HTIcon(
-                iconName: AssetConstants.icons.twitter,
-                width: 20,
-                height: 20,
-                color: ThemeManager.instance?.getCurrentTheme.colorTheme
-                    .darkBlueTextColor,
+                width: 24,
+                height: 24,
               ),
             ),
           ),

@@ -26,6 +26,7 @@
 			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 			<string>com.googleusercontent.apps.725006118544-rfndbg9mu39350f5lunsiml02p334epn</string>
             <string>fb795591362100790</string>
+            <string>https://health-tourism-cc878.firebaseapp.com/__/auth/handler</string>
 		</array>
 	</dict>
 </array>

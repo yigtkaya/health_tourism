@@ -6,6 +6,7 @@ abstract class AuthRepository {
       {required String email, required String password}) async {}
   Future<void> signInWithGoogle();
   Future<void> signInWithFacebook();
+  Future<void> signInWithTwitter();
   Future<void> signUpWithEmailAndPassword({required String email, required String password}) async {}
   Future<void> resetPassword({required String email}) async {}
   Future<bool> isUserLoggedIn();

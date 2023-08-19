@@ -95,6 +95,19 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> signInWithTwitter() async {
+      emit(const AuthLoading());
+      await _authRepository
+          .signInWithTwitter()
+          .then((value) {
+        emit(Authenticated(firebaseAuth.currentUser!));
+        Future.delayed(const Duration(seconds: 2), () {
+          goTo(path: RoutePath.bottomNavigation);
+        });
+      }).onError((error, stackTrace) {
+        emit(AuthError(error.toString()));
+      });
+  }
   // create a function to get user id
   String? getCurrentUserId() {
     return _authRepository.getCurrentUserId();
