@@ -54,11 +54,13 @@ dependencies:
   firebase_core:
   firebase_messaging:
   cloud_firestore:
-  flutter_facebook_auth:
   firebase_storage:
 
-  google_fonts:
   google_sign_in:
+  flutter_facebook_auth:
+  twitter_login:
+
+  google_fonts:
   email_validator:
   flutter_pw_validator:
   fluttertoast:
