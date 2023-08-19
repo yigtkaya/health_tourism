@@ -22,11 +22,22 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController chronic = TextEditingController();
+  final TextEditingController allergies = TextEditingController();
+  final TextEditingController medications = TextEditingController();
+  final TextEditingController surgeries = TextEditingController();
+  final TextEditingController familyHistory = TextEditingController();
+  final TextEditingController diseases = TextEditingController();
+  final TextEditingController hairTransplantation = TextEditingController();
+  final TextEditingController supplements = TextEditingController();
+  final TextEditingController alcoholOrSmoking = TextEditingController();
+
   DateTime? date = DateTime.now();
   String dateText = 'Date of Birth';
   List gender = ["Male", "Female", "Other"];
   String selectedGender = "";
   int selectedIndex = 0;
+  bool isChanged = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +55,17 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           label: "Profile",
           style: htToolBarLabel,
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Center(
+              child: HTText(
+                label: "Save",
+                style: isChanged ? htToolBarLabel : htToolBarLabel.copyWith(color: Colors.transparent),
+              ),
+            ),
+          ),
+        ],
         leadingWidth: 42,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -58,9 +80,10 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-          child: SingleChildScrollView(
+        top: false,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -238,6 +261,39 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                     ),
                   ),
                 ),
+                const VerticalSpace(
+                  spaceAmount: 32,
+                ),
+                HTText(label: "Medical Information", style: htSubTitle),
+                const VerticalSpace(spaceAmount: 16,),
+                questionAndAnswer(chronic, "1. Does the patient have any chronic conditions? (Ex: heart disease, diabetes, high blood pressure, etc.). Please provide details.",
+                    "Chronic Conditions"),
+                const VerticalSpace(spaceAmount: 16,),
+                questionAndAnswer(allergies,"2.	Does the patient have any allergies or sensitivities? Please provide details.", "Allegeries"),
+                const VerticalSpace(spaceAmount: 16,),
+                questionAndAnswer(
+                    medications,
+                    "3.	Is the patient currently taking any medications? (Ex: Especially blood thinners or immunosuppressive drugs, etc.). Please provide details.",
+                    "Medications"),
+                const VerticalSpace(spaceAmount: 16,),
+                questionAndAnswer(
+                    diseases,
+                    "4.	Does the patient have any infections or skin diseases on the scalp? (Ex: eczema, fungal infections, psoriasis, etc.). Please provide details.",
+                    "Diseases"),
+                const VerticalSpace(spaceAmount: 16,),
+                questionAndAnswer(surgeries, "5.	Does the patient have a surgical operation history? Please provide details.", "Surgery History"),
+                const VerticalSpace(spaceAmount: 16,),
+                questionAndAnswer(
+                    alcoholOrSmoking,
+                    "6.	Does the patient have a history of smoking or alcohol consumption? ",
+                    "Alcohol or Smoking"),
+                const VerticalSpace(spaceAmount: 16,),
+                questionAndAnswer(
+                    hairTransplantation,
+                    "7.	Has the patient undergone any previous hair transplantation procedures? Please provide details.",
+                    "Hair Transplantation"),
+                const VerticalSpace(spaceAmount: 16,),
+                questionAndAnswer(supplements, "8.	Does the patient take any supplements or herbal products? Please provide details.", "Supplements"),
               ],
             ),
           ),
@@ -247,33 +303,34 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   }
 
   Widget addGenderButton(int index, String title) => GestureDetector(
-    onTap: () {
-      setState(() {
-        selectedIndex = index;
-      });
-    },
-    child: Row(
-      children: [
-        Container(
-          width: 16.0,
-          height: 16.0,
-          padding: const EdgeInsets.all(4.0),
-          decoration: BoxDecoration(
-            border: Border.all(),
-            borderRadius: BorderRadius.circular(25.0),
-            color: selectedIndex == index ? Colors.blue : Colors.white,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0), color: selectedIndex == index ? Colors.blue : Colors.white,
+        onTap: () {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        child: Row(
+          children: [
+            Container(
+              width: 16.0,
+              height: 16.0,
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(25.0),
+                color: selectedIndex == index ? Colors.blue : Colors.white,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: selectedIndex == index ? Colors.blue : Colors.white,
+                ),
+              ),
             ),
-          ),
+            const HorizontalSpace(spaceAmount: 8),
+            HTText(label: title, style: htDarkBlueLargeStyle),
+          ],
         ),
-        const HorizontalSpace(spaceAmount: 8),
-        HTText(label: title, style: htDarkBlueLargeStyle),
-      ],
-    ),
-  );
+      );
   String monthFromInt(int index) {
     switch (index) {
       case 1:
@@ -302,5 +359,43 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         return "Dec";
     }
   }
-}
 
+  Widget questionAndAnswer(
+      TextEditingController controller, String question, String labelText) {
+    return Column(
+      children: [
+        HTText(label: question, style: htDarkBlueNormalStyle),
+        const VerticalSpace(
+          spaceAmount: 6,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {});
+              },
+              minLines: 1,
+              maxLines: 3,
+              controller: controller,
+              style: htDarkBlueNormalStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: labelText,
+                hintStyle: htHintTextDarkStyle,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
