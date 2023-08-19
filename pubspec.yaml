@@ -70,6 +70,8 @@ dependencies:
   carousel_slider:
   flutter_slidable:
   readmore:
+  chewie:
+  video_player:
   #navigation
   go_router:
 
