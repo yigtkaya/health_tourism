@@ -3,8 +3,10 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/repositories/auth_repo.dart';
 import '../../cubit/auth/auth_exception_handler.dart';
+import '../navigation/route_paths.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -28,6 +30,8 @@ class AuthRepositoryImpl extends AuthRepository {
     await _firebaseAuth.signOut();
     await GoogleSignIn().signOut();
     await _facebookAuth.logOut();
+
+    goTo(path: RoutePath.signIn);
   }
 
   @override
