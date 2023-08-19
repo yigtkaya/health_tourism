@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "725006118544-u2qtkqbkr7pmcad7qbrjm5hm6dccf8ff.apps.googleusercontent.com",
+          "client_id": "725006118544-g8ogvub1f0oaqsocvepo2ilh6qbtkd9l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.health.voyesthetic",
-            "certificate_hash": "11bde8d169f2c0e1eb76998c14aba793264f1f01"
+            "certificate_hash": "22e66249d90d5376077db25d76c822c707b334b2"
           }
         },
         {
@@ -38,6 +38,13 @@
             {
               "client_id": "725006118544-tiho3u0omn9qe8kn1lqogtd301buca20.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "725006118544-rfndbg9mu39350f5lunsiml02p334epn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.health.voyesthetic"
+              }
             }
           ]
         }
