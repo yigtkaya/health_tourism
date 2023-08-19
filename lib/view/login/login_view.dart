@@ -230,6 +230,7 @@ Widget signInAlternatives(Size size, AuthCubit authCubit) {
         child: GestureDetector(
           onTap: () {
             authCubit.signInWithFacebook();
+            print("sign in facebook button tapped");
           },
           child: Container(
             alignment: Alignment.center,
@@ -252,9 +253,7 @@ Widget signInAlternatives(Size size, AuthCubit authCubit) {
       const HorizontalSpace(),
       Expanded(
         child: GestureDetector(
-          onTap: () {
-            authCubit.signInWithTwitter();
-          },
+          onTap: () {},
           child: Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
