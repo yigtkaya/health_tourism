@@ -40,7 +40,9 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.signInWithEmailAndPassword(
           email: email, password: password);
-      emit(Authenticated(firebaseAuth.currentUser!));
+      if (firebaseAuth.currentUser != null) {
+        emit(Authenticated(firebaseAuth.currentUser!));
+      }
     } catch (e) {
       emit(AuthError(e.toString()));
     }

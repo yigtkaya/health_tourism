@@ -72,6 +72,8 @@ class AuthRepositoryImpl extends AuthRepository {
         if (!authUser.user!.emailVerified) {
           authUser.user!.sendEmailVerification();
         }
+
+        goTo(path: RoutePath.bottomNavigation);
       });
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);

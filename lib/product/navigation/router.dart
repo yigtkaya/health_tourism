@@ -127,28 +127,8 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: RoutePath.register,
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 500),
-          key: state.pageKey,
-          child: const SignUpView(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            // Change the opacity of the screen using a Curve based on the the animation's value
-            const begin = Offset(0.0, 1.0);
-            const end = Offset.zero;
-            const curve = Curves.ease;
-
-            final tween = Tween(begin: begin, end: end);
-            final curvedAnimation = CurvedAnimation(
-              parent: animation,
-              curve: curve,
-            );
-            return SlideTransition(
-              position: tween.animate(curvedAnimation),
-              child: child,
-            );
-          },
-        );
+      builder: (context, state) {
+        return const SignUpView();
       },
     ),
     GoRoute(
@@ -207,3 +187,16 @@ void goBack() {
   router.pop();
 }
 
+
+CustomTransitionPage buildPageWithDefaultTransition<T>({
+  required BuildContext context,
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+        FadeTransition(opacity: animation, child: child),
+  );
+}
