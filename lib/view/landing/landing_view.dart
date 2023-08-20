@@ -12,6 +12,7 @@ import 'package:health_tourism/cubit/clinic/clinic_cubit_state.dart';
 import '../../core/components/clinic_card.dart';
 import '../../core/components/ht_text.dart';
 import '../../cubit/clinic/clinic_cubit.dart';
+import '../../product/models/clinic.dart';
 import '../../product/theme/styles.dart';
 
 class LandingView extends StatefulWidget {
@@ -184,10 +185,11 @@ class _LandingViewState extends State<LandingView> {
             return ListView.builder(
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
-                  Map<String, dynamic> data =
-                      snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                  print(snapshot.data!.docs[index].data());
-                  return ClinicCard(clinic: data);
+                  Map<dynamic, dynamic> data =
+                      snapshot.data!.docs[index].data() as Map<dynamic, dynamic>;
+                  final clinic = Clinic.fromData(data);
+
+                  return ClinicCard(clinic: clinic);
                 });
           }
           else {

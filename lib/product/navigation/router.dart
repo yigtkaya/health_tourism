@@ -25,6 +25,7 @@ import '../../view/clinics/clinic_detail_view.dart';
 import '../../view/onboarding/onboarding_view.dart';
 import '../../view/profile/profile_view.dart';
 import '../../view/sign_up/sign_up_view.dart';
+import '../models/clinic.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -72,7 +73,8 @@ final GoRouter router = GoRouter(
       path: RoutePath.clinicDetail,
       name: RoutePath.clinicDetail,
       builder: (context, state) {
-        return ClinicDetailView(clinicId: state.queryParameters['clinicId'] ?? '',);
+        Clinic clinic = state.extra as Clinic;
+        return ClinicDetailView(clinic: clinic);
       },
     ),
     GoRoute(

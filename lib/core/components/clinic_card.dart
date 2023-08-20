@@ -7,8 +7,10 @@ import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 
+import '../../product/models/clinic.dart';
+
 class ClinicCard extends StatefulWidget {
-  final Map clinic;
+  final Clinic clinic;
 
   const ClinicCard({
     super.key,
@@ -25,9 +27,7 @@ class _ClinicCardState extends State<ClinicCard> {
     final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        context.pushNamed(RoutePath.clinicDetail, queryParameters: {
-          "clinicId": widget.clinic["cid"],
-        });
+        context.pushNamed(RoutePath.clinicDetail, extra: widget.clinic,);
       },
       child: Column(
         children: [
@@ -55,7 +55,7 @@ class _ClinicCardState extends State<ClinicCard> {
                         topRight: Radius.circular(12),
                       ),
                       child: Image.network(
-                        widget.clinic["profilePicture"],
+                        widget.clinic.profilePicture,
                         width: size.width * 1,
                         height: size.height * 0.22,
                         fit: BoxFit.cover,
@@ -70,7 +70,7 @@ class _ClinicCardState extends State<ClinicCard> {
                           Row(
                             children: [
                               HTText(
-                                  label: widget.clinic["name"],
+                                  label: widget.clinic.name,
                                   style: htDarkBlueLargeStyle),
                               const Spacer(),
                               HTIcon(
@@ -82,19 +82,19 @@ class _ClinicCardState extends State<ClinicCard> {
                                 spaceAmount: 3,
                               ),
                               HTText(
-                                  label: widget.clinic["rating"].toString(),
+                                  label: widget.clinic.averageRating.toString(),
                                   style: htDarkBlueLargeStyle),
                               const HorizontalSpace(
                                 spaceAmount: 6,
                               ),
                               HTText(
                                   label:
-                                      '(${widget.clinic["reviewCount"].toString()})',
+                                      '(${widget.clinic.reviewCount.toString()})',
                                   style: htSmallLabelStyle),
                             ],
                           ),
                           HTText(
-                              label: widget.clinic["clinicAddress"],
+                              label: widget.clinic.address,
                               style: htSmallLabelStyle),
                         ],
                       ),

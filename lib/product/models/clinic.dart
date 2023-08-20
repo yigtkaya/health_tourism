@@ -9,12 +9,12 @@ class Clinic extends Equatable {
   final String address;
   final String email;
   final String profilePicture;
-  final List<String> imageUrls;
-  final List<String> operationImageUrls;
-  final List<Map> packages;
-  final List<Map> reviews;
+  final List<dynamic> imageUrls;
+  final List<dynamic> operationImageUrls;
+  final List<dynamic> packages;
+  final List<dynamic> reviews;
   final int reviewCount;
-  final int averageRating;
+  final double averageRating;
   final String role;
 
   const Clinic({

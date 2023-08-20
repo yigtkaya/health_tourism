@@ -14,12 +14,13 @@ import '../../core/components/ht_text.dart';
 import '../../core/components/review_card.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
+import '../../product/models/clinic.dart';
 import '../../product/navigation/route_paths.dart';
 import '../../product/theme/styles.dart';
 
 class ClinicDetailView extends StatefulWidget {
-  final String clinicId;
-  const ClinicDetailView({super.key, required this.clinicId});
+  final Clinic clinic;
+  const ClinicDetailView({super.key, required this.clinic});
 
   @override
   State<ClinicDetailView> createState() => _ClinicDetailViewState();
@@ -74,21 +75,23 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                 alignment: Alignment.bottomCenter,
                 children: [
                   CarouselSlider.builder(
-                      carouselController: controller,
-                      itemCount: clinicImages.length,
-                      itemBuilder: (context, index, realIndex) {
-                        final urlImage = clinicImages[index];
-                        return buildImage(urlImage, index, context);
-                      },
-                      options: CarouselOptions(
-                          height: size.height * 0.6,
-                          autoPlay: false,
-                          enableInfiniteScroll: false,
-                          autoPlayAnimationDuration: const Duration(seconds: 2),
-                          viewportFraction: 1,
-                          enlargeCenterPage: false,
-                          onPageChanged: (index, reason) =>
-                              setState(() => activeIndex = index))),
+                    carouselController: controller,
+                    itemCount: widget.clinic.imageUrls.length,
+                    itemBuilder: (context, index, realIndex) {
+                      final urlImage = widget.clinic.imageUrls[index];
+                      return buildImage(urlImage, index, context);
+                    },
+                    options: CarouselOptions(
+                      height: size.height * 0.5,
+                      autoPlay: false,
+                      enableInfiniteScroll: false,
+                      autoPlayAnimationDuration: const Duration(seconds: 2),
+                      viewportFraction: 1,
+                      enlargeCenterPage: false,
+                      onPageChanged: (index, reason) =>
+                          setState(() => activeIndex = index),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: buildIndicator(),
@@ -117,7 +120,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   children: [
                     Row(
                       children: [
-                        HTText(label: "Vera Clinic", style: htTitleStyle),
+                        HTText(label: widget.clinic.name, style: htTitleStyle),
                         const Spacer(),
                         HTIcon(
                           iconName: AssetConstants.icons.star,
@@ -127,7 +130,9 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                         const HorizontalSpace(
                           spaceAmount: 3,
                         ),
-                        HTText(label: "4.5", style: htBlueLabelStyle),
+                        HTText(
+                            label: widget.clinic.averageRating.toString(),
+                            style: htBlueLabelStyle),
                         const HorizontalSpace(
                           spaceAmount: 6,
                         ),
@@ -137,7 +142,9 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                     Row(
                       children: [
                         HTText(
-                            label: "Istanbul, Türkiye", style: htBlueLabelStyle),
+                            label:
+                                "${widget.clinic.city}, ${widget.clinic.country}",
+                            style: htBlueLabelStyle),
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
@@ -153,11 +160,13 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                               child: Row(
                                 children: [
                                   HTIcon(
-                                      iconName: AssetConstants.icons.chatBubble),
+                                      iconName:
+                                          AssetConstants.icons.chatBubble),
                                   const HorizontalSpace(
                                     spaceAmount: 4,
                                   ),
-                                  HTText(label: "Chat", style: htWhiteLabelStyle),
+                                  HTText(
+                                      label: "Chat", style: htWhiteLabelStyle),
                                 ],
                               ),
                             ),
@@ -191,15 +200,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
         children: [
           HTText(label: "About", style: htSubTitle),
           const VerticalSpace(),
-          const ReadMoreText(
-              "placehoplaceholderplac"
-              "eholderplaceholderplaceholderplaceholderplaceho"
-              "ülderplaceholderplaceholderplaceholderlderplaceholderpl"
-              "aceholderplaceholderplaceholderaceholderplaceholderplaceholdera"
-              "ceholaceholderplaceholderplaceholderaceholderplaceholderplacehold"
-              "erderaceholderplaceholderplaceholderaceholderplaceholderplaceholderpl"
-              "acehoaceholderplaceholderplaceholderaceholderplaceholderplaceholderlderplacehol"
-              "deraceholderplaceholderplaceholderaceholderplaceholderplaceholder",
+          ReadMoreText(widget.clinic.about,
               style: htLabelBlackStyle,
               trimLines: 4,
               colorClickableText: Colors.blue,
@@ -364,7 +365,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
         activeIndex: activeIndex,
-        count: clinicImages.length,
+        count: widget.clinic.imageUrls.length,
         effect: const ExpandingDotsEffect(
             dotWidth: 6,
             dotHeight: 6,
@@ -437,17 +438,20 @@ class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
 
   void listener() {
     controller.addListener(() {
-      if(controller.value.position == const Duration(seconds: 0, minutes: 0, hours: 0)) {
+      if (controller.value.position ==
+          const Duration(seconds: 0, minutes: 0, hours: 0)) {
         print('video Started');
       }
 
-      if(!controller.value.isPlaying &&controller.value.isInitialized &&
-          (controller.value.duration ==controller.value.position)) {
+      if (!controller.value.isPlaying &&
+          controller.value.isInitialized &&
+          (controller.value.duration == controller.value.position)) {
         print('video Ended');
         widget.corousel.nextPage();
       }
     });
   }
+
   @override
   void dispose() {
     controller.dispose();
