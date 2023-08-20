@@ -4,13 +4,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClinicRepositoryImpl extends ClinicRepo {
 
-  CollectionReference clinicEntities =
+  CollectionReference clinicCollection =
       FirebaseFirestore.instance.collection("clinics");
 
   Future<List<Clinic>> getClinicData() async {
-    QuerySnapshot querySnapshot =  await clinicEntities.get();
+    QuerySnapshot querySnapshot =  await clinicCollection.get();
     final list = querySnapshot.docs.map((doc) => Clinic.fromData(doc.data() as Map<String, dynamic>)).toList();
     return list;
+  }
+
+  Stream<QuerySnapshot> getAllClinics() {
+    return clinicCollection.snapshots();
   }
 
   Clinic clinicFromSnapshot(DocumentSnapshot snapshot) {
@@ -21,7 +25,7 @@ class ClinicRepositoryImpl extends ClinicRepo {
   @override
   Future<void> createClinic(
       Clinic clinic) async {
-    await clinicEntities.doc(clinic.cid).set({
+    await clinicCollection.doc(clinic.cid).set({
       "operationPhotosPath": clinic.operationPhotosPath,
       "videoPath": clinic.videoPath,
       "titleTxt": clinic.titleTxt,
@@ -37,12 +41,12 @@ class ClinicRepositoryImpl extends ClinicRepo {
   @override
   Future<void> deleteClinicEntity(String cid) async {
     // TODO: implement deleteClinicEntity
-    clinicEntities.doc(cid).delete();
+    clinicCollection.doc(cid).delete();
   }
 
   @override
   Future<void> updateClinicEntityData(Clinic clinicEntity) async {
-    await clinicEntities.doc(clinicEntity.cid).update({
+    await clinicCollection.doc(clinicEntity.cid).update({
       "operationPhotosPath": clinicEntity.operationPhotosPath,
       "videoPath": clinicEntity.videoPath,
       "titleTxt": clinicEntity.titleTxt,

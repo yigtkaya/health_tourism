@@ -9,7 +9,7 @@ class ClinicCubit extends Cubit<ClinicState> {
   late var clinicList = List<Clinic>;
 
   ClinicCubit() : super(const ClinicInitState()) {
-    getAllClinic();
+    getClinics();
   }
 
   void getAllClinic() async {
@@ -22,5 +22,12 @@ class ClinicCubit extends Cubit<ClinicState> {
     } catch (e) {
       emit(ClinicsError(e.toString()));
     }
+  }
+
+  void getClinics() {
+    emit(const ClinicLoadingState());
+    Future.value(_clinicRepositoryImpl.getAllClinics())
+        .then((value) => emit(ClinicsLoaded2(value)))
+        .onError((error, stackTrace) => emit(ClinicsError(error.toString())));
   }
 }

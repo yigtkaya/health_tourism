@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../product/models/clinic.dart';
 
 abstract class ClinicState{
@@ -13,6 +15,21 @@ class ClinicLoadingState extends ClinicState{
   const ClinicLoadingState();
 }
 
+class ClinicsLoaded2 extends ClinicState {
+  final Stream<QuerySnapshot> clinicList;
+  const ClinicsLoaded2(this.clinicList);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ClinicsLoaded2 && other.clinicList == clinicList;
+  }
+
+  @override
+  int get hashCode => clinicList.hashCode;
+}
+
 class ClinicsLoaded extends ClinicState {
   final List<Clinic> clinicList;
   const ClinicsLoaded(this.clinicList);
@@ -21,7 +38,7 @@ class ClinicsLoaded extends ClinicState {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ClinicsLoaded && other.clinicList == clinicList;
+    return other is ClinicsLoaded2 && other.clinicList == clinicList;
   }
 
   @override
