@@ -32,7 +32,9 @@ class _SignUpViewState extends State<SignUpView> {
   String email = '';
   String password = '';
   String confPassword = '';
-
+  isNameValid() {
+    return nameController.text.isNotEmpty;
+  }
   final authCubit = AuthCubit();
 
   @override
@@ -142,6 +144,10 @@ class _SignUpViewState extends State<SignUpView> {
                         showToastMessage("Passwords are not same with each other");
                         return;
                       }
+                      if(emailController.text.isEmpty || passController.text.isEmpty || nameController.text.isEmpty || confirmPassController.text.isEmpty){
+                        showToastMessage("Please fill all the fields");
+                        return;
+                      }
                       try {
                         context
                             .read<AuthCubit>()
@@ -159,7 +165,7 @@ class _SignUpViewState extends State<SignUpView> {
                     child: signUpButton(size),
                   ),
                   const VerticalSpace(spaceAmount: 30),
-                  buildFooter(),
+                  Center(child: buildFooter()),
                 ],
               ),
               const Spacer(),
