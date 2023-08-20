@@ -15,6 +15,7 @@ import '../../core/components/review_card.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../product/models/clinic.dart';
+import '../../product/models/package.dart';
 import '../../product/navigation/route_paths.dart';
 import '../../product/theme/styles.dart';
 
@@ -29,20 +30,19 @@ class ClinicDetailView extends StatefulWidget {
 class _ClinicDetailViewState extends State<ClinicDetailView> {
   int activeIndex = 0;
   final controller = CarouselController();
+  List packages = [];
 
-  final clinicImages = [
-    "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
-    "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
-    "https://www.fue-hlc.com/wp-content/uploads/2018/01/unnamed-5-1-425x200.jpg",
-    "https://drfatihkoroglu.com/wp-content/uploads/2022/09/clinica-para-injerto-capilar.jpg",
-    "https://iadsb.tmgrup.com.tr/29d1f0/1200/627/0/147/1800/1087?u=https://idsb.tmgrup.com.tr/2019/03/03/high-quality-low-cost-drives-hair-transplant-sector-1551645283861.jpg"
-  ];
   final reviews = [
     ReviewCard(),
     ReviewCard(),
     ReviewCard(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    extractPackages();
+  }
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -208,7 +208,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               trimCollapsedText: 'Read more',
               trimExpandedText: ' show less'),
           const VerticalSpace(
-            spaceAmount: 20,
+            spaceAmount: 32,
           ),
           HTText(label: "Operations", style: htSubTitle),
           const VerticalSpace(
@@ -235,7 +235,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             ),
           ),
           const VerticalSpace(
-            spaceAmount: 20,
+            spaceAmount: 32,
           ),
           HTText(label: "Packages", style: htSubTitle),
           const VerticalSpace(
@@ -261,7 +261,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           ),
           Row(
             children: [
-              HTText(label: "Reviews (18)", style: htTitleStyle),
+              HTText(label: "Reviews (${widget.clinic.reviewCount})", style: htTitleStyle),
               const Spacer(),
               GestureDetector(
                 onTap: () {
@@ -290,13 +290,20 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
       ),
     );
   }
-
   List details = [
     "Maximum Graft",
     "Gives 100% satisfaction guarantee",
     "2 Nights stay in the Hotel",
     "Checkup"
   ];
+
+  void extractPackages() {
+    final details = widget.clinic.packages;
+    for (final package in details) {
+      packages.add(Package.fromData(package));
+    }
+  }
+
   Widget createPackages(Size size) {
     return GestureDetector(
       onTap: () {
