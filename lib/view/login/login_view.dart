@@ -143,7 +143,6 @@ class _LoginViewState extends State<LoginView> {
                     onTap: () {
                       BlocProvider.of<AuthCubit>(context)
                           .signInWithEmailAndPassword(email, password);
-                      print("object");
                       emailController.clear();
                       passController.clear();
                     },

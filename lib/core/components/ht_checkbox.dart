@@ -29,8 +29,8 @@ class _HTCheckBoxState extends State<HTCheckBox> {
       children: <Widget>[
         Container(
           alignment: Alignment.center,
-          width: 17.0,
-          height: 17.0,
+          width: 20.0,
+          height: 20.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.0),
             border: Border.all(
@@ -42,8 +42,8 @@ class _HTCheckBoxState extends State<HTCheckBox> {
           child: widget.isChecked
               ? HTIcon(
             iconName: AssetConstants.icons.checkMark,
-            width: 14,
-            height: 14,
+            width: 16,
+            height: 16,
             color: ThemeManager.instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
           ) : const SizedBox(),
         ),

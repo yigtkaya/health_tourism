@@ -90,6 +90,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   GestureDetector(
                     onTap: () {
                       // check email is valid and password is not empty then sign in
+
                       BlocProvider.of<AuthCubit>(context)
                           .passwordResetSubmit(email);
 

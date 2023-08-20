@@ -9,10 +9,12 @@ import '../../../product/theme/styles.dart';
 
 class HTCustomTextField extends StatefulWidget {
   final TextEditingController textController;
+  final Function(String) onChanged;
 
   const HTCustomTextField({
     Key? key,
     required this.textController,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -40,6 +42,7 @@ class _HTCustomTextFieldState extends State<HTCustomTextField> {
                 maxLines: 1,
                 onChanged: (value) {
                   checkIfEmpty(value);
+                  widget.onChanged(value);
                 },
                 cursorColor: ThemeManager.instance?.getCurrentTheme.colorTheme
                     .darkBlueTextColor,

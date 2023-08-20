@@ -32,9 +32,8 @@ class _SignUpViewState extends State<SignUpView> {
   String email = '';
   String password = '';
   String confPassword = '';
-  isNameValid() {
-    return nameController.text.isNotEmpty;
-  }
+  String name = '';
+
   final authCubit = AuthCubit();
 
   @override
@@ -66,6 +65,12 @@ class _SignUpViewState extends State<SignUpView> {
   void updateConfPassword(String value) {
     setState(() {
       confPassword = value;
+    });
+  }
+
+  void updateName(String value) {
+    setState(() {
+      name = value;
     });
   }
 
@@ -107,7 +112,12 @@ class _SignUpViewState extends State<SignUpView> {
                   const VerticalSpace(
                     spaceAmount: 50,
                   ),
-                  HTCustomTextField(textController: nameController),
+                  HTCustomTextField(
+                    textController: nameController,
+                    onChanged: (value) {
+                      updateName(value);
+                    },
+                  ),
                   const VerticalSpace(),
                   HTEmailField(
                     onChanged: (value) {
@@ -117,36 +127,48 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                   const VerticalSpace(),
                   HTPasswordField(
-                      onChanged: (value) {
-                        updatePassword(value);
-                        hasMatchedPassword(value, confPassword);
-                      },
-                      textController: passController,
-                      ),
+                    onChanged: (value) {
+                      updatePassword(value);
+                      hasMatchedPassword(value, confPassword);
+                    },
+                    textController: passController,
+                  ),
                   const VerticalSpace(),
                   HTPasswordField(
-                      onChanged: (value) {
-                        updateConfPassword(value);
-                        hasMatchedPassword(password, value);
-                      },
-                      textController: confirmPassController,
-                      ),
+                    onChanged: (value) {
+                      updateConfPassword(value);
+                      hasMatchedPassword(password, value);
+                    },
+                    textController: confirmPassController,
+                  ),
                   hasMatchedPassword(password, confPassword)
                       ? const SizedBox.shrink()
                       : Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 2),
-                        child: HTText(label: "Passwords are not same with each other", style: htSmallRedLabelStyle),
-                      ),
+                          padding: const EdgeInsets.only(left: 8.0, top: 2),
+                          child: HTText(
+                              label: "Passwords are not same with each other",
+                              style: htSmallRedLabelStyle),
+                        ),
                   const VerticalSpace(spaceAmount: 40),
                   GestureDetector(
                     onTap: () {
-                      if (!hasMatchedPassword(password, confPassword)) {
-                        showToastMessage("Passwords are not same with each other");
-                        return;
-                      }
-                      if(emailController.text.isEmpty || passController.text.isEmpty || nameController.text.isEmpty || confirmPassController.text.isEmpty){
+                      if (email.isEmpty ||
+                          password.isEmpty ||
+                          name.isEmpty ||
+                          confPassword.isEmpty) {
                         showToastMessage("Please fill all the fields");
                         return;
+                      }
+                      if (!hasMatchedPassword(password, confPassword)) {
+                        showToastMessage(
+                            "Passwords are not same with each other");
+                        return;
+                      } else {
+                        if (password.length < 8) {
+                          showToastMessage(
+                              "Password must be at least 8 characters");
+                          return;
+                        }
                       }
                       try {
                         context
@@ -157,7 +179,6 @@ class _SignUpViewState extends State<SignUpView> {
                         passController.clear();
                         emailController.clear();
                         nameController.clear();
-
                       } on Exception catch (e) {
                         print(e.toString());
                       }
@@ -272,7 +293,7 @@ void showToastMessage(String message) {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: const Color(0xFF58A2EB),
       textColor: Colors.white,
       fontSize: 16.0);
 }

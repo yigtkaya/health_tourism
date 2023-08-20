@@ -38,6 +38,11 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<void> resetPassword({required String email}) async {
     // send reset password email
+    if (email.isEmpty) {
+      showToastMessage("Email cannot be empty. Please enter your email to reset your password.");
+      return;
+    }
+
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
       showToastMessage(
@@ -163,7 +168,7 @@ class AuthRepositoryImpl extends AuthRepository {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: const Color(0xFF58A2EB),
         textColor: Colors.white,
         fontSize: 16.0);
   }
