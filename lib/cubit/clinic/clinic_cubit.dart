@@ -12,18 +12,6 @@ class ClinicCubit extends Cubit<ClinicState> {
     getClinics();
   }
 
-  void getAllClinic() async {
-    try {
-      emit(const ClinicLoadingState());
-      print("ClinicLoadingState");
-      Future.value(_clinicRepositoryImpl.getClinicData())
-          .then((value) => emit(ClinicsLoaded(value)));
-
-    } catch (e) {
-      emit(ClinicsError(e.toString()));
-    }
-  }
-
   void getClinics() {
     emit(const ClinicLoadingState());
     Future.value(_clinicRepositoryImpl.getAllClinics())
