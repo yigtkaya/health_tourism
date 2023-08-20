@@ -109,9 +109,7 @@ class _LoginViewState extends State<LoginView> {
                       updatePassword(value);
                     },
                     textController: passController,
-                    validation: false,
-                    hintText: "Enter your password",
-                    iconName: Icons.lock),
+                ),
                 const VerticalSpace(
                   spaceAmount: 20,
                 ),
@@ -143,7 +141,6 @@ class _LoginViewState extends State<LoginView> {
                 const VerticalSpace(spaceAmount: 40),
                 GestureDetector(
                     onTap: () {
-                      // check email is valid and password is not empty then sign in
                       BlocProvider.of<AuthCubit>(context)
                           .signInWithEmailAndPassword(email, password);
                       print("object");

@@ -67,7 +67,11 @@ final htToolBarLabel = GoogleFonts.nunitoSans(
   color: Colors.white,
   fontWeight: FontWeight.bold,
 );
-
+final htSmallRedLabelStyle = GoogleFonts.nunitoSans(
+  fontSize: 12.0,
+  color: Colors.redAccent,
+  fontWeight: FontWeight.normal,
+);
 final htSmallLabelStyle = GoogleFonts.nunitoSans(
   fontSize: 12.0,
   color: ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,

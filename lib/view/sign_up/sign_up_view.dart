@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/textfields/ht_password_field.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
@@ -27,7 +28,7 @@ class _SignUpViewState extends State<SignUpView> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
-  final TextEditingController confPassController = TextEditingController();
+  final TextEditingController confirmPassController = TextEditingController();
   String email = '';
   String password = '';
   String confPassword = '';
@@ -43,7 +44,8 @@ class _SignUpViewState extends State<SignUpView> {
   void dispose() {
     emailController.dispose();
     passController.dispose();
-    confPassController.dispose();
+    nameController.dispose();
+    confirmPassController.dispose();
     super.dispose();
   }
 
@@ -63,6 +65,10 @@ class _SignUpViewState extends State<SignUpView> {
     setState(() {
       confPassword = value;
     });
+  }
+
+  bool hasMatchedPassword(String password, String confPassword) {
+    return password == confPassword;
   }
 
   @override
@@ -90,6 +96,7 @@ class _SignUpViewState extends State<SignUpView> {
               ),
               const Spacer(),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HTText(
                     label: "Sign Up",
@@ -110,30 +117,37 @@ class _SignUpViewState extends State<SignUpView> {
                   HTPasswordField(
                       onChanged: (value) {
                         updatePassword(value);
+                        hasMatchedPassword(value, confPassword);
                       },
-                      validation: false,
                       textController: passController,
-                      hintText: "Enter your password",
-                      iconName: Icons.lock),
+                      ),
                   const VerticalSpace(),
                   HTPasswordField(
                       onChanged: (value) {
                         updateConfPassword(value);
+                        hasMatchedPassword(password, value);
                       },
-                      validation: false,
-                      textController: passController,
-                      hintText: "Enter your password",
-                      iconName: Icons.lock),
+                      textController: confirmPassController,
+                      ),
+                  hasMatchedPassword(password, confPassword)
+                      ? const SizedBox.shrink()
+                      : Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 2),
+                        child: HTText(label: "Passwords are not same with each other", style: htSmallRedLabelStyle),
+                      ),
                   const VerticalSpace(spaceAmount: 40),
                   GestureDetector(
                     onTap: () {
+                      if (!hasMatchedPassword(password, confPassword)) {
+                        showToastMessage("Passwords are not same with each other");
+                        return;
+                      }
                       try {
-
                         context
                             .read<AuthCubit>()
                             .signUpWithEmailAndPassword(email, password);
 
-                        confPassController.clear();
+                        confirmPassController.clear();
                         passController.clear();
                         emailController.clear();
                         nameController.clear();
@@ -244,6 +258,17 @@ Widget signInAlternatives(Size size, AuthCubit authCubit) {
       ),
     ],
   );
+}
+
+void showToastMessage(String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.blueGrey,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 Widget buildFooter() {

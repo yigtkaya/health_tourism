@@ -1,35 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:health_tourism/core/components/ht_text.dart';
-import 'package:health_tourism/core/components/ht_validation.dart';
-import 'package:health_tourism/cubit/validation/validation_cubit.dart';
-import 'package:health_tourism/cubit/validation/validation_state.dart';
-
 import '../../../product/theme/styles.dart';
 import '../../../product/theme/theme_manager.dart';
 import '../../constants/asset.dart';
 import '../../constants/dimen.dart';
-import '../../constants/horizontal_space.dart';
-import '../../constants/vertical_space.dart';
 import '../ht_icon.dart';
 
 class HTPasswordField extends StatefulWidget {
   final TextEditingController textController;
-  final String hintText;
-  final bool validation;
   final Function(String) onChanged;
-  final IconData iconName;
 
   const HTPasswordField({
     Key? key,
     required this.textController,
-    required this.hintText,
-    required this.iconName,
     required this.onChanged,
-    required this.validation,
   }) : super(key: key);
 
   @override

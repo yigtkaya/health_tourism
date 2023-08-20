@@ -37,7 +37,8 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 32),
+            padding: const EdgeInsets.only(
+                left: 16.0, right: 16.0, top: 16.0, bottom: 32),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -52,15 +53,22 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                     },
                     child: Container(
                       child: _selectedIndex == 0
-                          ? HTIcon(iconName: AssetConstants.icons.homeSelected, width: 24, height: 24,)
-                          : HTIcon(iconName: AssetConstants.icons.homeUnSelected, width: 24, height: 24,),
+                          ? HTIcon(
+                              iconName: AssetConstants.icons.homeSelected,
+                              width: 24,
+                              height: 24,
+                            )
+                          : HTIcon(
+                              iconName: AssetConstants.icons.homeUnSelected,
+                              width: 24,
+                              height: 24,
+                            ),
                     ),
                   ),
                 ),
                 Expanded(
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
-
                     onTap: () {
                       widget.onChange(1);
                       setState(() {
@@ -69,8 +77,16 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                     },
                     child: Container(
                       child: _selectedIndex == 1
-                          ? HTIcon(iconName: AssetConstants.icons.messageSelected, width: 24, height: 24,)
-                          : HTIcon(iconName: AssetConstants.icons.messageUnSelected, width: 24, height: 24,),
+                          ? HTIcon(
+                              iconName: AssetConstants.icons.messageSelected,
+                              width: 24,
+                              height: 24,
+                            )
+                          : HTIcon(
+                              iconName: AssetConstants.icons.messageUnSelected,
+                              width: 24,
+                              height: 24,
+                            ),
                     ),
                   ),
                 ),
@@ -85,8 +101,16 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                     },
                     child: Container(
                       child: _selectedIndex == 2
-                          ? HTIcon(iconName: AssetConstants.icons.profileSelected, width: 24, height: 24,)
-                          : HTIcon(iconName: AssetConstants.icons.profileUnSelected, width: 24, height: 24,),
+                          ? HTIcon(
+                              iconName: AssetConstants.icons.profileSelected,
+                              width: 24,
+                              height: 24,
+                            )
+                          : HTIcon(
+                              iconName: AssetConstants.icons.profileUnSelected,
+                              width: 24,
+                              height: 24,
+                            ),
                     ),
                   ),
                 ),

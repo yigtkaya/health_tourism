@@ -46,7 +46,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
     } catch (e) {
-      showToastMessage(e.toString());
+      showToastMessage("Failed to send reset password email.");
     }
   }
 
@@ -54,6 +54,10 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     // sign in with email and password
+    if (email.isEmpty || password.isEmpty) {
+      showToastMessage("Password or email cannot be empty.");
+      return;
+    }
     try {
       await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password)
@@ -68,7 +72,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
     } catch (e) {
-      showToastMessage(e.toString());
+      showToastMessage("An error occurred. Failed to sign in.");
     }
   }
 
@@ -87,7 +91,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
     } catch (e) {
-      showToastMessage(e.toString());
+      showToastMessage("An error occurred. Failed to sign in.");
     }
   }
 
@@ -131,7 +135,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
     } catch (e) {
-      showToastMessage(e.toString());
+      showToastMessage("An error occurred. Failed to sign in.");
     }
   }
 
@@ -149,7 +153,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
     } catch (e) {
-      showToastMessage(e.toString());
+      showToastMessage("An error occurred. Failed to sign up.");
     }
   }
 

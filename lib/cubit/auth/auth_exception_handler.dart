@@ -49,37 +49,37 @@ class AuthExceptionHandler {
     String errorMessage;
     switch (exceptionCode) {
       case "invalid-email":
-        errorMessage = "Your email address is not valid.";
+        errorMessage = "Your email address is not valid. Please enter a valid email address.";
         break;
       case "wrong-password":
-        errorMessage = "Your password is wrong.";
+        errorMessage = "Your password is wrong. Please enter correct password.";
         break;
       case "user-not-found":
-        errorMessage = "User with this email doesn't exist.";
+        errorMessage = "User with this email doesn't exist. Please enter valid email address.";
         break;
       case "user-disabled":
-        errorMessage = "User with this email has been disabled.";
+        errorMessage = "User with this email has been disabled. Please contact support.";
         break;
       case "ERROR_TOO_MANY_REQUESTS":
-        errorMessage = "Too many requests. Try again later.";
+        errorMessage = "Too many requests. Try again later. Please try again in a few minutes.";
         break;
       case "operation-not-allowed":
-        errorMessage = "Signing in with Email and Password is not enabled.";
+        errorMessage = "Signing in with Email and Password is not enabled. Please contact support.";
         break;
       case "account-exists-with-different-credential":
-        errorMessage = "There is already a account with this credentials";
+        errorMessage = "There is already a account with this credentials but different email address. Please try again with different email address.";
         break;
       case "weak-password":
-        errorMessage = "Your password is too weak";
+        errorMessage = "Your password is too weak and easy to guess. Please enter strong password.";
         break;
       case "email-already-in-use":
-        errorMessage = "Email is already in use on different account";
+        errorMessage = "Email is already in use on different account or this account. Please try again with different email address.";
         break;
       case "invalid-credential":
-        errorMessage = "Your email is invalid";
+        errorMessage = "Your email is invalid or expired. Please try again with different email.";
         break;
       default:
-        errorMessage = "An undefined Error happened.";
+        errorMessage = "An Error happened.";
     }
 
     return errorMessage;
