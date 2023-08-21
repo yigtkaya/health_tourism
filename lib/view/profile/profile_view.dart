@@ -26,6 +26,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  late User user;
   @override
   void initState() {
     // TODO: implement initState
@@ -168,7 +169,7 @@ class _ProfileViewState extends State<ProfileView> {
 
           Map<String, dynamic> data =
               snapshot.data?.data() as Map<String, dynamic>;
-          User user = User.fromData(data);
+          user = User.fromData(data);
           return Column(
             children: [
               Container(

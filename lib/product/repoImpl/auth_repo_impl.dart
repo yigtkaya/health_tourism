@@ -32,8 +32,6 @@ class AuthRepositoryImpl extends AuthRepository {
     await _firebaseAuth.signOut();
     await GoogleSignIn().signOut();
     await _facebookAuth.logOut();
-
-    goTo(path: RoutePath.signIn);
   }
 
   @override
