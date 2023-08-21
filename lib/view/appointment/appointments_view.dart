@@ -20,6 +20,9 @@ class AppointmentsView extends StatefulWidget {
 }
 
 class _AppointmentsViewState extends State<AppointmentsView> {
+  List pastAppointmentsList = [];
+  List upcomingAppointmentsList = [];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

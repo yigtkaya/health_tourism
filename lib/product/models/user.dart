@@ -16,6 +16,7 @@ class User extends Equatable {
   final String skinDiseases;
   final String chronicConditions;
   final String hairTransplantOperations;
+  final List<dynamic> appointments;
 
   const User(
       {required this.supplements,
@@ -31,6 +32,7 @@ class User extends Equatable {
       required this.uid,
       required this.email,
       required this.name,
+      required this.appointments,
       required this.birthday});
 
   @override
@@ -48,6 +50,7 @@ class User extends Equatable {
         hairTransplantOperations,
         alcoholOrSmoke,
         supplements,
+        appointments,
         medications,
       ];
 
@@ -69,6 +72,7 @@ class User extends Equatable {
         surgeryHistory = data['surgeryHistory'],
         skinDiseases = data['skinDiseases'],
         chronicConditions = data['chronicConditions'],
+        appointments = data['appointments'],
         hairTransplantOperations = data['hairTransplantOperations'];
 
   Map<String, dynamic> toJson() {
@@ -85,6 +89,7 @@ class User extends Equatable {
       'previousOperations': surgeryHistory,
       'skinDiseases': skinDiseases,
       'chronicConditions': chronicConditions,
+      'appointments': appointments,
       'hairTransplantOperations': hairTransplantOperations
     };
   }

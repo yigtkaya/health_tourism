@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
-import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 
 import '../ht_text.dart';

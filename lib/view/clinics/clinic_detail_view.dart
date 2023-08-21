@@ -30,7 +30,7 @@ class ClinicDetailView extends StatefulWidget {
 class _ClinicDetailViewState extends State<ClinicDetailView> {
   int activeIndex = 0;
   final controller = CarouselController();
-  List packages = [];
+  List<Package> packages = [];
 
   final reviews = [
     ReviewCard(),
@@ -182,7 +182,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               const Divider(
                 height: 1,
                 thickness: 1,
-                color: Color(0x33000000),
+                color: Color(0xfff3f3f3),
               ),
               const VerticalSpace(),
               buildInformation(size),
@@ -236,18 +236,6 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           const VerticalSpace(
             spaceAmount: 12,
           ),
-          SizedBox(
-            height: size.height * 0.15,
-            child: ListView.builder(
-                itemCount: packages.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: createPackages(size, packages[index]),
-                  );
-                }),
-          ),
           const VerticalSpace(
             spaceAmount: 32,
           ),
@@ -271,10 +259,11 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             ],
           ),
           const VerticalSpace(
-            spaceAmount: 12,
+            spaceAmount: 16,
           ),
           ListView.builder(
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: reviews.length,
             itemBuilder: (context, index) {
@@ -293,10 +282,9 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     }
   }
 
-  Widget createPackages(Size size, Package package) {
+  Widget packageCard(Package package) {
     return GestureDetector(
       onTap: () {
-        /// TODO: Navigate to package detail page ??
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -306,40 +294,30 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             });
       },
       child: Container(
-        width: size.width * 0.46,
-        decoration: const BoxDecoration(
-          color: Color(0xffd3e9ff),
-          borderRadius: BorderRadius.all(Radius.circular(30)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: const Color(0xff58a2eb)),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 6),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Center(
-                  child: HTText(
-                      label: package.packageName, style: htDarkBlueLargeStyle)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  removeBottom: true,
-                  child: ListView.builder(
-                      itemCount: package.packageFeatures.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(spaceAmount: 4),
-                            HTText(
-                                label: package.packageFeatures[index],
-                                style: htLabelBlackStyle),
-                          ],
-                        );
-                      }),
-                ),
+              HTText(
+                label: package.packageName,
+                style: htBlueLabelStyle.copyWith(fontSize: 22),
+              ),
+              const VerticalSpace(
+                spaceAmount: 8,
+              ),
+              HTText(label: '\$${package.price.toString()}', style: htBlueLabelStyle),
+              const VerticalSpace(),
+              const Divider(
+                height: 1,
+                thickness: 1,
+                color: Colors.black,
               ),
             ],
           ),
