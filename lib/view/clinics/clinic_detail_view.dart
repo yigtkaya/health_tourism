@@ -104,7 +104,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                       iconName: AssetConstants.icons.chevronLeft,
                       width: 20,
                       height: 20,
-                      color: Colors.white,
+                      color: const Color(0xff123258),
                       onPress: () {
                         context.pop();
                       },
@@ -275,6 +275,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           ),
           ListView.builder(
             shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: reviews.length,
             itemBuilder: (context, index) {
               return reviews[index];
@@ -284,13 +285,6 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
       ),
     );
   }
-
-  List details = [
-    "Maximum Graft",
-    "Gives 100% satisfaction guarantee",
-    "2 Nights stay in the Hotel",
-    "Checkup"
-  ];
 
   void extractPackages() {
     final details = widget.clinic.packages;
@@ -332,19 +326,19 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   removeTop: true,
                   removeBottom: true,
                   child: ListView.builder(
-                    itemCount: package.packageFeatures.length,
+                      itemCount: package.packageFeatures.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                    return Row(
-                      children: [
-                        HTIcon(iconName: AssetConstants.icons.checkMark),
-                        const HorizontalSpace(spaceAmount: 4),
-                        HTText(
-                            label: package.packageFeatures[index],
-                            style: htLabelBlackStyle),
-                      ],
-                    );
-                  }),
+                        return Row(
+                          children: [
+                            HTIcon(iconName: AssetConstants.icons.checkMark),
+                            const HorizontalSpace(spaceAmount: 4),
+                            HTText(
+                                label: package.packageFeatures[index],
+                                style: htLabelBlackStyle),
+                          ],
+                        );
+                      }),
                 ),
               ),
             ],
@@ -355,12 +349,12 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
   }
 
   Widget operationImageHolder(String url, Size size) => GestureDetector(
-    onTap: () {
-      context.pushNamed(RoutePath.fullscreenImage, queryParameters: {
-        "imageUrl": url,
-      });
-    },
-    child: Container(
+        onTap: () {
+          context.pushNamed(RoutePath.fullscreenImage, queryParameters: {
+            "imageUrl": url,
+          });
+        },
+        child: Container(
           height: size.height * 0.12,
           width: size.width * 0.28,
           decoration: BoxDecoration(
@@ -368,7 +362,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
           ),
         ),
-  );
+      );
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
         activeIndex: activeIndex,
@@ -384,12 +378,14 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
 
   Widget buildImage(String urlImage, int index, BuildContext context) {
     if (urlImage.contains(".mp4")) {
-      return ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(22),
-          bottomLeft: Radius.circular(22),
+      return SafeArea(
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomRight: Radius.circular(22),
+            bottomLeft: Radius.circular(22),
+          ),
+          child: VideoPlayerDemo(url: urlImage, corousel: controller),
         ),
-        child: VideoPlayerDemo(url: urlImage, corousel: controller),
       );
     }
     return ClipRRect(
@@ -428,14 +424,20 @@ class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
     controller = VideoPlayerController.networkUrl(Uri.parse(widget.url));
     _chewieController = ChewieController(
       videoPlayerController: controller,
+      aspectRatio: 4 / 3,
+      customControls: const MaterialControls(
+        showPlayButton: true,
+      ),
+      hideControlsTimer: Duration(seconds: 0),
       autoPlay: false,
-      looping: false,
+      looping: true,
+      allowMuting: false,
       autoInitialize: true,
       errorBuilder: (context, errorMessage) {
         return Center(
           child: Text(
             errorMessage,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black),
           ),
         );
       },
