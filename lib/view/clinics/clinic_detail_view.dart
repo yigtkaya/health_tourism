@@ -30,6 +30,7 @@ class ClinicDetailView extends StatefulWidget {
 class _ClinicDetailViewState extends State<ClinicDetailView> {
   int activeIndex = 0;
   final controller = CarouselController();
+  late List operationImageUrls;
   List packages = [];
 
   final reviews = [
@@ -42,6 +43,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
   void initState() {
     super.initState();
     extractPackages();
+    operationImageUrls = widget.clinic.operationImageUrls;
+    print(widget.clinic.operationImageUrls);
   }
 
   @override
@@ -216,25 +219,18 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           const VerticalSpace(
             spaceAmount: 12,
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  operationImageHolder(size),
-                  const HorizontalSpace(),
-                  operationImageHolder(size),
-                  const HorizontalSpace(),
-                  operationImageHolder(size),
-                  const HorizontalSpace(),
-                  operationImageHolder(size),
-                  const HorizontalSpace(),
-                  operationImageHolder(size),
-                ],
-              ),
-            ),
+          SizedBox(
+            height: size.height * 0.15,
+            child: ListView.builder(
+                itemCount: widget.clinic.operationImageUrls.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: operationImageHolder(
+                        widget.clinic.operationImageUrls[index], size),
+                  );
+                }),
           ),
           const VerticalSpace(
             spaceAmount: 32,
@@ -322,7 +318,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             });
       },
       child: Container(
-        width: size.width * 0.45,
+        width: size.width * 0.35,
+        height: size.height * 0.25,
         decoration: const BoxDecoration(
           color: Color(0xffd3e9ff),
           borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -376,7 +373,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             });
       },
       child: Container(
-        width: size.width * 0.45,
+        width: size.width * 0.5,
+        height: size.height * 0.2,
         decoration: const BoxDecoration(
           color: Color(0xffd3e9ff),
           borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -417,17 +415,21 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     );
   }
 
-  Widget operationImageHolder(Size size) => Container(
-        height: size.height * 0.12,
-        width: size.width * 0.28,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          image: const DecorationImage(
-              image: NetworkImage(
-                  "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg"),
-              fit: BoxFit.cover),
+  Widget operationImageHolder(String url, Size size) => GestureDetector(
+    onTap: () {
+      context.pushNamed(RoutePath.fullscreenImage, queryParameters: {
+        "imageUrl": url,
+      });
+    },
+    child: Container(
+          height: size.height * 0.12,
+          width: size.width * 0.28,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+          ),
         ),
-      );
+  );
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
         activeIndex: activeIndex,
