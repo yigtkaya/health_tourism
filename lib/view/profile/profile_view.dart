@@ -12,6 +12,7 @@ import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
 import 'package:health_tourism/product/models/user.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/product/navigation/router.dart';
+import 'package:health_tourism/product/utils/skelton.dart';
 
 import '../../core/components/ht_text.dart';
 import '../../core/constants/horizontal_space.dart';
@@ -25,17 +26,18 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  late User customer;
+  late User user;
 
   @override
   void initState() {
     // TODO: implement initState
-    context.read<ProfileCubit>().getUserData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
@@ -57,7 +59,38 @@ class _ProfileViewState extends State<ProfileView> {
             const VerticalSpace(
               spaceAmount: 30,
             ),
-            userInfo(),
+            BlocBuilder<ProfileCubit, ProfileState>(
+              builder: (context, state) {
+                if (state is ProfileLoadingState) {
+                  return Column(
+                    children: [
+                      CircleSkeleton(
+                        size: 100,
+                      ),
+                      VerticalSpace(),
+                      Skeleton(
+                        height: 12,
+                        width: size.width * 0.5,
+                      ),
+                      VerticalSpace(),
+                      Skeleton(
+                        height: 12,
+                        width: size.width * 0.5,
+                      ),
+                    ],
+                  );
+                }
+
+                if (state is ProfileLoadedState) {
+                  return userInfo(state.user.profilePhoto, state.user.name,
+                      state.user.email);
+                } else {
+                  return const Center(
+                    child: HTText(label: "Something went wrong", style: htLabelBlackStyle),
+                  );
+                }
+              },
+            ),
             const VerticalSpace(
               spaceAmount: 40,
             ),
@@ -109,24 +142,24 @@ class _ProfileViewState extends State<ProfileView> {
     AssetConstants.icons.logout,
   ];
 
-  Widget userInfo() {
+  Widget userInfo(String url, String name, String email) {
     return Column(
       children: [
         Container(
           height: 100,
           width: 100,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
               image: NetworkImage(
-                  "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
+                  url),
               fit: BoxFit.cover,
             ),
           ),
         ),
         const VerticalSpace(),
-        HTText(label: "John Doe", style: htTitleStyle),
-        HTText(label: "hasan.kaya@gmail.com", style: htBlueLabelStyle),
+        HTText(label: name, style: htTitleStyle),
+        HTText(label: email, style: htBlueLabelStyle),
       ],
     );
   }
@@ -156,10 +189,12 @@ class _ProfileViewState extends State<ProfileView> {
                       height: 16),
             ],
           ),
-          index == 5 ? const SizedBox.shrink() : const Divider(
-            color: Color(0xffd3e3f1),
-            thickness: 2,
-          ),
+          index == 5
+              ? const SizedBox.shrink()
+              : const Divider(
+                  color: Color(0xffd3e3f1),
+                  thickness: 2,
+                ),
         ],
       ),
     );

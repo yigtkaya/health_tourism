@@ -58,7 +58,7 @@ class User extends Equatable {
   User.fromData(Map<dynamic, dynamic> data)
       : uid = data['uid'],
         email = data['email'],
-        name = data['fullName'],
+        name = data['name'],
         surname = data['surname'],
         birthday = data['birthday'],
         profilePhoto = data['photoURL'],
@@ -75,7 +75,7 @@ class User extends Equatable {
     return {
       'uid': uid,
       'email': email,
-      'fullName': name,
+      'name': name,
       'birthday': birthday,
       'photoURL': profilePhoto,
       'supplements': supplements,

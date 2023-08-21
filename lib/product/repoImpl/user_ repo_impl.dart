@@ -39,20 +39,20 @@ class UserRepositoryImpl extends UserRepo {
   }
 
   @override
-  Future<void> deleteCustomer(String uid) async {
+  Future<void> deleteUser(String uid) async {
     users.doc(uid).delete();
   }
 
   @override
-  Future<User> getCustomer() async {
-    final data = await users.doc().get();
+  Future<User> getUser(String uid) async {
+    final data = await users.doc(uid).get();
     Map<dynamic, dynamic> map = data.data() as Map;
 
     return User.fromData(map);
   }
 
   @override
-  Future<void> updateCustomerData(User user) async {
+  Future<void> updateUser(User user) async {
     FirebaseFirestore.instance
         .collection("users")
         .doc(user.uid)

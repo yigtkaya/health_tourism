@@ -15,35 +15,31 @@ class HTBottomNav extends StatefulWidget {
 class _HTBottomNavState extends State<HTBottomNav> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavbarCubit(),
-      child: BlocConsumer<NavbarCubit, NavbarState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          var cubit = NavbarCubit.get(context);
-          return Scaffold(
-            bottomNavigationBar: CustomBottomNavBar(
-              onChange: (index) {
-                cubit.changeBottomNavBar(index);
-              },
-              defaultSelectedIndex: 0,
-            ),
-            extendBody: true,
-            body: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: cubit.pageController,
-              onPageChanged: (index) {
-                cubit.changeBottomNavBar(index);
-              },
-              children: const [
-                LandingView(),
-                ChatsView(),
-                ProfileView(),
-              ],
-            )
-          );
-        },
-      ),
+    return BlocBuilder<NavbarCubit, NavbarState>(
+      builder: (context, state) {
+        var cubit = NavbarCubit.get(context);
+        return Scaffold(
+          bottomNavigationBar: CustomBottomNavBar(
+            onChange: (index) {
+              cubit.changeBottomNavBar(index);
+            },
+            defaultSelectedIndex: 0,
+          ),
+          extendBody: true,
+          body: PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: cubit.pageController,
+            onPageChanged: (index) {
+              cubit.changeBottomNavBar(index);
+            },
+            children: const [
+              LandingView(),
+              ChatsView(),
+              ProfileView(),
+            ],
+          )
+        );
+      },
     );
   }
 }
