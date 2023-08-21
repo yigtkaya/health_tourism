@@ -20,7 +20,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(const ProfileLoadingState());
       Future.value(_userRepositoryImpl.getUserSnapshot(uid)
       ).then((value) => {
-        emit(ProfileLoaded2State(value))
+        emit(ProfileLoadedState(value))
       });
     } on Exception catch (e) {
       emit(const ProfileErrorState('Error while loading user data'));
