@@ -76,6 +76,32 @@ class _ProfileViewState extends State<ProfileView> {
                         height: 12,
                         width: size.width * 0.5,
                       ),
+                      const VerticalSpace(
+                        spaceAmount: 40,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: settings.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: index == 5
+                                      ? () {
+                                    context.read<AuthCubit>().signOut();
+                                  }
+                                      : () {
+                                    context.pushNamed(
+                                      '/${settings[index].toString().replaceAll(" ", "")}',
+                                      queryParameters: {'title': settings[index]},
+                                    );
+                                    print("object");
+                                  },
+                                  child: getSettings(
+                                      iconList[index], settings[index], index));
+                            }),
+                      ),
                     ],
                   );
                 }
@@ -109,7 +135,7 @@ class _ProfileViewState extends State<ProfileView> {
                             : () {
                                 context.pushNamed(
                                   '/${settings[index].toString().replaceAll(" ", "")}',
-                                  queryParameters: {'title': settings[index]},
+                                  queryParameters: {'title': settings[index]}, extra: user
                                 );
                                 print("object");
                               },

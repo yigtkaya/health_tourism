@@ -7,10 +7,12 @@ import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../core/constants/vertical_space.dart';
+import '../../product/models/user.dart';
 import '../../product/theme/styles.dart';
 
 class PersonalInfoView extends StatefulWidget {
-  const PersonalInfoView({super.key});
+  final User user;
+  const PersonalInfoView({super.key, required this.user});
 
   @override
   State<PersonalInfoView> createState() => _PersonalInfoViewState();
@@ -19,14 +21,11 @@ class PersonalInfoView extends StatefulWidget {
 class _PersonalInfoViewState extends State<PersonalInfoView> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController surnameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController ageController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController chronic = TextEditingController();
   final TextEditingController allergies = TextEditingController();
   final TextEditingController medications = TextEditingController();
   final TextEditingController surgeries = TextEditingController();
-  final TextEditingController familyHistory = TextEditingController();
   final TextEditingController diseases = TextEditingController();
   final TextEditingController hairTransplantation = TextEditingController();
   final TextEditingController supplements = TextEditingController();
@@ -38,6 +37,22 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   String selectedGender = "";
   int selectedIndex = 0;
   bool isChanged = false;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.user.name;
+    surnameController.text = widget.user.surname;
+    emailController.text = widget.user.email;
+    medications.text = widget.user.medications;
+    chronic.text = widget.user.chronicConditions;
+    allergies.text = widget.user.allergies;
+    surgeries.text = widget.user.surgeryHistory;
+    diseases.text = widget.user.skinDiseases;
+    hairTransplantation.text = widget.user.hairTransplantOperations;
+    alcoholOrSmoking.text = widget.user.alcoholOrSmoke;
+    supplements.text = widget.user.supplements;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +106,11 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                   child: Container(
                     width: size.width * 0.3,
                     height: size.width * 0.3,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: NetworkImage(
-                            "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
+                            widget.user.profilePhoto),
                         fit: BoxFit.cover,
                       ),
                     ),

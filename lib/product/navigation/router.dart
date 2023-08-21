@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +16,6 @@ import 'package:health_tourism/view/personal_information/personal_info.dart';
 import 'package:health_tourism/view/reviews/reviews.dart';
 import 'package:health_tourism/view/root/root_view.dart';
 import 'package:health_tourism/view/splash/splash_view.dart';
-
 import '../../cubit/message/message_cubit.dart';
 import '../../view/chats/chat_room_view.dart';
 import '../../view/chats/send_image_view.dart';
@@ -26,6 +24,7 @@ import '../../view/onboarding/onboarding_view.dart';
 import '../../view/profile/profile_view.dart';
 import '../../view/sign_up/sign_up_view.dart';
 import '../models/clinic.dart';
+import '../models/user.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -45,7 +44,8 @@ final GoRouter router = GoRouter(
       path: RoutePath.personalInfo,
       name: RoutePath.personalInfo,
       builder: (context, state) {
-        return const PersonalInfoView();
+        User user = state.extra as User;
+        return PersonalInfoView(user: user,);
       },
     ),
     GoRoute(
@@ -59,7 +59,8 @@ final GoRouter router = GoRouter(
       path: RoutePath.appointment,
       name: RoutePath.appointment,
       builder: (context, state) {
-        return const AppointmentsView();
+        User user = state.extra as User;
+        return AppointmentsView(user: user);
       },
     ),
     GoRoute(

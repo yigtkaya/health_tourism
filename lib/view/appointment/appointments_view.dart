@@ -8,10 +8,12 @@ import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
+import '../../product/models/user.dart';
 import '../../product/theme/styles.dart';
 
 class AppointmentsView extends StatefulWidget {
-  const AppointmentsView({super.key});
+  final User user;
+  const AppointmentsView({super.key, required this.user});
 
   @override
   State<AppointmentsView> createState() => _AppointmentsViewState();
@@ -20,7 +22,6 @@ class AppointmentsView extends StatefulWidget {
 class _AppointmentsViewState extends State<AppointmentsView> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
