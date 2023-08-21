@@ -43,6 +43,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     super.initState();
     extractPackages();
   }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -196,6 +197,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HTText(label: "About", style: htSubTitle),
@@ -257,11 +259,13 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             ),
           ),
           const VerticalSpace(
-            spaceAmount: 24,
+            spaceAmount: 32,
           ),
           Row(
             children: [
-              HTText(label: "Reviews (${widget.clinic.reviewCount})", style: htTitleStyle),
+              HTText(
+                  label: "Reviews (${widget.clinic.reviewCount})",
+                  style: htTitleStyle),
               const Spacer(),
               GestureDetector(
                 onTap: () {
@@ -290,6 +294,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
       ),
     );
   }
+
   List details = [
     "Maximum Graft",
     "Gives 100% satisfaction guarantee",
@@ -302,6 +307,60 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     for (final package in details) {
       packages.add(Package.fromData(package));
     }
+  }
+
+  Widget createPackageView(Package package, Size size) {
+    return GestureDetector(
+      onTap: () {
+        /// TODO: Navigate to package detail page ??
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return PackageDetailDialog(
+                packageDetailList: package.packageFeatures,
+              );
+            });
+      },
+      child: Container(
+        width: size.width * 0.45,
+        decoration: const BoxDecoration(
+          color: Color(0xffd3e9ff),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
+              child: Center(
+                  child: HTText(
+                      label: package.packageName, style: htDarkBlueLargeStyle)),
+            ),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.black,
+            ),
+            const Padding(
+              padding: EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HTText(label: "- Maximum Graft", style: htLabelBlackStyle),
+                  HTText(
+                      label: "- Gives 100% satisfaction guarantee",
+                      style: htLabelBlackStyle),
+                  HTText(
+                      label: "- 2 Nights stay in the Hotel",
+                      style: htLabelBlackStyle),
+                  HTText(label: "- Checkup", style: htLabelBlackStyle),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget createPackages(Size size) {
