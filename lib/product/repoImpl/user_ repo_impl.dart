@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/customer.dart';
+import '../models/user.dart';
 import '../repositories/customer_repo.dart';
 
 class UserRepositoryImpl extends UserRepo {
@@ -7,8 +7,23 @@ class UserRepositoryImpl extends UserRepo {
   FirebaseFirestore.instance.collection("users");
 
 
+  Future<void> createUserOnSignUp(String uid) async {
+    final data = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .get();
+
+    if (!data.exists) {
+      users.doc(uid).set({
+        "uid": uid,
+      });
+    }
+
+
+  }
+
   @override
-  Future<void> createCustomer(
+  Future<void> createUser(
       User user) async {
     final data = await FirebaseFirestore.instance
         .collection("users")
@@ -18,7 +33,7 @@ class UserRepositoryImpl extends UserRepo {
     if (!data.exists) {
       FirebaseFirestore.instance
           .collection("users")
-          .doc("iniAcRHUF5HLDjk0IaFh")
+          .doc()
           .set({
         "name": user.name,
         "surname": user.surname,

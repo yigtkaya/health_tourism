@@ -9,7 +9,7 @@ import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
-import 'package:health_tourism/product/models/customer.dart';
+import 'package:health_tourism/product/models/user.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/product/navigation/router.dart';
 

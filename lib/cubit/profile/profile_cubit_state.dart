@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:health_tourism/product/models/customer.dart';
+import 'package:health_tourism/product/models/user.dart';
 @immutable
 abstract class ProfileState {
   const ProfileState();

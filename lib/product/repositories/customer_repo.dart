@@ -1,6 +1,6 @@
 import 'package:health_tourism/product/models/clinic.dart';
 
-import '../models/customer.dart';
+import '../models/user.dart';
 
 abstract class UserRepo {
   Future<User> getCustomer() async {
@@ -9,6 +9,6 @@ abstract class UserRepo {
   }
   Future<void> updateCustomerData(User customer);
   Future<void> deleteCustomer(String uid);
-  Future<void> createCustomer(
+  Future<void> createUser(
       User customer) async {}
 }

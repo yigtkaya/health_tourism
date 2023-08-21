@@ -1,18 +1,18 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:health_tourism/product/navigation/router.dart';
+import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
 import 'package:health_tourism/product/repositories/auth_repo.dart';
-import 'package:twitter_login/twitter_login.dart';
 import '../../cubit/auth/auth_exception_handler.dart';
 import '../navigation/route_paths.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
+  final userRepo = UserRepositoryImpl();
 
   @override
   String? getCurrentUserId() {
@@ -89,42 +89,19 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       final facebookLoginResult =
           await _facebookAuth.login(permissions: ['public_profile', 'email']);
-      final userData = await FacebookAuth.instance.getUserData();
 
       final AuthCredential credential = FacebookAuthProvider.credential(
           facebookLoginResult.accessToken!.token);
 
       await _firebaseAuth.signInWithCredential(credential);
+
+      userRepo.createUserOnSignUp(_firebaseAuth.currentUser!.uid);
+
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
     } catch (e) {
       showToastMessage("An error occurred. Failed to sign in.");
-    }
-  }
-
-  @override
-  Future<void> signInWithTwitter() async {
-    final twitterLogin = TwitterLogin(
-        apiKey: "D38vH6YDecit8Qmbo2ccEB7BY",
-        apiSecretKey: "h9KWLTZ6QMSrOJTxlrQfO3ndjOtDhChFrqG9lcN88gmD1mNiTa",
-        redirectURI: "https://health-tourism-cc878.firebaseapp.com/__/auth/handler");
-
-    final authResult = await twitterLogin.login();
-
-    if (authResult.status == TwitterLoginStatus.loggedIn) {
-      final AuthCredential credential = TwitterAuthProvider.credential(
-          accessToken: authResult.authToken!,
-          secret: authResult.authTokenSecret!);
-
-      await _firebaseAuth.signInWithCredential(credential);
-
-    } else if (authResult.status == TwitterLoginStatus.cancelledByUser) {
-      showToastMessage("Login cancelled by user");
-    } else if (authResult.status == TwitterLoginStatus.error) {
-      showToastMessage("Login error: ${authResult.errorMessage}");
-    } else {
-      showToastMessage("Login error: ${authResult.errorMessage}");
     }
   }
 
@@ -139,6 +116,9 @@ class AuthRepositoryImpl extends AuthRepository {
         idToken: googleAuth.idToken,
       );
       await _firebaseAuth.signInWithCredential(credential);
+
+      userRepo.createUserOnSignUp(_firebaseAuth.currentUser!.uid);
+
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
@@ -155,7 +135,9 @@ class AuthRepositoryImpl extends AuthRepository {
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((authUser) {
+            // create user in firestore
             authUser.user?.sendEmailVerification();
+            userRepo.createUserOnSignUp(authUser.user!.uid);
             _firebaseAuth.signOut();
           })
           .then((value) {
@@ -175,7 +157,7 @@ class AuthRepositoryImpl extends AuthRepository {
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
+        timeInSecForIosWeb: 2,
         backgroundColor: const Color(0xFF58A2EB),
         textColor: Colors.white,
         fontSize: 16.0);
