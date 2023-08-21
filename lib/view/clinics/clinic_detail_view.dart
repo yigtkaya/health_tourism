@@ -236,20 +236,17 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           const VerticalSpace(
             spaceAmount: 12,
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                createPackages(size),
-                const HorizontalSpace(),
-                createPackages(size),
-                const HorizontalSpace(),
-                createPackages(size),
-                const HorizontalSpace(),
-                createPackages(size),
-              ],
-            ),
+          SizedBox(
+            height: size.height * 0.15,
+            child: ListView.builder(
+                itemCount: packages.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: createPackages(size, packages[index]),
+                  );
+                }),
           ),
           const VerticalSpace(
             spaceAmount: 32,
@@ -302,7 +299,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
     }
   }
 
-  Widget createPackageView(Package package, Size size) {
+  Widget createPackages(Size size, Package package) {
     return GestureDetector(
       onTap: () {
         /// TODO: Navigate to package detail page ??
@@ -310,103 +307,48 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             context: context,
             builder: (BuildContext context) {
               return PackageDetailDialog(
-                packageDetailList: package.packageFeatures,
+                package: package,
               );
             });
       },
       child: Container(
-        width: size.width * 0.35,
-        height: size.height * 0.25,
+        width: size.width * 0.46,
         decoration: const BoxDecoration(
           color: Color(0xffd3e9ff),
           borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
-              child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 6),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
                   child: HTText(
                       label: package.packageName, style: htDarkBlueLargeStyle)),
-            ),
-            const Divider(
-              height: 1,
-              thickness: 1,
-              color: Colors.black,
-            ),
-            const Padding(
-              padding: EdgeInsets.all(14.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HTText(label: "- Maximum Graft", style: htLabelBlackStyle),
-                  HTText(
-                      label: "- Gives 100% satisfaction guarantee",
-                      style: htLabelBlackStyle),
-                  HTText(
-                      label: "- 2 Nights stay in the Hotel",
-                      style: htLabelBlackStyle),
-                  HTText(label: "- Checkup", style: htLabelBlackStyle),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  removeBottom: true,
+                  child: ListView.builder(
+                    itemCount: package.packageFeatures.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        HTIcon(iconName: AssetConstants.icons.checkMark),
+                        const HorizontalSpace(spaceAmount: 4),
+                        HTText(
+                            label: package.packageFeatures[index],
+                            style: htLabelBlackStyle),
+                      ],
+                    );
+                  }),
+                ),
               ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget createPackages(Size size) {
-    return GestureDetector(
-      onTap: () {
-        /// TODO: Navigate to package detail page ??
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return PackageDetailDialog(
-                packageDetailList: details,
-              );
-            });
-      },
-      child: Container(
-        width: size.width * 0.5,
-        height: size.height * 0.2,
-        decoration: const BoxDecoration(
-          color: Color(0xffd3e9ff),
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
-              child: Center(
-                  child: HTText(
-                      label: "PackageTitle", style: htDarkBlueLargeStyle)),
-            ),
-            const Divider(
-              height: 1,
-              thickness: 1,
-              color: Colors.black,
-            ),
-            const Padding(
-              padding: EdgeInsets.all(14.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HTText(label: "- Maximum Graft", style: htLabelBlackStyle),
-                  HTText(
-                      label: "- Gives 100% satisfaction guarantee",
-                      style: htLabelBlackStyle),
-                  HTText(
-                      label: "- 2 Nights stay in the Hotel",
-                      style: htLabelBlackStyle),
-                  HTText(label: "- Checkup", style: htLabelBlackStyle),
-                ],
-              ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
