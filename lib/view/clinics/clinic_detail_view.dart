@@ -30,7 +30,6 @@ class ClinicDetailView extends StatefulWidget {
 class _ClinicDetailViewState extends State<ClinicDetailView> {
   int activeIndex = 0;
   final controller = CarouselController();
-  late List operationImageUrls;
   List packages = [];
 
   final reviews = [
@@ -43,8 +42,6 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
   void initState() {
     super.initState();
     extractPackages();
-    operationImageUrls = widget.clinic.operationImageUrls;
-    print(widget.clinic.operationImageUrls);
   }
 
   @override
