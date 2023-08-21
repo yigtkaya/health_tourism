@@ -105,9 +105,11 @@ class _SignUpViewState extends State<SignUpView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  HTText(
-                    label: "Sign Up",
-                    style: htTitleStyle2,
+                  Center(
+                    child: HTText(
+                      label: "Sign Up",
+                      style: htTitleStyle2,
+                    ),
                   ),
                   const VerticalSpace(
                     spaceAmount: 50,

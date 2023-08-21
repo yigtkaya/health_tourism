@@ -25,7 +25,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  late Customer customer;
+  late User customer;
 
   @override
   void initState() {
@@ -64,6 +64,7 @@ class _ProfileViewState extends State<ProfileView> {
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: settings.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
@@ -155,7 +156,7 @@ class _ProfileViewState extends State<ProfileView> {
                       height: 16),
             ],
           ),
-          const Divider(
+          index == 5 ? const SizedBox.shrink() : const Divider(
             color: Color(0xffd3e3f1),
             thickness: 2,
           ),

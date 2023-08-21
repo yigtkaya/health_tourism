@@ -3,18 +3,16 @@ import '../models/customer.dart';
 import '../repositories/customer_repo.dart';
 
 class UserRepositoryImpl extends UserRepo {
-  CollectionReference customers =
+  CollectionReference users =
   FirebaseFirestore.instance.collection("users");
-  CollectionReference clinicEntities =
-  FirebaseFirestore.instance.collection("clinics");
 
 
   @override
   Future<void> createCustomer(
-      Customer customer) async {
+      User user) async {
     final data = await FirebaseFirestore.instance
         .collection("users")
-        .doc("iniAcRHUF5HLDjk0IaFh")
+        .doc(user.uid)
         .get();
 
     if (!data.exists) {
@@ -22,55 +20,57 @@ class UserRepositoryImpl extends UserRepo {
           .collection("users")
           .doc("iniAcRHUF5HLDjk0IaFh")
           .set({
-        "fullName": customer.fullName,
-        "email": customer.email,
-        "birthday": customer.age,
-        "alcohol": customer.alcohol,
-        "smoke": customer.smoke,
-        "medications": customer.medications,
-        "allergies": customer.allergies,
-        "previousOperations": customer.previousOperations,
-        "skinDiseases": customer.skinDiseases,
-        "chronicConditions": customer.chronicConditions,
-        "hairTransplantOperations": customer.hairTransplantOperations,
-        "uid": customer.uid
+        "name": user.name,
+        "surname": user.surname,
+        "email": user.email,
+        "birthday": user.birthday.toDate(),
+        "photoURL": user.profilePhoto,
+        "alcoholOrSmoke": user.alcoholOrSmoke,
+        "supplements": user.supplements,
+        "medications": user.medications,
+        "allergies": user.allergies,
+        "surgeryHistory": user.surgeryHistory,
+        "skinDiseases": user.skinDiseases,
+        "chronicConditions": user.chronicConditions,
+        "hairTransplantOperations": user.hairTransplantOperations,
+        "uid": user.uid
       });
     }
   }
 
   @override
   Future<void> deleteCustomer(String uid) async {
-    customers.doc(uid).delete();
+    users.doc(uid).delete();
   }
 
   @override
-  Future<Customer> getCustomer() async {
-    final data = await customers.doc("iniAcRHUF5HLDjk0IaFh").get();
+  Future<User> getCustomer() async {
+    final data = await users.doc().get();
     Map<dynamic, dynamic> map = data.data() as Map;
 
-    return Customer.fromData(map);
+    return User.fromData(map);
   }
 
   @override
-  Future<void> updateCustomerData(Customer customer) async {
-    /// ve ya saved valueyu sadece değiştiricez. fazla yazım miktarı saymasın diye
+  Future<void> updateCustomerData(User user) async {
     FirebaseFirestore.instance
         .collection("users")
-        .doc("iniAcRHUF5HLDjk0IaFh")
+        .doc(user.uid)
         .set({
-      "fullName": customer.fullName,
-      "email": customer.email,
-      "birthday": customer.age,
-      "alcohol": customer.alcohol,
-      "smoke": customer.smoke,
-      "medications": customer.medications,
-      "allergies": customer.allergies,
-      "previousOperations": customer.previousOperations,
-      "skinDiseases": customer.skinDiseases,
-      "chronicConditions": customer.chronicConditions,
-      "hairTransplantOperations": customer.hairTransplantOperations,
-      "uid": customer.uid
+      "name": user.name,
+      "surname": user.surname,
+      "email": user.email,
+      "birthday": user.birthday.toDate(),
+      "photoURL": user.profilePhoto,
+      "alcoholOrSmoke": user.alcoholOrSmoke,
+      "supplements": user.supplements,
+      "medications": user.medications,
+      "allergies": user.allergies,
+      "previousOperations": user.surgeryHistory,
+      "skinDiseases": user.skinDiseases,
+      "chronicConditions": user.chronicConditions,
+      "hairTransplantOperations": user.hairTransplantOperations,
+      "uid": user.uid
     });
   }
-
 }

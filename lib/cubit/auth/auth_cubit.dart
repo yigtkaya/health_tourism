@@ -16,10 +16,6 @@ class AuthCubit extends Cubit<AuthState> {
   @override
   List<Object> get props => [];
 
-  void updatePasswordConfirm(String passwordSec) {
-    emit(AuthPasswordConfirmUpdated(passwordSec));
-  }
-
   // check if user is logged in
   Future<void> checkIfUserIsLoggedIn() async {
     try {
@@ -54,7 +50,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.signUpWithEmailAndPassword(
           email: email, password: password);
-      emit(Authenticated(firebaseAuth.currentUser!));
+      emit(const AuthUserCreated());
     } catch (e) {
       emit(AuthError(e.toString()));
     }

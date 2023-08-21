@@ -1,63 +1,72 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class Customer extends Equatable {
+class User extends Equatable {
   final String uid;
   final String email;
-  final int age;
-  final String fullName;
-  final bool alcohol;
-  final bool smoke;
+  final Timestamp birthday;
+  final String profilePhoto;
+  final String name;
+  final String surname;
+  final String alcoholOrSmoke;
+  final String supplements;
   final String medications;
   final String allergies;
-  final String previousOperations;
+  final String surgeryHistory;
   final String skinDiseases;
   final String chronicConditions;
   final String hairTransplantOperations;
 
-  const Customer(
-      {required this.alcohol,
-      required this.smoke,
+  const User(
+      {required this.supplements,
+      required this.alcoholOrSmoke,
+      required this.surname,
+      required this.profilePhoto,
       required this.medications,
       required this.allergies,
-      required this.previousOperations,
+      required this.surgeryHistory,
       required this.skinDiseases,
       required this.chronicConditions,
       required this.hairTransplantOperations,
       required this.uid,
       required this.email,
-      required this.fullName,
-      required this.age});
+      required this.name,
+      required this.birthday});
 
   @override
   List<Object> get props => [
         uid,
         email,
-        fullName,
-        age,
-        alcohol,
-        smoke,
-        medications,
+        name,
+        birthday,
+        profilePhoto,
+        surname,
         allergies,
-        previousOperations,
+        surgeryHistory,
         skinDiseases,
         chronicConditions,
-        hairTransplantOperations
+        hairTransplantOperations,
+        alcoholOrSmoke,
+        supplements,
+        medications,
       ];
 
   @override
   bool get stringify => true;
 
   // create functions to read data from/to firestore document
-  Customer.fromData(Map<dynamic, dynamic> data) :
-        uid = data['uid'],
+  User.fromData(Map<dynamic, dynamic> data)
+      : uid = data['uid'],
         email = data['email'],
-        fullName = data['fullName'],
-        age = data['birthday'],
-        alcohol = data['alcohol'],
-        smoke = data['smoke'],
+        name = data['fullName'],
+        surname = data['surname'],
+        birthday = data['birthday'],
+        profilePhoto = data['photoURL'],
+        supplements = data['supplements'],
+        alcoholOrSmoke = data['alcoholOrSmoke'],
         medications = data['medications'],
         allergies = data['allergies'],
-        previousOperations = data['previousOperations'],
+        surgeryHistory = data['surgeryHistory'],
         skinDiseases = data['skinDiseases'],
         chronicConditions = data['chronicConditions'],
         hairTransplantOperations = data['hairTransplantOperations'];
@@ -66,13 +75,14 @@ class Customer extends Equatable {
     return {
       'uid': uid,
       'email': email,
-      'fullName': fullName,
-      'birthday': age,
-      'alcohol': alcohol,
-      'smoke': smoke,
+      'fullName': name,
+      'birthday': birthday,
+      'photoURL': profilePhoto,
+      'supplements': supplements,
+      'alcoholOrSmoke': alcoholOrSmoke,
       'medications': medications,
       'allergies': allergies,
-      'previousOperations': previousOperations,
+      'previousOperations': surgeryHistory,
       'skinDiseases': skinDiseases,
       'chronicConditions': chronicConditions,
       'hairTransplantOperations': hairTransplantOperations

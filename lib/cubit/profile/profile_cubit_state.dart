@@ -16,8 +16,8 @@ class ProfileLoadingState extends ProfileState {
 
 // create loaded state
 class ProfileLoadedState extends ProfileState {
-  Customer costumer;
-  ProfileLoadedState(this.costumer);
+  User user;
+  ProfileLoadedState(this.user);
 }
 
 // create error state

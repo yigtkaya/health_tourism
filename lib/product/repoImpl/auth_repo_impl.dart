@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -153,9 +154,14 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((authUser) => authUser.user?.sendEmailVerification())
-          .then((value) => showToastMessage(
-              "We have send you a verification email to verify your account"));
+          .then((authUser) {
+            authUser.user?.sendEmailVerification();
+            _firebaseAuth.signOut();
+          })
+          .then((value) {
+            showToastMessage(
+              "We have send you a verification email to verify your account");
+          });
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
