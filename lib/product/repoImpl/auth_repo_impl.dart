@@ -95,8 +95,6 @@ class AuthRepositoryImpl extends AuthRepository {
 
       await _firebaseAuth.signInWithCredential(credential);
 
-      userRepo.createUserOnSignUp(_firebaseAuth.currentUser!.uid);
-
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
@@ -117,8 +115,6 @@ class AuthRepositoryImpl extends AuthRepository {
       );
       await _firebaseAuth.signInWithCredential(credential);
 
-      userRepo.createUserOnSignUp(_firebaseAuth.currentUser!.uid);
-
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.generateExceptionMessage(e.code);
       showToastMessage(message);
@@ -137,7 +133,6 @@ class AuthRepositoryImpl extends AuthRepository {
           .then((authUser) {
             // create user in firestore
             authUser.user?.sendEmailVerification();
-            userRepo.createUserOnSignUp(authUser.user!.uid);
             _firebaseAuth.signOut();
           })
           .then((value) {

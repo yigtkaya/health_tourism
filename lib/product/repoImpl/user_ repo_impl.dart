@@ -7,21 +7,6 @@ class UserRepositoryImpl extends UserRepo {
   FirebaseFirestore.instance.collection("users");
 
 
-  Future<void> createUserOnSignUp(String uid) async {
-    final data = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .get();
-
-    if (!data.exists) {
-      users.doc(uid).set({
-        "uid": uid,
-      });
-    }
-
-
-  }
-
   @override
   Future<void> createUser(
       User user) async {
