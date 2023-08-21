@@ -44,11 +44,8 @@ class UserRepositoryImpl extends UserRepo {
   }
 
   @override
-  Future<User> getUser(String uid) async {
-    final data = await users.doc(uid).get();
-    Map<dynamic, dynamic> map = data.data() as Map;
-
-    return User.fromData(map);
+  Stream<DocumentSnapshot> getUserSnapshot(String uid) {
+    return users.doc(uid).snapshots();
   }
 
   @override

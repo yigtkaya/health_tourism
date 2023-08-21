@@ -1,12 +1,9 @@
-import 'package:health_tourism/product/models/clinic.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/user.dart';
 
 abstract class UserRepo {
-  Future<User> getUser(String uid) async {
-    // TODO: implement getCustomer
-    throw UnimplementedError();
-  }
+  Stream<DocumentSnapshot> getUserSnapshot(String uid);
   Future<void> updateUser(User user);
   Future<void> deleteUser(String uid);
   Future<void> createUser(

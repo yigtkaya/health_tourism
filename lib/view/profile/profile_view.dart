@@ -26,8 +26,6 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  late User user;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -82,11 +80,12 @@ class _ProfileViewState extends State<ProfileView> {
                 }
 
                 if (state is ProfileLoadedState) {
-                  return userInfo(state.user.profilePhoto, state.user.name,
-                      state.user.email);
+                  return userInfo(state, size);
                 } else {
                   return const Center(
-                    child: HTText(label: "Something went wrong", style: htLabelBlackStyle),
+                    child: HTText(
+                        label: "Something went wrong",
+                        style: htLabelBlackStyle),
                   );
                 }
               },
@@ -108,10 +107,9 @@ class _ProfileViewState extends State<ProfileView> {
                               }
                             : () {
                                 context.pushNamed(
-                                    '/${settings[index].toString().replaceAll(" ", "")}',
-                                    queryParameters: {
-                                      'title': settings[index]
-                                    });
+                                  '/${settings[index].toString().replaceAll(" ", "")}',
+                                  queryParameters: {'title': settings[index]},
+                                );
                                 print("object");
                               },
                         child: getSettings(
@@ -142,26 +140,55 @@ class _ProfileViewState extends State<ProfileView> {
     AssetConstants.icons.logout,
   ];
 
-  Widget userInfo(String url, String name, String email) {
-    return Column(
-      children: [
-        Container(
-          height: 100,
-          width: 100,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: NetworkImage(
-                  url),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        const VerticalSpace(),
-        HTText(label: name, style: htTitleStyle),
-        HTText(label: email, style: htBlueLabelStyle),
-      ],
-    );
+  Widget userInfo(ProfileLoadedState state, Size size) {
+    return StreamBuilder(
+        stream: state.userSnapshot,
+        builder: (context, snapshot) {
+          if (snapshot.hasError ||
+              !snapshot.hasData ||
+              snapshot.connectionState == ConnectionState.waiting) {
+            return Column(
+              children: [
+                CircleSkeleton(
+                  size: 100,
+                ),
+                VerticalSpace(),
+                Skeleton(
+                  height: 12,
+                  width: size.width * 0.5,
+                ),
+                VerticalSpace(),
+                Skeleton(
+                  height: 12,
+                  width: size.width * 0.5,
+                ),
+              ],
+            );
+          }
+
+          Map<String, dynamic> data =
+              snapshot.data?.data() as Map<String, dynamic>;
+          User user = User.fromData(data);
+          return Column(
+            children: [
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage(user.profilePhoto),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const VerticalSpace(),
+              HTText(
+                  label: '${user.name} ${user.surname}', style: htTitleStyle),
+              HTText(label: user.email, style: htBlueLabelStyle),
+            ],
+          );
+        });
   }
 
   Widget getSettings(String iconName, String label, int index) {

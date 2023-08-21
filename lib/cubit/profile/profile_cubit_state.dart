@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:health_tourism/product/models/user.dart';
+
 @immutable
 abstract class ProfileState {
   const ProfileState();
 }
+
 // create initial state
 class ProfileInitState extends ProfileState {
   const ProfileInitState();
@@ -14,10 +16,9 @@ class ProfileLoadingState extends ProfileState {
   const ProfileLoadingState();
 }
 
-// create loaded state
 class ProfileLoadedState extends ProfileState {
-  User user;
-  ProfileLoadedState(this.user);
+  Stream<DocumentSnapshot> userSnapshot;
+  ProfileLoadedState(this.userSnapshot);
 }
 
 // create error state

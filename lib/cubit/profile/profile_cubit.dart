@@ -8,20 +8,19 @@ class ProfileCubit extends Cubit<ProfileState> {
   final firebaseAuth = FirebaseAuth.instance;
   final String uid = FirebaseAuth.instance.currentUser!.uid;
   ProfileCubit() : super(const ProfileInitState()) {
-    getUserData(uid);
+    getUserSnapshot(uid);
   }
 
   static ProfileCubit get(context) => BlocProvider.of(context);
 
   final UserRepositoryImpl _userRepositoryImpl = UserRepositoryImpl();
 
-  // create function read user data from firestore
-  void getUserData(String uid) {
+  void getUserSnapshot(String uid) {
     try {
       emit(const ProfileLoadingState());
-      Future.value(_userRepositoryImpl.getUser(uid)
+      Future.value(_userRepositoryImpl.getUserSnapshot(uid)
       ).then((value) => {
-        emit(ProfileLoadedState(value))
+        emit(ProfileLoaded2State(value))
       });
     } on Exception catch (e) {
       emit(const ProfileErrorState('Error while loading user data'));
@@ -29,5 +28,4 @@ class ProfileCubit extends Cubit<ProfileState> {
     // if error
 
   }
-
 }
