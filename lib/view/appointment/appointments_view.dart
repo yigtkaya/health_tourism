@@ -161,108 +161,121 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   }
 
   Widget upcomingAppointments(Appointment appointment) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            flex: 2,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF0B4F93),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 26.0, vertical: 4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    HTText(
-                        label: monthFromInt(appointment.date.month),
-                        style: htWhiteSmallLabelStyle),
-                    const VerticalSpace(),
-                    HTText(
-                        label: "${appointment.date.day}",
-                        style: htToolBarLabel),
-                    const VerticalSpace(),
-                    HTText(
-                        label: "${appointment.date.year}",
-                        style: htWhiteSmallLabelStyle),
-                  ],
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const AppointmentDetailDialog();
+          },
+        );
+      },
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 2,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFF0B4F93),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 26.0, vertical: 4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      HTText(
+                          label: monthFromInt(appointment.date.month),
+                          style: htWhiteSmallLabelStyle),
+                      const VerticalSpace(),
+                      HTText(
+                          label: "${appointment.date.day}",
+                          style: htToolBarLabel),
+                      const VerticalSpace(),
+                      HTText(
+                          label: "${appointment.date.year}",
+                          style: htWhiteSmallLabelStyle),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Flexible(
-            flex: 7,
-            fit: FlexFit.tight,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.network(
-                      "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
-                      width: 70,
-                      height: 40,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        HTText(
-                            label: appointment.clinicName,
-                            style: htDarkBlueLargeStyle),
-                        HTText(
-                            label: appointment.clinicCity,
-                            style: htBlueLabelStyle),
-                      ],
-                    ),
-                    const Spacer(),
-                    HTIcon(iconName: AssetConstants.icons.vector),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 6.0),
-                      child: HTText(
-                          label: "Confirmed", style: htDarkBlueNormalStyle),
-                    ),
-                    const HorizontalSpace(
-                      spaceAmount: 4,
-                    ),
-                    HTIcon(iconName: AssetConstants.icons.checkMark),
-                    const Spacer(),
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF123258),
+            Flexible(
+              flex: 7,
+              fit: FlexFit.tight,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(
+                        "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+                        width: 70,
+                        height: 40,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 2),
-                        child: Row(
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.chatBubble),
-                            const HorizontalSpace(
-                              spaceAmount: 4,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HTText(
+                              label: appointment.clinicName,
+                              style: htDarkBlueLargeStyle),
+                          HTText(
+                              label: appointment.clinicCity,
+                              style: htBlueLabelStyle),
+                        ],
+                      ),
+                      const Spacer(),
+                      HTIcon(iconName: AssetConstants.icons.vector),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6.0),
+                        child: HTText(
+                            label: "Confirmed", style: htDarkBlueNormalStyle),
+                      ),
+                      const HorizontalSpace(
+                        spaceAmount: 4,
+                      ),
+                      HTIcon(iconName: AssetConstants.icons.checkMark),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF123258),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 2),
+                            child: Row(
+                              children: [
+                                HTIcon(iconName: AssetConstants.icons.chatBubble),
+                                const HorizontalSpace(
+                                  spaceAmount: 4,
+                                ),
+                                HTText(label: "Chat", style: htWhiteLabelStyle),
+                              ],
                             ),
-                            HTText(label: "Chat", style: htWhiteLabelStyle),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
