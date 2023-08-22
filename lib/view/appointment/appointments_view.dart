@@ -166,7 +166,9 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return const AppointmentDetailDialog();
+            return AppointmentDetailDialog(
+              appointment: appointment
+            );
           },
         );
       },
@@ -183,7 +185,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 26.0, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 22.0, vertical: 4),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -197,14 +199,16 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       const VerticalSpace(),
                       HTText(
                           label: "${appointment.date.year}",
-                          style: htWhiteSmallLabelStyle),
+                          style: htWhiteSmallLabelStyle.copyWith(
+                            fontSize: 14
+                          )),
                     ],
                   ),
                 ),
               ),
             ),
             Flexible(
-              flex: 7,
+              flex: 6,
               fit: FlexFit.tight,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -336,7 +340,9 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const AppointmentDetailDialog();
+                    return AppointmentDetailDialog(
+                      appointment: appointment,
+                    );
                   },
                 );
               },

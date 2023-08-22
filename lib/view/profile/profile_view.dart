@@ -51,97 +51,76 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const VerticalSpace(
-              spaceAmount: 30,
-            ),
-            BlocBuilder<ProfileCubit, ProfileState>(
-              builder: (context, state) {
-                if (state is ProfileLoadingState) {
-                  return Column(
-                    children: [
-                      CircleSkeleton(
-                        size: 100,
-                      ),
-                      VerticalSpace(),
-                      Skeleton(
-                        height: 12,
-                        width: size.width * 0.5,
-                      ),
-                      VerticalSpace(),
-                      Skeleton(
-                        height: 12,
-                        width: size.width * 0.5,
-                      ),
-                      const VerticalSpace(
-                        spaceAmount: 40,
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: settings.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: index == 5
-                                      ? () {
-                                    context.read<AuthCubit>().signOut();
-                                  }
-                                      : () {
-                                    context.pushNamed(
-                                      '/${settings[index].toString().replaceAll(" ", "")}',
-                                      queryParameters: {'title': settings[index]},
-                                    );
-                                    print("object");
-                                  },
-                                  child: getSettings(
-                                      iconList[index], settings[index], index));
-                            }),
-                      ),
-                    ],
-                  );
-                }
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const VerticalSpace(
+                spaceAmount: 30,
+              ),
+              BlocBuilder<ProfileCubit, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileLoadingState) {
+                    return Column(
+                      children: [
+                        CircleSkeleton(
+                          size: 100,
+                        ),
+                        VerticalSpace(),
+                        Skeleton(
+                          height: 12,
+                          width: size.width * 0.5,
+                        ),
+                        VerticalSpace(),
+                        Skeleton(
+                          height: 12,
+                          width: size.width * 0.5,
+                        ),
+                        const VerticalSpace(
+                          spaceAmount: 40,
+                        ),
+                      ],
+                    );
+                  }
 
-                if (state is ProfileLoadedState) {
-                  return userInfo(state, size);
-                } else {
-                  return const Center(
-                    child: HTText(
-                        label: "Something went wrong",
-                        style: htLabelBlackStyle),
-                  );
-                }
-              },
-            ),
-            const VerticalSpace(
-              spaceAmount: 20,
-            ),
-            ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: settings.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: index == 5
-                          ? () {
-                              context.read<AuthCubit>().signOut();
-                            }
-                          : () {
-                              context.pushNamed(
-                                '/${settings[index].toString().replaceAll(" ", "")}',
-                                queryParameters: {'title': settings[index]}, extra: user
-                              );
-                              print("object");
-                            },
-                      child: getSettings(
-                          iconList[index], settings[index], index));
-                }),
-          ],
+                  if (state is ProfileLoadedState) {
+                    return userInfo(state, size);
+                  } else {
+                    return const Center(
+                      child: HTText(
+                          label: "Something went wrong",
+                          style: htLabelBlackStyle),
+                    );
+                  }
+                },
+              ),
+              const VerticalSpace(
+                spaceAmount: 20,
+              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: settings.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: index == 5
+                            ? () {
+                                context.read<AuthCubit>().signOut();
+                              }
+                            : () {
+                                context.pushNamed(
+                                  '/${settings[index].toString().replaceAll(" ", "")}',
+                                  queryParameters: {'title': settings[index]}, extra: user
+                                );
+                                print("object");
+                              },
+                        child: getSettings(
+                            iconList[index], settings[index], index));
+                  }),
+            ],
+          ),
         ),
       ),
     );
@@ -190,27 +169,46 @@ class _ProfileViewState extends State<ProfileView> {
               ],
             );
           }
-
-          Map<String, dynamic> data =
-              snapshot.data?.data() as Map<String, dynamic>;
-          user = User.fromData(data);
-          return Column(
-            children: [
-              Container(
-                height: size.height * 0.16,
-                width: size.height * 0.16,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage(user.profilePhoto),
-                    fit: BoxFit.cover,
+          if (snapshot.hasData) {
+            Map<String, dynamic> data =
+            snapshot.data?.data() as Map<String, dynamic>;
+            user = User.fromData(data);
+            return Column(
+              children: [
+                Container(
+                  height: size.height * 0.16,
+                  width: size.height * 0.16,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(user.profilePhoto),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
+                const VerticalSpace(),
+                HTText(
+                    label: '${user.name} ${user.surname}', style: htTitleStyle),
+                HTText(label: user.email, style: htBlueLabelStyle),
+              ],
+            );
+          }
+
+          return Column(
+            children: [
+              CircleSkeleton(
+                size: 100,
               ),
-              const VerticalSpace(),
-              HTText(
-                  label: '${user.name} ${user.surname}', style: htTitleStyle),
-              HTText(label: user.email, style: htBlueLabelStyle),
+              VerticalSpace(),
+              Skeleton(
+                height: 12,
+                width: size.width * 0.5,
+              ),
+              VerticalSpace(),
+              Skeleton(
+                height: 12,
+                width: size.width * 0.5,
+              ),
             ],
           );
         });

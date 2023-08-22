@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_tourism/product/models/appointment.dart';
 
 import '../../../product/theme/styles.dart';
 import '../../constants/asset.dart';
@@ -8,7 +9,8 @@ import '../ht_icon.dart';
 import '../ht_text.dart';
 
 class AppointmentDetailDialog extends StatelessWidget {
-  const AppointmentDetailDialog({super.key});
+  final Appointment appointment;
+  const AppointmentDetailDialog({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class AppointmentDetailDialog extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.network(
-                  "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+                  appointment.profilePhoto,
                   width: 60,
                   height: 60,
                 ),
@@ -37,16 +39,16 @@ class AppointmentDetailDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     HTText(
-                        label: "Vera Clinic",
+                        label: appointment.clinicName,
                         style: htBoldDarkLabelStyle),
                     HTText(
-                        label: "Hair Transplant",
+                        label: appointment.operation,
                         style: htSmallLabelStyle),
                   ],
                 ),
                 const Spacer(),
                 HTText(
-                    label: "£24", style: htBoldDarkLabelStyle),
+                    label: appointment.price.toString(), style: htBoldDarkLabelStyle),
               ],
             ),
             const VerticalSpace(),
@@ -78,7 +80,7 @@ class AppointmentDetailDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0),
                   child: HTText(
-                      label: "21 January, 2023",
+                      label: appointment.date.toString(),
                       style: htSmallLabelStyle),
                 ),
                 const VerticalSpace(),
@@ -139,7 +141,7 @@ class AppointmentDetailDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0),
                   child: HTText(
-                      label: "£24", style: htSmallLabelStyle),
+                      label: appointment.price.toString(), style: htSmallLabelStyle),
                 ),
                 const VerticalSpace(),
               ],
