@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/cubit/profile/profile_cubit.dart';
+import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
+import 'package:health_tourism/product/utils/skelton.dart';
 
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
@@ -37,7 +41,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   String selectedGender = "";
   int selectedIndex = 0;
   bool isChanged = false;
-
+  late User forImg;
   @override
   void initState() {
     super.initState();
@@ -58,199 +62,148 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.light,
-        ),
-        backgroundColor: const Color(0xff2D9CDB),
-        elevation: 0,
-        centerTitle: true,
-        title: HTText(
-          label: "Profile",
-          style: htToolBarLabel,
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Center(
-              child: HTText(
-                label: "Save",
-                style: isChanged ? htToolBarLabel : htToolBarLabel.copyWith(color: Colors.transparent),
+    return BlocProvider(
+      create: (context) => ProfileCubit(),
+      child: Scaffold(
+        appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarIconBrightness: Brightness.light,
+          ),
+          backgroundColor: const Color(0xff2D9CDB),
+          elevation: 0,
+          centerTitle: true,
+          title: HTText(
+            label: "Profile",
+            style: htToolBarLabel,
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Center(
+                child: HTText(
+                  label: "Save",
+                  style: isChanged
+                      ? htToolBarLabel
+                      : htToolBarLabel.copyWith(color: Colors.transparent),
+                ),
               ),
             ),
-          ),
-        ],
-        leadingWidth: 42,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: HTIcon(
-            iconName: AssetConstants.icons.chevronLeft,
-            onPress: () {
-              context.pop();
-            },
-            width: 24,
-            height: 24,
+          ],
+          leadingWidth: 42,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: HTIcon(
+              iconName: AssetConstants.icons.chevronLeft,
+              onPress: () {
+                context.pop();
+              },
+              width: 24,
+              height: 24,
+            ),
           ),
         ),
-      ),
-      body: SafeArea(
-        top: false,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: size.width * 0.3,
-                    height: size.width * 0.3,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            widget.user.profilePhoto),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                const VerticalSpace(spaceAmount: 26),
-                HTText(label: "Personal Information", style: htSubTitle),
-                const VerticalSpace(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                            color: const Color(0xFFD3E3F1).withOpacity(0.5),
-                            width: 2,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: TextField(
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                            maxLines: 1,
-                            controller: nameController,
-                            style: htDarkBlueNormalStyle,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Name",
-                              hintStyle: htHintTextDarkStyle,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const HorizontalSpace(spaceAmount: 8),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                            color: const Color(0xFFD3E3F1).withOpacity(0.5),
-                            width: 2,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: TextField(
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                            maxLines: 1,
-                            controller: surnameController,
-                            style: htDarkBlueNormalStyle,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Surname",
-                              hintStyle: htHintTextDarkStyle,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const VerticalSpace(),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.0),
-                    border: Border.all(
-                      color: const Color(0xFFD3E3F1).withOpacity(0.5),
-                      width: 2,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      maxLines: 1,
-                      controller: emailController,
-                      style: htDarkBlueNormalStyle,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: "Email",
-                        hintStyle: htHintTextDarkStyle,
-                      ),
-                    ),
-                  ),
-                ),
-                const VerticalSpace(),
-                Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(
-                        color: const Color(0xFFD3E3F1).withOpacity(0.5),
-                        width: 2,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          addGenderButton(0, gender[0]),
-                          const HorizontalSpace(),
-                          addGenderButton(1, gender[1]),
-                          const HorizontalSpace(),
-                          addGenderButton(2, gender[2]),
-                        ],
-                      ),
-                    )),
-                const VerticalSpace(),
-                GestureDetector(
-                  onTap: () async {
-                    date = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1945),
-                      lastDate: DateTime(2025),
-                    );
-                    if (date == null) {
-                      setState(() {
-                        dateText = 'Date of Birth';
-                      });
-                    } else {
-                      setState(() {
-                        dateText =
-                            '${monthFromInt(date!.month.toInt())} ${date!.day}, ${date!.year}';
-                      });
+        body: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+                    if (state is ProfileLoadedState) {
+                      return buildView(state, size);
                     }
-                  },
-                  child: Container(
+                    if (state is ProfileErrorState) {
+                      return Center(
+                        child: HTText(
+                          label: "Couldn't load the image",
+                          color: Colors.white,
+                          style: htHintTextDarkStyle,
+                        ),
+                      );
+                    }
+                    if (state is ProfileLoadingState) {
+                      return Center(
+                        child: CircleSkeleton(
+                          size: size.width * 0.3,
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: CircleSkeleton(
+                          size: size.width * 0.3,
+                        ),
+                      );
+                    }
+                  }),
+                  const VerticalSpace(spaceAmount: 26),
+                  HTText(label: "Personal Information", style: htSubTitle),
+                  const VerticalSpace(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                              width: 2,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: TextField(
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                              maxLines: 1,
+                              controller: nameController,
+                              style: htDarkBlueNormalStyle,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: "Name",
+                                hintStyle: htHintTextDarkStyle,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const HorizontalSpace(spaceAmount: 8),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                              width: 2,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: TextField(
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                              maxLines: 1,
+                              controller: surnameController,
+                              style: htDarkBlueNormalStyle,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: "Surname",
+                                hintStyle: htHintTextDarkStyle,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const VerticalSpace(),
+                  Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
@@ -260,62 +213,207 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 14.0, vertical: 17.0),
-                      child: Row(
-                        children: [
-                          HTText(label: dateText, style: htBlueLabelStyle),
-                          const Spacer(),
-                          HTIcon(
-                            iconName: AssetConstants.icons.calendar,
-                            width: 24,
-                            height: 24,
-                          ),
-                        ],
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        maxLines: 1,
+                        controller: emailController,
+                        style: htDarkBlueNormalStyle,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: "Email",
+                          hintStyle: htHintTextDarkStyle,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const VerticalSpace(
-                  spaceAmount: 32,
-                ),
-                HTText(label: "Medical Information", style: htSubTitle),
-                const VerticalSpace(spaceAmount: 16,),
-                questionAndAnswer(chronic, "1. Does the patient have any chronic conditions? (Ex: heart disease, diabetes, high blood pressure, etc.). Please provide details.",
-                    "Chronic Conditions"),
-                const VerticalSpace(spaceAmount: 16,),
-                questionAndAnswer(allergies,"2.	Does the patient have any allergies or sensitivities? Please provide details.", "Allegeries"),
-                const VerticalSpace(spaceAmount: 16,),
-                questionAndAnswer(
-                    medications,
-                    "3.	Is the patient currently taking any medications? (Ex: Especially blood thinners or immunosuppressive drugs, etc.). Please provide details.",
-                    "Medications"),
-                const VerticalSpace(spaceAmount: 16,),
-                questionAndAnswer(
-                    diseases,
-                    "4.	Does the patient have any infections or skin diseases on the scalp? (Ex: eczema, fungal infections, psoriasis, etc.). Please provide details.",
-                    "Diseases"),
-                const VerticalSpace(spaceAmount: 16,),
-                questionAndAnswer(surgeries, "5.	Does the patient have a surgical operation history? Please provide details.", "Surgery History"),
-                const VerticalSpace(spaceAmount: 16,),
-                questionAndAnswer(
-                    alcoholOrSmoking,
-                    "6.	Does the patient have a history of smoking or alcohol consumption? ",
-                    "Alcohol or Smoking"),
-                const VerticalSpace(spaceAmount: 16,),
-                questionAndAnswer(
-                    hairTransplantation,
-                    "7.	Has the patient undergone any previous hair transplantation procedures? Please provide details.",
-                    "Hair Transplantation"),
-                const VerticalSpace(spaceAmount: 16,),
-                questionAndAnswer(supplements, "8.	Does the patient take any supplements or herbal products? Please provide details.", "Supplements"),
-                const VerticalSpace(spaceAmount: 16,),
-              ],
+                  const VerticalSpace(),
+                  Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                          width: 2,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            addGenderButton(0, gender[0]),
+                            const HorizontalSpace(),
+                            addGenderButton(1, gender[1]),
+                            const HorizontalSpace(),
+                            addGenderButton(2, gender[2]),
+                          ],
+                        ),
+                      )),
+                  const VerticalSpace(),
+                  GestureDetector(
+                    onTap: () async {
+                      date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1945),
+                        lastDate: DateTime(2025),
+                      );
+                      if (date == null) {
+                        setState(() {
+                          dateText = 'Date of Birth';
+                        });
+                      } else {
+                        setState(() {
+                          dateText =
+                              '${monthFromInt(date!.month.toInt())} ${date!.day}, ${date!.year}';
+                        });
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                          width: 2,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14.0, vertical: 17.0),
+                        child: Row(
+                          children: [
+                            HTText(label: dateText, style: htBlueLabelStyle),
+                            const Spacer(),
+                            HTIcon(
+                              iconName: AssetConstants.icons.calendar,
+                              width: 24,
+                              height: 24,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const VerticalSpace(
+                    spaceAmount: 32,
+                  ),
+                  HTText(label: "Medical Information", style: htSubTitle),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                  questionAndAnswer(
+                      chronic,
+                      "1. Does the patient have any chronic conditions? (Ex: heart disease, diabetes, high blood pressure, etc.). Please provide details.",
+                      "Chronic Conditions"),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                  questionAndAnswer(
+                      allergies,
+                      "2.	Does the patient have any allergies or sensitivities? Please provide details.",
+                      "Allegeries"),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                  questionAndAnswer(
+                      medications,
+                      "3.	Is the patient currently taking any medications? (Ex: Especially blood thinners or immunosuppressive drugs, etc.). Please provide details.",
+                      "Medications"),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                  questionAndAnswer(
+                      diseases,
+                      "4.	Does the patient have any infections or skin diseases on the scalp? (Ex: eczema, fungal infections, psoriasis, etc.). Please provide details.",
+                      "Diseases"),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                  questionAndAnswer(
+                      surgeries,
+                      "5.	Does the patient have a surgical operation history? Please provide details.",
+                      "Surgery History"),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                  questionAndAnswer(
+                      alcoholOrSmoking,
+                      "6.	Does the patient have a history of smoking or alcohol consumption? ",
+                      "Alcohol or Smoking"),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                  questionAndAnswer(
+                      hairTransplantation,
+                      "7.	Has the patient undergone any previous hair transplantation procedures? Please provide details.",
+                      "Hair Transplantation"),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                  questionAndAnswer(
+                      supplements,
+                      "8.	Does the patient take any supplements or herbal products? Please provide details.",
+                      "Supplements"),
+                  const VerticalSpace(
+                    spaceAmount: 16,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  void initControllers(User user) {
+    nameController.text = user.name;
+    surnameController.text = user.surname;
+    emailController.text = user.email;
+    medications.text = user.medications;
+    chronic.text = user.chronicConditions;
+    allergies.text = user.allergies;
+    surgeries.text = user.surgeryHistory;
+    diseases.text = user.skinDiseases;
+    hairTransplantation.text = user.hairTransplantOperations;
+    alcoholOrSmoking.text = user.alcoholOrSmoke;
+    supplements.text = user.supplements;
+  }
+
+  Widget buildView(ProfileLoadedState state, Size size) {
+    return StreamBuilder(
+        stream: state.userSnapshot,
+        builder: (context, snapshot) {
+          if (snapshot.hasError ||
+              snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircleSkeleton(
+                size: size.width * 0.3,
+              ),
+            );
+          }
+          Map<String, dynamic> data =
+              snapshot.data?.data() as Map<String, dynamic>;
+          forImg = User.fromData(data);
+
+          return Center(
+            child: Container(
+              width: size.width * 0.3,
+              height: size.width * 0.3,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: NetworkImage(forImg.profilePhoto),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget addGenderButton(int index, String title) => GestureDetector(
