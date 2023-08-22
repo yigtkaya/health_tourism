@@ -118,31 +118,29 @@ class _ProfileViewState extends State<ProfileView> {
               },
             ),
             const VerticalSpace(
-              spaceAmount: 40,
+              spaceAmount: 20,
             ),
-            Expanded(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: settings.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: index == 5
-                            ? () {
-                                context.read<AuthCubit>().signOut();
-                              }
-                            : () {
-                                context.pushNamed(
-                                  '/${settings[index].toString().replaceAll(" ", "")}',
-                                  queryParameters: {'title': settings[index]}, extra: user
-                                );
-                                print("object");
-                              },
-                        child: getSettings(
-                            iconList[index], settings[index], index));
-                  }),
-            ),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: settings.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: index == 5
+                          ? () {
+                              context.read<AuthCubit>().signOut();
+                            }
+                          : () {
+                              context.pushNamed(
+                                '/${settings[index].toString().replaceAll(" ", "")}',
+                                queryParameters: {'title': settings[index]}, extra: user
+                              );
+                              print("object");
+                            },
+                      child: getSettings(
+                          iconList[index], settings[index], index));
+                }),
           ],
         ),
       ),
@@ -199,8 +197,8 @@ class _ProfileViewState extends State<ProfileView> {
           return Column(
             children: [
               Container(
-                height: 100,
-                width: 100,
+                height: size.height * 0.16,
+                width: size.height * 0.16,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
