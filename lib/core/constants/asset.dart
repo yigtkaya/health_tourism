@@ -43,4 +43,5 @@ class HTIcons {
   final String vector = AssetConstants.toIcon("vector");
   final String creditCard = AssetConstants.toIcon("credit_card");
   final String clock = AssetConstants.toIcon("clock");
+  final String location = AssetConstants.toIcon("location");
 }

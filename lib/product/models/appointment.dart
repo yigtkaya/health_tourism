@@ -6,6 +6,7 @@ class Appointment {
   final String profilePhoto;
   final bool reviewed;
   final DateTime date;
+  final DateTime bookedDate;
   final double price;
 
   Appointment({
@@ -14,6 +15,7 @@ class Appointment {
     required this.package,
     required this.operation,
     required this.reviewed,
+    required this.bookedDate,
     required this.profilePhoto,
     required this.date,
     required this.price,
@@ -28,6 +30,7 @@ class Appointment {
       reviewed: json['review'],
       profilePhoto: json['clinicProfilePhoto'],
       date: json['date'].toDate(),
+      bookedDate: json['bookedDate'].toDate(),
       price: json['price'],
     );
   }
@@ -39,6 +42,7 @@ class Appointment {
       'package': package,
       'review': reviewed,
       'operation': operation,
+      'bookedDate': bookedDate,
       'clinicProfilePhoto': profilePhoto,
       'date': date,
       'price': price,

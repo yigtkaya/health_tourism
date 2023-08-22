@@ -162,12 +162,14 @@ class _AppointmentsViewState extends State<AppointmentsView> {
 
   Widget upcomingAppointments(Appointment appointment) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
+        final cancellable = checkCancellable(appointment);
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AppointmentDetailDialog(
-              appointment: appointment
+              appointment: appointment, cancellable: cancellable
             );
           },
         );
@@ -220,10 +222,11 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image.network(
-                        "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+                        appointment.profilePhoto,
                         width: 70,
                         height: 40,
                       ),
+                      const HorizontalSpace(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -307,7 +310,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
             ),
             const Spacer(),
             HTText(
-                label: appointment.price.toString(),
+                label: '\$${appointment.price.toString()}',
                 style: htBoldDarkLabelStyle),
           ],
         ),
@@ -335,13 +338,14 @@ class _AppointmentsViewState extends State<AppointmentsView> {
               ),
             ),
             GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
                 // open details dialog.
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AppointmentDetailDialog(
-                      appointment: appointment,
+                      appointment: appointment, cancellable: false
                     );
                   },
                 );
@@ -407,6 +411,18 @@ class _AppointmentsViewState extends State<AppointmentsView> {
       } else {
         pastAppointmentsList.add(appointment);
       }
+    }
+  }
+
+
+  bool checkCancellable(Appointment appointment) {
+    // if appointment booked day is more then 7 days from now, then it is not cancellable.
+    final diff = DateTime.now().difference(appointment.bookedDate);
+
+    if(diff.inDays <= 7) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

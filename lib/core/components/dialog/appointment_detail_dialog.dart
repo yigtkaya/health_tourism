@@ -10,7 +10,8 @@ import '../ht_text.dart';
 
 class AppointmentDetailDialog extends StatelessWidget {
   final Appointment appointment;
-  const AppointmentDetailDialog({super.key, required this.appointment});
+  final bool cancellable;
+  const AppointmentDetailDialog({super.key, required this.appointment, required this.cancellable});
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +47,6 @@ class AppointmentDetailDialog extends StatelessWidget {
                         style: htSmallLabelStyle),
                   ],
                 ),
-                const Spacer(),
-                HTText(
-                    label: appointment.price.toString(), style: htBoldDarkLabelStyle),
               ],
             ),
             const VerticalSpace(),
@@ -97,13 +95,14 @@ class AppointmentDetailDialog extends StatelessWidget {
                 Row(
                   children: [
                     HTIcon(
-                      iconName: AssetConstants.icons.clock,
+                      iconName: AssetConstants.icons.location,
                       height: 20,
                       width: 20,
+                      color: const Color(0xff58a2eb),
                     ),
                     const HorizontalSpace(),
                     HTText(
-                        label: "Time",
+                        label: "Location",
                         style: htDarkBlueNormalStyle),
                   ],
                 ),
@@ -111,7 +110,7 @@ class AppointmentDetailDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0),
                   child: HTText(
-                      label: "at 4:30pm",
+                      label: appointment.clinicCity,
                       style: htSmallLabelStyle),
                 ),
                 const VerticalSpace(),
@@ -141,7 +140,7 @@ class AppointmentDetailDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0),
                   child: HTText(
-                      label: appointment.price.toString(), style: htSmallLabelStyle),
+                      label: '\$${appointment.price.toString()}', style: htSmallLabelStyle),
                 ),
                 const VerticalSpace(),
               ],
@@ -198,15 +197,15 @@ class AppointmentDetailDialog extends StatelessWidget {
             const VerticalSpace(
               spaceAmount: 16,
             ),
-            Center(
+            cancellable ? Center(
               child: GestureDetector(
                   onTap: () {
-                    // cancel appointment.
+                    // cancel appointment. ?
                   },
                   child: HTText(
                       label: "Cancel Appointment",
                       style: htDarkBlueLargeStyle)),
-            ),
+            ) : const SizedBox.shrink(),
           ],
         ),
       ),
