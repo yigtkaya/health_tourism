@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../models/user.dart';
 import '../repositories/customer_repo.dart';
+import 'package:path/path.dart' as Path;
+
 
 class UserRepositoryImpl extends UserRepo {
   CollectionReference users =
@@ -69,5 +73,31 @@ class UserRepositoryImpl extends UserRepo {
       "hairTransplantOperations": user.hairTransplantOperations,
       "uid": user.uid
     });
+  }
+
+  @override
+  Future<void> updateProfilePhoto(String uid, String photoURL) async {
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .update({
+      "photoURL": photoURL,
+    });
+  }
+
+  Future<String> uploadImageToFirebase(File file, String uid) async {
+    String fileUrl = '';
+    String fileName = Path.basename(file.path);
+    var reference =
+    FirebaseStorage.instance.ref().child('userImages/$uid/$fileName');
+    UploadTask uploadTask = reference.putFile(file);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    await taskSnapshot.ref
+        .getDownloadURL()
+        .then((value) => {fileUrl = value});
+
+    print('URL: $fileUrl');
+    return fileUrl;
   }
 }

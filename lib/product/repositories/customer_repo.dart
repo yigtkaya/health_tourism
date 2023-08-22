@@ -8,4 +8,6 @@ abstract class UserRepo {
   Future<void> deleteUser(String uid);
   Future<void> createUser(
       User customer) async {}
+  Future<void> updateProfilePhoto(
+      String uid, String imageUrl) async {}
 }

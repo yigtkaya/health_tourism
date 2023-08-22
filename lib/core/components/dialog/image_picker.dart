@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
+import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../product/navigation/route_paths.dart';
 
 class ImagePickerDialog extends StatefulWidget {
-  final String receiverId;
-
-  const ImagePickerDialog({super.key, required this.receiverId});
+  final String uid;
+  const ImagePickerDialog({super.key, required this.uid});
 
   @override
   State<ImagePickerDialog> createState() => _ImagePickerDialogState();
@@ -19,7 +19,7 @@ class ImagePickerDialog extends StatefulWidget {
 
 class _ImagePickerDialogState extends State<ImagePickerDialog> {
   late File imageFile;
-  final repo = MessageRepositoryImpl();
+  final repo = UserRepositoryImpl();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
             title: Text("Camera"),
             onTap: () {
               _getFromCamera();
-            },
+              },
           ),
           ListTile(
             leading: Icon(Icons.photo_library),
@@ -59,12 +59,13 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
         imageFile = File(xfile.path);
       });
 
-      if(mounted) {
-        context.pushNamed(RoutePath.sendImage, queryParameters: {
-          "receiverId": widget.receiverId,
-          "imageFile": xfile.path,
-        });
-      }
+      String imageUrl = await repo.uploadImageToFirebase(
+          imageFile, widget.uid);
+
+      repo.updateProfilePhoto(widget.uid, imageUrl);
+
+      goBack();
+
     } else {
       goBack();
     }
@@ -82,12 +83,13 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
       setState(() {
         imageFile = File(xfile.path);
       });
-      if(mounted) {
-        context.pushNamed(RoutePath.sendImage, queryParameters: {
-          "receiverId": widget.receiverId,
-          "imageFile": xfile.path,
-        });
-      }
+
+      String imageUrl = await repo.uploadImageToFirebase(
+          imageFile, widget.uid);
+
+      repo.updateProfilePhoto(widget.uid, imageUrl);
+
+      goBack();
     } else {
       goBack();
     }

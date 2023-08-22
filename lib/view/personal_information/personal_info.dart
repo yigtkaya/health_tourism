@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
 import 'package:health_tourism/product/utils/skelton.dart';
-
+import '../../core/components/dialog/image_picker.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
@@ -42,6 +42,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   int selectedIndex = 0;
   bool isChanged = false;
   late User forImg;
+
   @override
   void initState() {
     super.initState();
@@ -111,7 +112,8 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+                  BlocBuilder<ProfileCubit, ProfileState>(
+                      builder: (context, state) {
                     if (state is ProfileLoadedState) {
                       return buildView(state, size);
                     }
@@ -401,16 +403,43 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           forImg = User.fromData(data);
 
           return Center(
-            child: Container(
-              width: size.width * 0.3,
-              height: size.width * 0.3,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: NetworkImage(forImg.profilePhoto),
-                  fit: BoxFit.cover,
+            child: Stack(
+              children: [
+                Container(
+                  width: size.width * 0.35,
+                  height: size.width * 0.35,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(forImg.profilePhoto),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(context: context, builder: (BuildContext context) {
+                        return ImagePickerDialog(uid: forImg.uid);
+                      });
+                    },
+                    child: Container(
+                          height: size.height * 0.04,
+                          width: size.height * 0.04,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: const Color(0xff2D9CDB),
+                            border: Border.all(color: Colors.white, width: 4),
+                          ),
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          )),
+                  ),
+                ),
+              ],
             ),
           );
         });
