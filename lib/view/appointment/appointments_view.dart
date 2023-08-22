@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/dialog/appointment_detail_dialog.dart';
 import 'package:health_tourism/core/components/dialog/leave_comment_dialog.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
+import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
+import '../../cubit/profile/profile_cubit.dart';
 import '../../product/models/appointment.dart';
 import '../../product/models/user.dart';
 import '../../product/theme/styles.dart';
@@ -29,17 +32,14 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   @override
   void initState() {
     super.initState();
-    if (widget.user.appointments.isEmpty) {
-      anyAppointment = false;
-    } else {
-      anyAppointment = true;
-      extractAppointments(widget.user);
-    }
+    upcomingAppointmentsList.clear();
+    pastAppointmentsList.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(create: (context) => ProfileCubit(),
+      child: Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
@@ -67,36 +67,52 @@ class _AppointmentsViewState extends State<AppointmentsView> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: anyAppointment
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const VerticalSpace(
-                      spaceAmount: 20,
-                    ),
-                    buildUpcomingAppointmentView(),
-                    const Divider(
-                      color: Color(0xFFD3E3F1),
-                      thickness: 1,
-                    ),
-                    const VerticalSpace(spaceAmount: 40),
-                    buildPastAppointmentView(),
-                    const Spacer(),
-                  ],
-                )
-              : Center(
-                  child: HTText(
-                    label: "You have no appointments yet",
-                    style: htHintTextDarkStyle,
-                  ),
-                ),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: BlocBuilder<ProfileCubit, ProfileState>(
+              builder: (context, state) {
+                if(state is ProfileLoadingState) {
+                    return const Center(child: CircularProgressIndicator());
+                }
+                if (state is ProfileLoadedState) {
+                  return buildView(state);
+                }
+                else {
+                  return Center(child: HTText(label: "Something went wrong", style: htHintTextDarkStyle));
+                }
+              },
+            )
         ),
       ),
-    );
+    ),);
   }
+  Widget buildView(ProfileLoadedState state) {
+    return StreamBuilder(
+      stream: state.userSnapshot,
+        builder: (context, snapshot) {
+        if(snapshot.hasError) {
+          return Center(child: HTText(label: "Something went wrong", style: htHintTextDarkStyle));
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        Map<String, dynamic> data =
+        snapshot.data?.data() as Map<String, dynamic>;
+        secUser = User.fromData(data);
+        extractAppointments(secUser);
 
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const VerticalSpace(),
+              buildUpcomingAppointmentView(),
+              const VerticalSpace(spaceAmount: 40),
+              buildPastAppointmentView(),
+            ],
+          ),
+        );
+        });
+  }
   Widget buildUpcomingAppointmentView() {
     return upcomingAppointmentsList.isEmpty
         ? const SizedBox.shrink()
@@ -110,8 +126,16 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return upcomingAppointments(
-                        upcomingAppointmentsList[index]);
+                    return Column(
+                      children: [
+                        upcomingAppointments(
+                            upcomingAppointmentsList[index]),
+                        const Divider(
+                          color: Color(0xFFD3E3F1),
+                          thickness: 1,
+                        ),
+                      ],
+                    );
                   }),
             ],
           );
@@ -131,7 +155,15 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return pastAppointments(pastAppointmentsList[index]);
+                    return Column(
+                      children: [
+                        pastAppointments(pastAppointmentsList[index]),
+                        const Divider(
+                          color: Color(0xFFD3E3F1),
+                          thickness: 1,
+                        ),
+                      ],
+                    );
                   }),
             ],
           );
@@ -354,6 +386,8 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   }
 
   void extractAppointments(User user) {
+    upcomingAppointmentsList.clear();
+    pastAppointmentsList.clear();
     for (final i in user.appointments) {
       final appointment = Appointment.fromJson(i);
       if (appointment.date.isAfter(DateTime.now())) {
