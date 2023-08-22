@@ -16,6 +16,7 @@ class User extends Equatable {
   final String skinDiseases;
   final String chronicConditions;
   final String hairTransplantOperations;
+  final String gender;
   final List<dynamic> appointments;
 
   const User(
@@ -32,6 +33,7 @@ class User extends Equatable {
       required this.uid,
       required this.email,
       required this.name,
+        required this.gender,
       required this.appointments,
       required this.birthday});
 
@@ -49,6 +51,7 @@ class User extends Equatable {
         chronicConditions,
         hairTransplantOperations,
         alcoholOrSmoke,
+    gender,
         supplements,
         appointments,
         medications,
@@ -68,6 +71,7 @@ class User extends Equatable {
         supplements = data['supplements'],
         alcoholOrSmoke = data['alcoholOrSmoke'],
         medications = data['medications'],
+        gender = data['gender'],
         allergies = data['allergies'],
         surgeryHistory = data['surgeryHistory'],
         skinDiseases = data['skinDiseases'],
@@ -86,6 +90,7 @@ class User extends Equatable {
       'alcoholOrSmoke': alcoholOrSmoke,
       'medications': medications,
       'allergies': allergies,
+      'gender' : gender,
       'previousOperations': surgeryHistory,
       'skinDiseases': skinDiseases,
       'chronicConditions': chronicConditions,

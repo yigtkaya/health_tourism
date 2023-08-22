@@ -17,7 +17,7 @@ class ProfileLoadingState extends ProfileState {
 }
 
 class ProfileLoadedState extends ProfileState {
-  Stream<DocumentSnapshot> userSnapshot;
+  Stream<DocumentSnapshot>? userSnapshot;
   ProfileLoadedState(this.userSnapshot);
 }
 

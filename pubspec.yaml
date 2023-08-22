@@ -75,6 +75,8 @@ dependencies:
   readmore:
   chewie:
   video_player:
+  recase:
+
   #navigation
   go_router:
 

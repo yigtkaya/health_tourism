@@ -53,28 +53,25 @@ class UserRepositoryImpl extends UserRepo {
   }
 
   @override
-  Future<void> updateUser(User user) async {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user.uid)
-        .set({
-      "name": user.name,
-      "surname": user.surname,
-      "email": user.email,
-      "birthday": user.birthday.toDate(),
-      "photoURL": user.profilePhoto,
-      "alcoholOrSmoke": user.alcoholOrSmoke,
-      "supplements": user.supplements,
-      "medications": user.medications,
-      "allergies": user.allergies,
-      "previousOperations": user.surgeryHistory,
-      "skinDiseases": user.skinDiseases,
-      "chronicConditions": user.chronicConditions,
-      "hairTransplantOperations": user.hairTransplantOperations,
-      "uid": user.uid
-    });
+  Future<void> updateUser(Map changes) async {
+    try {
+      print(changes.keys);
+      Map<String, dynamic> map = Map<String, dynamic>.from(changes);
+      await users.doc(changes["uid"]).update(map);
+    } on FirebaseException catch (e) {
+      print(e);
+    }
   }
 
+  Future<void> updateChanges(List<String> changes, String uid) async {
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .set({
+
+    });
+  }
   @override
   Future<void> updateProfilePhoto(String uid, String photoURL) async {
 

@@ -13,6 +13,7 @@ import '../../core/constants/horizontal_space.dart';
 import '../../core/constants/vertical_space.dart';
 import '../../product/models/user.dart';
 import '../../product/theme/styles.dart';
+import 'package:recase/recase.dart';
 
 class PersonalInfoView extends StatefulWidget {
   final User user;
@@ -38,11 +39,12 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   DateTime? date = DateTime.now();
   String dateText = 'Date of Birth';
   List gender = ["Male", "Female", "Other"];
-  String selectedGender = "";
-  int selectedIndex = 0;
-  bool isChanged = false;
+  late String selectedGender;
+  late int selectedIndex;
   late User forImg;
+  bool isChanged = false;
 
+  final changes = <dynamic, dynamic>{};
   @override
   void initState() {
     super.initState();
@@ -57,6 +59,8 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
     hairTransplantation.text = widget.user.hairTransplantOperations;
     alcoholOrSmoking.text = widget.user.alcoholOrSmoke;
     supplements.text = widget.user.supplements;
+    selectedGender = widget.user.gender;
+    selectedIndex = gender.indexOf(selectedGender);
   }
 
   @override
@@ -80,12 +84,22 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
-              child: Center(
-                child: HTText(
-                  label: "Save",
-                  style: isChanged
-                      ? htToolBarLabel
-                      : htToolBarLabel.copyWith(color: Colors.transparent),
+              child: GestureDetector(
+                onTap: () {
+                  changes["uid"] = widget.user.uid;
+                  context.read<ProfileCubit>().updateUser(changes);
+                  setState(() {
+                    isChanged = false;
+                    changes.clear();
+                  });
+                },
+                child: Center(
+                  child: HTText(
+                    label: "Save",
+                    style: isChanged
+                        ? htToolBarLabel
+                        : htToolBarLabel.copyWith(color: Colors.transparent),
+                  ),
                 ),
               ),
             ),
@@ -159,7 +173,8 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                             padding: const EdgeInsets.only(left: 16.0),
                             child: TextField(
                               onChanged: (value) {
-                                setState(() {});
+                                changed();
+                                changes["name"] = nameController.text;
                               },
                               maxLines: 1,
                               controller: nameController,
@@ -188,7 +203,8 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                             padding: const EdgeInsets.only(left: 16.0),
                             child: TextField(
                               onChanged: (value) {
-                                setState(() {});
+                                changed();
+                                changes["surname"] = surnameController.text;
                               },
                               maxLines: 1,
                               controller: surnameController,
@@ -218,7 +234,8 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                       padding: const EdgeInsets.only(left: 16.0),
                       child: TextField(
                         onChanged: (value) {
-                          setState(() {});
+                          changed();
+                          changes["email"] = emailController.text;
                         },
                         maxLines: 1,
                         controller: emailController,
@@ -272,6 +289,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                           dateText =
                               '${monthFromInt(date!.month.toInt())} ${date!.day}, ${date!.year}';
                         });
+                        changes["birthday"] = date;
                       }
                     },
                     child: Container(
@@ -317,7 +335,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                   questionAndAnswer(
                       allergies,
                       "2.	Does the patient have any allergies or sensitivities? Please provide details.",
-                      "Allegeries"),
+                      "Allergies"),
                   const VerticalSpace(
                     spaceAmount: 16,
                   ),
@@ -370,20 +388,6 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         ),
       ),
     );
-  }
-
-  void initControllers(User user) {
-    nameController.text = user.name;
-    surnameController.text = user.surname;
-    emailController.text = user.email;
-    medications.text = user.medications;
-    chronic.text = user.chronicConditions;
-    allergies.text = user.allergies;
-    surgeries.text = user.surgeryHistory;
-    diseases.text = user.skinDiseases;
-    hairTransplantation.text = user.hairTransplantOperations;
-    alcoholOrSmoking.text = user.alcoholOrSmoke;
-    supplements.text = user.supplements;
   }
 
   Widget buildView(ProfileLoadedState state, Size size) {
@@ -447,9 +451,13 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
 
   Widget addGenderButton(int index, String title) => GestureDetector(
         onTap: () {
+          changed();
           setState(() {
+            changed();
             selectedIndex = index;
+            selectedGender = gender[index];
           });
+          changes["gender"] = selectedGender;
         },
         child: Row(
           children: [
@@ -474,6 +482,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           ],
         ),
       );
+
   String monthFromInt(int index) {
     switch (index) {
       case 1:
@@ -524,7 +533,9 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
             padding: const EdgeInsets.only(left: 16.0),
             child: TextField(
               onChanged: (value) {
-                setState(() {});
+                changed();
+                labelText = labelText.replaceAll(" ", "").camelCase;
+                changes[labelText] = controller.text;
               },
               minLines: 1,
               maxLines: 3,
@@ -540,5 +551,11 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         ),
       ],
     );
+  }
+
+  void changed() {
+    setState(() {
+      isChanged = true;
+    });
   }
 }
