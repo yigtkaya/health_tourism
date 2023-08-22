@@ -104,9 +104,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const VerticalSpace(),
               buildUpcomingAppointmentView(),
-              const VerticalSpace(spaceAmount: 40),
               buildPastAppointmentView(),
             ],
           ),
@@ -119,6 +117,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const VerticalSpace(),
               HTText(label: "Upcoming Appointments", style: htSubTitle),
               const VerticalSpace(),
               ListView.builder(
@@ -155,15 +154,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        pastAppointments(pastAppointmentsList[index]),
-                        const Divider(
-                          color: Color(0xFFD3E3F1),
-                          thickness: 1,
-                        ),
-                      ],
-                    );
+                    return pastAppointments(pastAppointmentsList[index]);
                   }),
             ],
           );
@@ -319,8 +310,10 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                   );
                 },
                 child: HTText(
-                  label: appointment.reviewed ? "" : "Leave a review",
-                  style: htDarkBlueNormalStyle,
+                  label: appointment.reviewed ? "" : "Leave a comment",
+                  style: htDarkBlueNormalStyle.copyWith(
+                    fontSize: 15,
+                  ),
                 ),
               ),
             ),
