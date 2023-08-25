@@ -100,6 +100,17 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         secUser = User.fromData(data);
         extractAppointments(secUser);
 
+        if (upcomingAppointmentsList.isEmpty && pastAppointmentsList.isEmpty) {
+          return Center(
+            child: HTText(
+              label: "You don't have any appointments yet.",
+              style: htHintTextDarkStyle.copyWith(
+                color: Colors.blueGrey,
+              ),
+            ),
+          );
+        }
+
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
