@@ -1,3 +1,4 @@
+import 'package:better_player/better_player.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chewie/chewie.dart';
@@ -71,6 +72,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
         top: false,
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 alignment: Alignment.bottomCenter,
@@ -114,8 +116,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               ),
               const VerticalSpace(),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -185,7 +186,88 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                 color: Color(0xfff3f3f3),
               ),
               const VerticalSpace(),
-              buildInformation(size),
+              HTText(label: "About", style: htSubTitle),
+              const VerticalSpace(),
+              ReadMoreText(widget.clinic.about,
+                  style: htLabelBlackStyle,
+                  trimLines: 4,
+                  colorClickableText: Colors.blue,
+                  trimMode: TrimMode.Line,
+                  trimCollapsedText: 'Read more',
+                  trimExpandedText: ' show less'),
+              const VerticalSpace(
+                spaceAmount: 32,
+              ),
+              HTText(label: "Operations", style: htSubTitle),
+              const VerticalSpace(
+                spaceAmount: 12,
+              ),
+              SizedBox(
+                height: size.height * 0.15,
+                child: ListView.builder(
+                    itemCount: widget.clinic.operationImageUrls.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: operationImageHolder(
+                            widget.clinic.operationImageUrls[index], size),
+                      );
+                    }),
+              ),
+              const VerticalSpace(
+                spaceAmount: 32,
+              ),
+              HTText(label: "Packages", style: htSubTitle),
+              const VerticalSpace(
+                spaceAmount: 12,
+              ),
+              SizedBox(
+                height: size.height * 0.15,
+                child: ListView.builder(
+                    itemCount: packages.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: packageCard(packages[index]),
+                      );
+                    }),
+              ),
+              const VerticalSpace(
+                spaceAmount: 32,
+              ),
+              Row(
+                children: [
+                  HTText(
+                      label: "Reviews (${widget.clinic.reviewCount})",
+                      style: htTitleStyle),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      context.push(RoutePath.reviews);
+                    },
+                    child: SizedBox(
+                      child: HTText(
+                          label: "View All", style: htDarkBlueNormalStyle),
+                    ),
+                  ),
+                  const HorizontalSpace(),
+                  HTIcon(iconName: AssetConstants.icons.chevronRight)
+                ],
+              ),
+              const VerticalSpace(
+                spaceAmount: 16,
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: reviews.length,
+                itemBuilder: (context, index) {
+                  return reviews[index];
+                },
+              ),
             ],
           ),
         ),
@@ -312,7 +394,9 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               const VerticalSpace(
                 spaceAmount: 8,
               ),
-              HTText(label: '\$${package.price.toString()}', style: htBlueLabelStyle),
+              HTText(
+                  label: '\$${package.price.toString()}',
+                  style: htBlueLabelStyle),
               const VerticalSpace(),
               const Divider(
                 height: 1,
@@ -362,7 +446,17 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             bottomRight: Radius.circular(22),
             bottomLeft: Radius.circular(22),
           ),
-          child: VideoPlayerDemo(url: urlImage, corousel: controller),
+          child: BetterPlayer.network(
+            urlImage,
+            betterPlayerConfiguration: const BetterPlayerConfiguration(
+              autoPlay: false,
+              looping: true,
+              aspectRatio: 4 / 3,
+              placeholder: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ),
         ),
       );
     }
@@ -395,6 +489,22 @@ class VideoPlayerDemo extends StatefulWidget {
 class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
   late VideoPlayerController controller;
   late ChewieController _chewieController;
+  bool isVideoPlaying = false;
+  // crete a decider function or widget to show loading indicator or play button
+  Widget overlay(bool isInitialized) {
+    if (!isInitialized) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return const Center(
+      child: Icon(
+        Icons.play_arrow,
+        color: Colors.white,
+        size: 50,
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -406,11 +516,30 @@ class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
       customControls: const MaterialControls(
         showPlayButton: true,
       ),
-      hideControlsTimer: Duration(seconds: 0),
+      hideControlsTimer: const Duration(seconds: 0),
       autoPlay: false,
       looping: true,
       allowMuting: false,
       autoInitialize: true,
+      showControls: false,
+      overlay: Center(
+        child: IconButton(
+          color: Colors.white,
+          onPressed: () {
+            setState(() {
+              controller.value.isPlaying
+                  ? {
+                      controller.pause(),
+                      isVideoPlaying = false,
+              } : {
+                isVideoPlaying = true,
+                controller.play(),
+              };
+            });
+          },
+          icon: const Icon(Icons.play_arrow, size: 50,),
+        ),
+      ),
       errorBuilder: (context, errorMessage) {
         return Center(
           child: Text(
