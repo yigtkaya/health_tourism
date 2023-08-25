@@ -141,8 +141,10 @@ final GoRouter router = GoRouter(
         }),
     GoRoute(
       path: RoutePath.payment,
+      name: RoutePath.payment,
       builder: (context, state) {
-        return PaymentView();
+        Clinic clinic = state.extra as Clinic;
+        return PaymentView(clinic: clinic,);
       },
     ),
     GoRoute(

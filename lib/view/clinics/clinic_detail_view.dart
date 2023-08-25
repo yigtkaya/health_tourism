@@ -60,7 +60,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
       ),
       floatingActionButton: GestureDetector(
         onTap: () {
-          context.push(RoutePath.payment);
+          context.pushNamed(RoutePath.payment, extra: widget.clinic);
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -120,163 +120,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               ],
             ),
             const VerticalSpace(),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      HTText(label: widget.clinic.name, style: htTitleStyle),
-                      const Spacer(),
-                      HTIcon(
-                        iconName: AssetConstants.icons.star,
-                        width: 20,
-                        height: 20,
-                      ),
-                      const HorizontalSpace(
-                        spaceAmount: 3,
-                      ),
-                      HTText(
-                          label: widget.clinic.averageRating.toString(),
-                          style: htBlueLabelStyle),
-                      const HorizontalSpace(
-                        spaceAmount: 6,
-                      ),
-                    ],
-                  ),
-                  const VerticalSpace(),
-                  Row(
-                    children: [
-                      HTText(
-                          label:
-                              "${widget.clinic.city}, ${widget.clinic.country}",
-                          style: htBlueLabelStyle),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          // route to contact create chat room and start chatting
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF123258),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12.0, vertical: 2),
-                            child: Row(
-                              children: [
-                                HTIcon(
-                                    iconName:
-                                        AssetConstants.icons.chatBubble),
-                                const HorizontalSpace(
-                                  spaceAmount: 4,
-                                ),
-                                HTText(
-                                    label: "Chat", style: htWhiteLabelStyle),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            const VerticalSpace(),
-            const Divider(
-              height: 1,
-              thickness: 1,
-              color: Color(0xfff3f3f3),
-            ),
-            const VerticalSpace(),
-            HTText(label: "About", style: htSubTitle),
-            const VerticalSpace(),
-            ReadMoreText(widget.clinic.about,
-                style: htLabelBlackStyle,
-                trimLines: 4,
-                colorClickableText: Colors.blue,
-                trimMode: TrimMode.Line,
-                trimCollapsedText: 'Read more',
-                trimExpandedText: ' show less'),
-            const VerticalSpace(
-              spaceAmount: 32,
-            ),
-            HTText(label: "Operations", style: htSubTitle),
-            const VerticalSpace(
-              spaceAmount: 12,
-            ),
-            SizedBox(
-              height: size.height * 0.15,
-              child: ListView.builder(
-                  itemCount: widget.clinic.operationImageUrls.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: operationImageHolder(
-                          widget.clinic.operationImageUrls[index], size),
-                    );
-                  }),
-            ),
-            const VerticalSpace(
-              spaceAmount: 32,
-            ),
-            HTText(label: "Packages", style: htSubTitle),
-            const VerticalSpace(
-              spaceAmount: 12,
-            ),
-            Container(
-              constraints: BoxConstraints(
-                maxHeight: size.height * 0.36,
-              ),
-              child: Expanded(
-                child: ListView.builder(
-                    itemCount: packages.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: packageCard(packages[index]),
-                      );
-                    }),
-              ),
-            ),
-            const VerticalSpace(
-              spaceAmount: 32,
-            ),
-            Row(
-              children: [
-                HTText(
-                    label: "Reviews (${widget.clinic.reviewCount})",
-                    style: htTitleStyle),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    context.push(RoutePath.reviews);
-                  },
-                  child: SizedBox(
-                    child: HTText(
-                        label: "View All", style: htDarkBlueNormalStyle),
-                  ),
-                ),
-                const HorizontalSpace(),
-                HTIcon(iconName: AssetConstants.icons.chevronRight)
-              ],
-            ),
-            const VerticalSpace(
-              spaceAmount: 16,
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: reviews.length,
-              itemBuilder: (context, index) {
-                return reviews[index];
-              },
-            ),
+            buildInformation(size),
           ],
         ),
       ),
@@ -290,6 +134,77 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    HTText(label: widget.clinic.name, style: htTitleStyle),
+                    const Spacer(),
+                    HTIcon(
+                      iconName: AssetConstants.icons.star,
+                      width: 20,
+                      height: 20,
+                    ),
+                    const HorizontalSpace(
+                      spaceAmount: 3,
+                    ),
+                    HTText(
+                        label: widget.clinic.averageRating.toString(),
+                        style: htBlueLabelStyle),
+                    const HorizontalSpace(
+                      spaceAmount: 6,
+                    ),
+                  ],
+                ),
+                const VerticalSpace(),
+                Row(
+                  children: [
+                    HTText(
+                        label:
+                        "${widget.clinic.city}, ${widget.clinic.country}",
+                        style: htBlueLabelStyle),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        // route to contact create chat room and start chatting
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF123258),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 2),
+                          child: Row(
+                            children: [
+                              HTIcon(
+                                  iconName:
+                                  AssetConstants.icons.chatBubble),
+                              const HorizontalSpace(
+                                spaceAmount: 4,
+                              ),
+                              HTText(
+                                  label: "Chat", style: htWhiteLabelStyle),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          const VerticalSpace(),
+          const Divider(
+            height: 1,
+            thickness: 2,
+            color: Color(0xfff3f3f3),
+          ),
+          const VerticalSpace(),
           HTText(label: "About", style: htSubTitle),
           const VerticalSpace(),
           ReadMoreText(widget.clinic.about,
@@ -326,6 +241,22 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           const VerticalSpace(
             spaceAmount: 12,
           ),
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: size.height * 0.36,
+            ),
+            child: Expanded(
+              child: ListView.builder(
+                  itemCount: packages.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: packageCard(packages[index]),
+                    );
+                  }),
+            ),
+          ),
           const VerticalSpace(
             spaceAmount: 32,
           ),
@@ -340,8 +271,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   context.push(RoutePath.reviews);
                 },
                 child: SizedBox(
-                  child:
-                      HTText(label: "View All", style: htDarkBlueNormalStyle),
+                  child: HTText(
+                      label: "View All", style: htDarkBlueNormalStyle),
                 ),
               ),
               const HorizontalSpace(),
@@ -379,6 +310,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             context: context,
             builder: (BuildContext context) {
               return PackageDetailDialog(
+                clinic: widget.clinic,
                 package: package,
               );
             });
@@ -406,7 +338,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               ),
               HTText(
                   label: package.packageDescription,
-                  style: htBlueLabelStyle),
+                  style: htDarkBlueLargeStyle),
               const VerticalSpace(),
               const Divider(
                 height: 1,
@@ -426,6 +358,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                     children: [
                       HTIcon(
                         iconName: AssetConstants.icons.checkMark,
+                        color: const Color(0xff58a2eb),
                         width: 14,
                         height: 14,
                       ),

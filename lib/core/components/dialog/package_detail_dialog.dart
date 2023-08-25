@@ -7,13 +7,15 @@ import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 
+import '../../../product/models/clinic.dart';
 import '../../../product/models/package.dart';
 import '../../../product/navigation/route_paths.dart';
 
 class PackageDetailDialog extends StatelessWidget {
+  final Clinic clinic;
   final Package package;
 
-  const PackageDetailDialog({super.key, required this.package});
+  const PackageDetailDialog({super.key, required this.package, required this.clinic});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +37,18 @@ class PackageDetailDialog extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return Row(
                         children: [
-                          HTText(
-                              label: package.packageFeatures[index],
-                              style: htDarkBlueLargeStyle)
+                          HTIcon(
+                            iconName: AssetConstants.icons.checkMark,
+                            width: 14,
+                            height: 14,
+                            color: const Color(0xff58a2eb),
+                          ),
+                          const HorizontalSpace(spaceAmount: 4,),
+                          Expanded(
+                            child: HTText(
+                                label: package.packageFeatures[index],
+                                style: htDarkBlueLargeStyle),
+                          )
                         ],
                       );
                     }),
@@ -47,7 +58,7 @@ class PackageDetailDialog extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  context.push(RoutePath.payment);
+                  context.pushNamed(RoutePath.payment, extra: clinic);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),

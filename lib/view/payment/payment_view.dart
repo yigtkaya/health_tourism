@@ -10,10 +10,14 @@ import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../core/constants/vertical_space.dart';
+import '../../product/models/clinic.dart';
+import '../../product/models/package.dart';
 import '../../product/theme/styles.dart';
 
 class PaymentView extends StatefulWidget {
-  PaymentView({super.key});
+  final Clinic clinic;
+
+  PaymentView({super.key, required this.clinic});
 
   @override
   State<PaymentView> createState() => _PaymentViewState();
@@ -146,6 +150,74 @@ class _PaymentViewState extends State<PaymentView> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget packageCard(Package package) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.65,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: const Color(0xff58a2eb)),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            HTText(
+              label: package.packageName,
+              style: htBlueLabelStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600, color: const Color(
+                  0xff58a2eb)),
+            ),
+            const VerticalSpace(
+              spaceAmount: 8,
+            ),
+            HTText(
+                label: package.packageDescription,
+                style: htDarkBlueLargeStyle),
+            const VerticalSpace(),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              color: Color(0xfff3f3f3),
+            ),
+            const VerticalSpace(),
+            Expanded(
+              child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: package.packageFeatures.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        HTIcon(
+                          iconName: AssetConstants.icons.checkMark,
+                          color: const Color(0xff58a2eb),
+                          width: 14,
+                          height: 14,
+                        ),
+                        const HorizontalSpace(
+                          spaceAmount: 4,
+                        ),
+                        Expanded(
+                          child: Text(
+                            package.packageFeatures[index],
+                            style: htDarkBlueLargeStyle.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w400
+                            ),),
+                        ),
+                      ],
+                    );
+                  }),
+            )
+          ],
         ),
       ),
     );
