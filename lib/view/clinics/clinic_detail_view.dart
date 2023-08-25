@@ -227,17 +227,21 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             const VerticalSpace(
               spaceAmount: 12,
             ),
-            SizedBox(
-              height: size.height * 0.15,
-              child: ListView.builder(
-                  itemCount: packages.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: packageCard(packages[index]),
-                    );
-                  }),
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: size.height * 0.36,
+              ),
+              child: Expanded(
+                child: ListView.builder(
+                    itemCount: packages.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: packageCard(packages[index]),
+                      );
+                    }),
+              ),
             ),
             const VerticalSpace(
               spaceAmount: 32,
@@ -380,6 +384,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             });
       },
       child: Container(
+        width: MediaQuery.of(context).size.width * 0.65,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: const Color(0xff58a2eb)),
@@ -393,20 +398,51 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             children: [
               HTText(
                 label: package.packageName,
-                style: htBlueLabelStyle.copyWith(fontSize: 22),
+                style: htBlueLabelStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600, color: const Color(
+                    0xff58a2eb)),
               ),
               const VerticalSpace(
                 spaceAmount: 8,
               ),
               HTText(
-                  label: '\$${package.price.toString()}',
+                  label: package.packageDescription,
                   style: htBlueLabelStyle),
               const VerticalSpace(),
               const Divider(
                 height: 1,
                 thickness: 1,
-                color: Colors.black,
+                color: Color(0xfff3f3f3),
               ),
+              const VerticalSpace(),
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: package.packageFeatures.length,
+                  shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      HTIcon(
+                        iconName: AssetConstants.icons.checkMark,
+                        width: 14,
+                        height: 14,
+                      ),
+                      const HorizontalSpace(
+                        spaceAmount: 4,
+                      ),
+                      Expanded(
+                        child: Text(
+                            package.packageFeatures[index],
+                          style: htDarkBlueLargeStyle.copyWith(
+                                fontSize: 14, fontWeight: FontWeight.w400
+                            ),),
+                      ),
+                    ],
+                  );
+                }),
+              )
             ],
           ),
         ),
