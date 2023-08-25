@@ -74,6 +74,7 @@ dependencies:
   flutter_slidable:
   readmore:
   chewie:
+  appinio_video_player: ^1.2.2
   video_player:
   recase:
 

@@ -1,4 +1,4 @@
-import 'package:better_player/better_player.dart';
+import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chewie/chewie.dart';
@@ -51,6 +51,13 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+      ),
       floatingActionButton: GestureDetector(
         onTap: () {
           context.push(RoutePath.payment);
@@ -68,208 +75,205 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               )),
         ),
       ),
-      body: SafeArea(
-        top: false,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  CarouselSlider.builder(
-                    carouselController: controller,
-                    itemCount: widget.clinic.imageUrls.length,
-                    itemBuilder: (context, index, realIndex) {
-                      final urlImage = widget.clinic.imageUrls[index];
-                      return buildImage(urlImage, index, context);
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CarouselSlider.builder(
+                  carouselController: controller,
+                  itemCount: widget.clinic.imageUrls.length,
+                  itemBuilder: (context, index, realIndex) {
+                    final urlImage = widget.clinic.imageUrls[index];
+                    return buildImage(urlImage, index, context);
+                  },
+                  options: CarouselOptions(
+                    height: size.height * 0.5,
+                    autoPlay: false,
+                    enableInfiniteScroll: false,
+                    autoPlayAnimationDuration: const Duration(seconds: 2),
+                    viewportFraction: 1,
+                    enlargeCenterPage: false,
+                    onPageChanged: (index, reason) =>
+                        setState(() => activeIndex = index),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: buildIndicator(),
+                ),
+                Positioned(
+                  top: 52,
+                  left: 32,
+                  child: HTIcon(
+                    iconName: AssetConstants.icons.chevronLeft,
+                    width: 20,
+                    height: 20,
+                    color: const Color(0xff123258),
+                    onPress: () {
+                      context.pop();
                     },
-                    options: CarouselOptions(
-                      height: size.height * 0.5,
-                      autoPlay: false,
-                      enableInfiniteScroll: false,
-                      autoPlayAnimationDuration: const Duration(seconds: 2),
-                      viewportFraction: 1,
-                      enlargeCenterPage: false,
-                      onPageChanged: (index, reason) =>
-                          setState(() => activeIndex = index),
-                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: buildIndicator(),
+                ),
+              ],
+            ),
+            const VerticalSpace(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      HTText(label: widget.clinic.name, style: htTitleStyle),
+                      const Spacer(),
+                      HTIcon(
+                        iconName: AssetConstants.icons.star,
+                        width: 20,
+                        height: 20,
+                      ),
+                      const HorizontalSpace(
+                        spaceAmount: 3,
+                      ),
+                      HTText(
+                          label: widget.clinic.averageRating.toString(),
+                          style: htBlueLabelStyle),
+                      const HorizontalSpace(
+                        spaceAmount: 6,
+                      ),
+                    ],
                   ),
-                  Positioned(
-                    top: 52,
-                    left: 32,
-                    child: HTIcon(
-                      iconName: AssetConstants.icons.chevronLeft,
-                      width: 20,
-                      height: 20,
-                      color: const Color(0xff123258),
-                      onPress: () {
-                        context.pop();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const VerticalSpace(),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        HTText(label: widget.clinic.name, style: htTitleStyle),
-                        const Spacer(),
-                        HTIcon(
-                          iconName: AssetConstants.icons.star,
-                          width: 20,
-                          height: 20,
-                        ),
-                        const HorizontalSpace(
-                          spaceAmount: 3,
-                        ),
-                        HTText(
-                            label: widget.clinic.averageRating.toString(),
-                            style: htBlueLabelStyle),
-                        const HorizontalSpace(
-                          spaceAmount: 6,
-                        ),
-                      ],
-                    ),
-                    const VerticalSpace(),
-                    Row(
-                      children: [
-                        HTText(
-                            label:
-                                "${widget.clinic.city}, ${widget.clinic.country}",
-                            style: htBlueLabelStyle),
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            // route to contact create chat room and start chatting
-                          },
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Color(0xFF123258),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12.0, vertical: 2),
-                              child: Row(
-                                children: [
-                                  HTIcon(
-                                      iconName:
-                                          AssetConstants.icons.chatBubble),
-                                  const HorizontalSpace(
-                                    spaceAmount: 4,
-                                  ),
-                                  HTText(
-                                      label: "Chat", style: htWhiteLabelStyle),
-                                ],
-                              ),
+                  const VerticalSpace(),
+                  Row(
+                    children: [
+                      HTText(
+                          label:
+                              "${widget.clinic.city}, ${widget.clinic.country}",
+                          style: htBlueLabelStyle),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          // route to contact create chat room and start chatting
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF123258),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 2),
+                            child: Row(
+                              children: [
+                                HTIcon(
+                                    iconName:
+                                        AssetConstants.icons.chatBubble),
+                                const HorizontalSpace(
+                                  spaceAmount: 4,
+                                ),
+                                HTText(
+                                    label: "Chat", style: htWhiteLabelStyle),
+                              ],
                             ),
                           ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              const VerticalSpace(),
-              const Divider(
-                height: 1,
-                thickness: 1,
-                color: Color(0xfff3f3f3),
-              ),
-              const VerticalSpace(),
-              HTText(label: "About", style: htSubTitle),
-              const VerticalSpace(),
-              ReadMoreText(widget.clinic.about,
-                  style: htLabelBlackStyle,
-                  trimLines: 4,
-                  colorClickableText: Colors.blue,
-                  trimMode: TrimMode.Line,
-                  trimCollapsedText: 'Read more',
-                  trimExpandedText: ' show less'),
-              const VerticalSpace(
-                spaceAmount: 32,
-              ),
-              HTText(label: "Operations", style: htSubTitle),
-              const VerticalSpace(
-                spaceAmount: 12,
-              ),
-              SizedBox(
-                height: size.height * 0.15,
-                child: ListView.builder(
-                    itemCount: widget.clinic.operationImageUrls.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: operationImageHolder(
-                            widget.clinic.operationImageUrls[index], size),
-                      );
-                    }),
-              ),
-              const VerticalSpace(
-                spaceAmount: 32,
-              ),
-              HTText(label: "Packages", style: htSubTitle),
-              const VerticalSpace(
-                spaceAmount: 12,
-              ),
-              SizedBox(
-                height: size.height * 0.15,
-                child: ListView.builder(
-                    itemCount: packages.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: packageCard(packages[index]),
-                      );
-                    }),
-              ),
-              const VerticalSpace(
-                spaceAmount: 32,
-              ),
-              Row(
-                children: [
-                  HTText(
-                      label: "Reviews (${widget.clinic.reviewCount})",
-                      style: htTitleStyle),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      context.push(RoutePath.reviews);
-                    },
-                    child: SizedBox(
-                      child: HTText(
-                          label: "View All", style: htDarkBlueNormalStyle),
-                    ),
-                  ),
-                  const HorizontalSpace(),
-                  HTIcon(iconName: AssetConstants.icons.chevronRight)
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
-              const VerticalSpace(
-                spaceAmount: 16,
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: reviews.length,
-                itemBuilder: (context, index) {
-                  return reviews[index];
-                },
-              ),
-            ],
-          ),
+            ),
+            const VerticalSpace(),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              color: Color(0xfff3f3f3),
+            ),
+            const VerticalSpace(),
+            HTText(label: "About", style: htSubTitle),
+            const VerticalSpace(),
+            ReadMoreText(widget.clinic.about,
+                style: htLabelBlackStyle,
+                trimLines: 4,
+                colorClickableText: Colors.blue,
+                trimMode: TrimMode.Line,
+                trimCollapsedText: 'Read more',
+                trimExpandedText: ' show less'),
+            const VerticalSpace(
+              spaceAmount: 32,
+            ),
+            HTText(label: "Operations", style: htSubTitle),
+            const VerticalSpace(
+              spaceAmount: 12,
+            ),
+            SizedBox(
+              height: size.height * 0.15,
+              child: ListView.builder(
+                  itemCount: widget.clinic.operationImageUrls.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: operationImageHolder(
+                          widget.clinic.operationImageUrls[index], size),
+                    );
+                  }),
+            ),
+            const VerticalSpace(
+              spaceAmount: 32,
+            ),
+            HTText(label: "Packages", style: htSubTitle),
+            const VerticalSpace(
+              spaceAmount: 12,
+            ),
+            SizedBox(
+              height: size.height * 0.15,
+              child: ListView.builder(
+                  itemCount: packages.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: packageCard(packages[index]),
+                    );
+                  }),
+            ),
+            const VerticalSpace(
+              spaceAmount: 32,
+            ),
+            Row(
+              children: [
+                HTText(
+                    label: "Reviews (${widget.clinic.reviewCount})",
+                    style: htTitleStyle),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    context.push(RoutePath.reviews);
+                  },
+                  child: SizedBox(
+                    child: HTText(
+                        label: "View All", style: htDarkBlueNormalStyle),
+                  ),
+                ),
+                const HorizontalSpace(),
+                HTIcon(iconName: AssetConstants.icons.chevronRight)
+              ],
+            ),
+            const VerticalSpace(
+              spaceAmount: 16,
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: reviews.length,
+              itemBuilder: (context, index) {
+                return reviews[index];
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -446,17 +450,7 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             bottomRight: Radius.circular(22),
             bottomLeft: Radius.circular(22),
           ),
-          child: BetterPlayer.network(
-            urlImage,
-            betterPlayerConfiguration: const BetterPlayerConfiguration(
-              autoPlay: false,
-              looping: true,
-              aspectRatio: 4 / 3,
-              placeholder: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          ),
+          child: VideoPlayerDemo(url: urlImage, corousel: controller),
         ),
       );
     }
@@ -488,6 +482,7 @@ class VideoPlayerDemo extends StatefulWidget {
 
 class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
   late VideoPlayerController controller;
+  late CustomVideoPlayerController _customVideoPlayerController;
   late ChewieController _chewieController;
   bool isVideoPlaying = false;
   // crete a decider function or widget to show loading indicator or play button
@@ -509,46 +504,30 @@ class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.networkUrl(Uri.parse(widget.url));
-    _chewieController = ChewieController(
-      videoPlayerController: controller,
-      aspectRatio: 4 / 3,
-      customControls: const MaterialControls(
-        showPlayButton: true,
-      ),
-      hideControlsTimer: const Duration(seconds: 0),
-      autoPlay: false,
-      looping: true,
-      allowMuting: false,
-      autoInitialize: true,
-      showControls: false,
-      overlay: Center(
-        child: IconButton(
-          color: Colors.white,
-          onPressed: () {
-            setState(() {
-              controller.value.isPlaying
-                  ? {
-                      controller.pause(),
-                      isVideoPlaying = false,
-              } : {
-                isVideoPlaying = true,
-                controller.play(),
-              };
-            });
-          },
-          icon: const Icon(Icons.play_arrow, size: 50,),
-        ),
-      ),
-      errorBuilder: (context, errorMessage) {
-        return Center(
-          child: Text(
-            errorMessage,
-            style: const TextStyle(color: Colors.black),
-          ),
-        );
-      },
-    );
+    controller = VideoPlayerController.networkUrl(Uri.parse(widget.url))
+      ..initialize().then((value) => setState(() {
+            _customVideoPlayerController = CustomVideoPlayerController(
+              context: context,
+              customVideoPlayerSettings: const CustomVideoPlayerSettings(
+                customAspectRatio: 4 / 3,
+                showPlayButton: true,
+                autoFadeOutControls: true,
+                durationAfterControlsFadeOut: Duration(milliseconds: 800),
+                settingsButtonAvailable: false,
+                durationRemainingTextStyle:
+                    TextStyle(color: Colors.transparent),
+                enterFullscreenButton: SizedBox.shrink(),
+                controlBarAvailable: true,
+                  customVideoPlayerProgressBarSettings: CustomVideoPlayerProgressBarSettings(
+                    bufferedColor: Colors.grey,
+                    progressBarHeight: 5,
+                    backgroundColor: Colors.grey,
+                  )
+              ),
+              videoPlayerController: controller,
+            );
+          }));
+
     listener();
   }
 
@@ -571,12 +550,13 @@ class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
   @override
   void dispose() {
     controller.dispose();
-    _chewieController.dispose();
+    _customVideoPlayerController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Chewie(controller: _chewieController);
+    return CustomVideoPlayer(
+        customVideoPlayerController: _customVideoPlayerController);
   }
 }
