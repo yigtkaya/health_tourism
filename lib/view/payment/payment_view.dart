@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/payment_field.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
+import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
@@ -80,7 +81,7 @@ class _PaymentViewState extends State<PaymentView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                showSelectedClinic(),
+                showSelectedClinic(widget.clinic),
                 const VerticalSpace(
                   spaceAmount: 24,
                 ),
@@ -811,7 +812,7 @@ class _PaymentViewState extends State<PaymentView> {
     );
   }
 
-  Widget showSelectedClinic() {
+  Widget showSelectedClinic(Clinic clinic) {
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -820,7 +821,7 @@ class _PaymentViewState extends State<PaymentView> {
           Flexible(
             flex: 2,
             child: Image.network(
-              "https://healthwaymedical.com/wp-content/uploads/2022/01/Medico-Clinic-Surgery-1024x681.jpg",
+             clinic.profilePicture,
             ),
           ),
           Flexible(
@@ -840,7 +841,7 @@ class _PaymentViewState extends State<PaymentView> {
                       Column(
                         children: [
                           HTText(
-                              label: "Vera Clinic",
+                              label: clinic.name,
                               style: htBoldDarkLabelStyle),
                         ],
                       ),
@@ -853,7 +854,7 @@ class _PaymentViewState extends State<PaymentView> {
                       const HorizontalSpace(
                         spaceAmount: 3,
                       ),
-                      HTText(label: "4.5", style: htBlueLabelStyle),
+                      HTText(label: "${clinic.averageRating}", style: htBlueLabelStyle),
                     ],
                   ),
                 ),
@@ -863,7 +864,7 @@ class _PaymentViewState extends State<PaymentView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       HTText(
-                          label: "Istanbul, Turkiye", style: htBlueLabelStyle),
+                          label: "${clinic.city}, ${clinic.country}", style: htBlueLabelStyle),
                       Container(
                         decoration: const BoxDecoration(
                           color: Color(0xFF123258),
