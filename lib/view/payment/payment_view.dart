@@ -26,6 +26,7 @@ class PaymentView extends StatefulWidget {
 
 class _PaymentViewState extends State<PaymentView> {
   List<bool> isSelected = [true, false];
+  List<Package> packages = [];
   DateTime? date = DateTime.now();
   String dateText = "Select a Date";
   String cardNumber = '';
@@ -44,6 +45,20 @@ class _PaymentViewState extends State<PaymentView> {
   final postalCodeController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  void extractPackages() {
+    final details = widget.clinic.packages;
+    for (final package in details) {
+      packages.add(Package.fromData(package));
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    extractPackages();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +104,20 @@ class _PaymentViewState extends State<PaymentView> {
                 const VerticalSpace(
                   spaceAmount: 20,
                 ),
-                togglePackages(size),
+                Container(
+                  constraints: BoxConstraints(
+                    maxHeight: size.height * 0.36,
+                  ),
+                  child: ListView.builder(
+                      itemCount: packages.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: packageCard(packages[index]),
+                        );
+                      }),
+                ),
                 const VerticalSpace(
                   spaceAmount: 24,
                 ),

@@ -245,17 +245,15 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             constraints: BoxConstraints(
               maxHeight: size.height * 0.36,
             ),
-            child: Expanded(
-              child: ListView.builder(
-                  itemCount: packages.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: packageCard(packages[index]),
-                    );
-                  }),
-            ),
+            child: ListView.builder(
+                itemCount: packages.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: packageCard(packages[index]),
+                  );
+                }),
           ),
           const VerticalSpace(
             spaceAmount: 32,

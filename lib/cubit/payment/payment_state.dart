@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:health_tourism/product/models/iyzico_error.dart';
+import 'package:health_tourism/product/models/package.dart';
 
 import '../../product/models/credit_card.dart';
 
@@ -28,3 +29,7 @@ class PaymentErrorState extends PaymentState {
   const PaymentErrorState(this.iyzicoError);
 }
 
+class PaymentPackageChosen extends PaymentState {
+  final Package package;
+  const PaymentPackageChosen(this.package);
+}
