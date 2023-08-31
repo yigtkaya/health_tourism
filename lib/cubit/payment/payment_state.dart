@@ -29,7 +29,7 @@ class PaymentErrorState extends PaymentState {
   const PaymentErrorState(this.iyzicoError);
 }
 
-class PaymentPackageChosen extends PaymentState {
+class SelectedPackage extends PaymentState {
   final Package package;
-  const PaymentPackageChosen(this.package);
+  const SelectedPackage(this.package);
 }

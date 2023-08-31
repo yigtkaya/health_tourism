@@ -7,9 +7,6 @@ class PaymentCubit extends Cubit<PaymentState> {
 
   PaymentRepoImpl paymentRepoImpl = PaymentRepoImpl();
 
-  void choosePackage() {
-    emit(PaymentPackageChosen());
-  }
   // create function to create payment
   Future<void> createPayment(
       String firstName, String surName,

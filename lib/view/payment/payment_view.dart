@@ -34,6 +34,7 @@ class _PaymentViewState extends State<PaymentView> {
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
+  int selectedIndex = -1;
 
   final cardHolderNameController = TextEditingController();
   final cardNumberController = TextEditingController();
@@ -121,7 +122,7 @@ class _PaymentViewState extends State<PaymentView> {
                 const VerticalSpace(
                   spaceAmount: 24,
                 ),
-                HTText(label: "Choose Date", style: htSubTitle),
+                HTText(label: "Choose a Date", style: htSubTitle),
                 const VerticalSpace(
                   spaceAmount: 20,
                 ),
@@ -680,8 +681,7 @@ class _PaymentViewState extends State<PaymentView> {
           children: [
             Container(
               width: size.width * 0.45,
-              decoration: const BoxDecoration(
-              ),
+              decoration: const BoxDecoration(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -758,8 +758,7 @@ class _PaymentViewState extends State<PaymentView> {
             ),
             Container(
               width: size.width * 0.45,
-              decoration: const BoxDecoration(
-              ),
+              decoration: const BoxDecoration(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -849,7 +848,7 @@ class _PaymentViewState extends State<PaymentView> {
           Flexible(
             flex: 2,
             child: Image.network(
-             clinic.profilePicture,
+              clinic.profilePicture,
             ),
           ),
           Flexible(
@@ -869,8 +868,7 @@ class _PaymentViewState extends State<PaymentView> {
                       Column(
                         children: [
                           HTText(
-                              label: clinic.name,
-                              style: htBoldDarkLabelStyle),
+                              label: clinic.name, style: htBoldDarkLabelStyle),
                         ],
                       ),
                       const Spacer(),
@@ -882,7 +880,9 @@ class _PaymentViewState extends State<PaymentView> {
                       const HorizontalSpace(
                         spaceAmount: 3,
                       ),
-                      HTText(label: "${clinic.averageRating}", style: htBlueLabelStyle),
+                      HTText(
+                          label: "${clinic.averageRating}",
+                          style: htBlueLabelStyle),
                     ],
                   ),
                 ),
@@ -892,7 +892,8 @@ class _PaymentViewState extends State<PaymentView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       HTText(
-                          label: "${clinic.city}, ${clinic.country}", style: htBlueLabelStyle),
+                          label: "${clinic.city}, ${clinic.country}",
+                          style: htBlueLabelStyle),
                       Container(
                         decoration: const BoxDecoration(
                           color: Color(0xFF123258),
