@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/payment_field.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
+import 'package:health_tourism/cubit/payment/payment_state.dart';
 import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
@@ -34,7 +35,7 @@ class _PaymentViewState extends State<PaymentView> {
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
-  int selectedIndex = -1;
+  int selectedIndex = 0;
 
   final cardHolderNameController = TextEditingController();
   final cardNumberController = TextEditingController();
@@ -59,6 +60,7 @@ class _PaymentViewState extends State<PaymentView> {
     // TODO: implement initState
     super.initState();
     extractPackages();
+    context.read<PackageCubit>().selectPackage(packages[0]);
   }
 
   @override
@@ -103,19 +105,27 @@ class _PaymentViewState extends State<PaymentView> {
                 ),
                 HTText(label: "Packages", style: htTitleStyle),
                 const VerticalSpace(
-                  spaceAmount: 20,
+                  spaceAmount: 12,
                 ),
                 Container(
                   constraints: BoxConstraints(
                     maxHeight: size.height * 0.36,
                   ),
                   child: ListView.builder(
+                    padding: EdgeInsets.zero,
                       itemCount: packages.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: packageCard(packages[index]),
+                          padding: const EdgeInsets.only(right: 12.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = index;
+                              });
+                              context.read<PackageCubit>().selectPackage(packages[index]);
+                            },
+                              child: packageCard(packages[index], selectedIndex == index)),
                         );
                       }),
                 ),
@@ -158,25 +168,20 @@ class _PaymentViewState extends State<PaymentView> {
                 const VerticalSpace(
                   spaceAmount: 16,
                 ),
-                paymentDetail(),
+                BlocBuilder<PackageCubit, Package?>(
+                  builder: (context, selectedPackage) {
+                    if(selectedPackage is Package) {
+                      return paymentDetail(selectedPackage);
+                    } else {
+                      return paymentDetail(null);
+                    }
+                  },
+                ),
                 const VerticalSpace(
                   spaceAmount: 24,
                 ),
-                totalButtonRow(),
+                checkoutButton(),
                 const VerticalSpace(),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 8),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100.0),
-                        color: const Color(0xFF123258),
-                      ),
-                      height: size.height * 0.006,
-                      width: size.width * 0.4,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -185,11 +190,11 @@ class _PaymentViewState extends State<PaymentView> {
     );
   }
 
-  Widget packageCard(Package package) {
+  Widget packageCard(Package package, bool isSelected) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.65,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isSelected ? const Color(0xffc2e1ff).withOpacity(0.6) : Colors.white,
         border: Border.all(color: const Color(0xff58a2eb)),
         borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
@@ -282,242 +287,10 @@ class _PaymentViewState extends State<PaymentView> {
     }
   }
 
-  Widget checkoutColumn(Size size) {
-    final cardHolderNameController = TextEditingController();
-    final cardNumberController = TextEditingController();
-    final expiryDateController = TextEditingController();
-    final cvvCodeController = TextEditingController();
-    final cityController = TextEditingController();
-    final countryController = TextEditingController();
-    final addressController = TextEditingController();
-
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(
-              color: const Color(0xFFD3E3F1).withOpacity(0.5),
-              width: 2,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  cardHolderName = value;
-                });
-              },
-              maxLines: 1,
-              controller: cardHolderNameController,
-              style: htDarkBlueNormalStyle,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: "Name on Card",
-                hintStyle: htHintTextDarkStyle,
-              ),
-            ),
-          ),
-        ),
-        const VerticalSpace(),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(
-              color: const Color(0xFFD3E3F1).withOpacity(0.5),
-              width: 2,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  cardNumber = value;
-                });
-              },
-              maxLines: 1,
-              controller: cardNumberController,
-              style: htDarkBlueNormalStyle,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: "Card Number",
-                hintStyle: htHintTextDarkStyle,
-              ),
-            ),
-          ),
-        ),
-        const VerticalSpace(),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
-                    width: 2,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        expiryDate = value;
-                      });
-                    },
-                    maxLines: 1,
-                    controller: expiryDateController,
-                    style: htDarkBlueNormalStyle,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "Expiry Date",
-                      hintStyle: htHintTextDarkStyle,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const HorizontalSpace(),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
-                    width: 2,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        cvvCode = value;
-                      });
-                    },
-                    maxLines: 1,
-                    controller: cvvCodeController,
-                    style: htDarkBlueNormalStyle,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "CCV",
-                      hintStyle: htHintTextDarkStyle,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const VerticalSpace(),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
-                    width: 2,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        expiryDate = value;
-                      });
-                    },
-                    maxLines: 1,
-                    controller: cityController,
-                    style: htDarkBlueNormalStyle,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "City",
-                      hintStyle: htHintTextDarkStyle,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const HorizontalSpace(),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
-                    width: 2,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        cvvCode = value;
-                      });
-                    },
-                    maxLines: 1,
-                    controller: countryController,
-                    style: htDarkBlueNormalStyle,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "Country",
-                      hintStyle: htHintTextDarkStyle,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const VerticalSpace(),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(
-              color: const Color(0xFFD3E3F1).withOpacity(0.5),
-              width: 2,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  cardNumber = value;
-                });
-              },
-              maxLines: 1,
-              controller: addressController,
-              style: htDarkBlueNormalStyle,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: "Address",
-                hintStyle: htHintTextDarkStyle,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget totalButtonRow() {
+  Widget checkoutButton() {
     return GestureDetector(
       onTap: () {
+
         var expireMonth = expiryDate.split('/')[0];
         var expireYear = '20${expiryDate.split('/')[1]}';
         var firstName = cardHolderName.split(' ')[0];
@@ -619,14 +392,14 @@ class _PaymentViewState extends State<PaymentView> {
     );
   }
 
-  Widget paymentDetail() {
+  Widget paymentDetail(Package? package) {
     return Column(
       children: [
         Row(
           children: [
-            HTText(label: "selectedPackageName", style: htDarkBlueNormalStyle),
+            HTText(label: "Package", style: htDarkBlueNormalStyle),
             const Spacer(),
-            HTText(label: "\$24.8".toString(), style: htDarkBlueNormalStyle),
+            HTText(label: "\$${package?.price}".toString(), style: htDarkBlueNormalStyle),
           ],
         ),
         const VerticalSpace(
@@ -634,9 +407,9 @@ class _PaymentViewState extends State<PaymentView> {
         ),
         Row(
           children: [
-            HTText(label: "selectedPackageName", style: htDarkBlueNormalStyle),
+            HTText(label: "Down Payment", style: htDarkBlueNormalStyle),
             const Spacer(),
-            HTText(label: "\$24.8", style: htDarkBlueNormalStyle),
+            HTText(label: "\$${package!.price / 10}", style: htDarkBlueNormalStyle),
           ],
         ),
         const VerticalSpace(
@@ -646,7 +419,7 @@ class _PaymentViewState extends State<PaymentView> {
           children: [
             HTText(label: "Total", style: htBoldDarkLabelStyle),
             const Spacer(),
-            HTText(label: "\$24.8", style: htBoldDarkLabelStyle),
+            HTText(label: "\$${package!.price / 10}", style: htBoldDarkLabelStyle),
           ],
         ),
       ],

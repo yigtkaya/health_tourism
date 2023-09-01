@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
+import 'package:health_tourism/product/models/package.dart';
 import 'package:health_tourism/product/repoImpl/payment_repo_impl.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
@@ -36,4 +37,10 @@ class PaymentCubit extends Cubit<PaymentState> {
   bool isAmexCard(String cardNumber) {
     return paymentRepoImpl.isAmexCard(cardNumber);
   }
+}
+
+class PackageCubit extends Cubit<Package?> {
+  PackageCubit() : super(null);
+
+  void selectPackage(Package package) => emit(package);
 }

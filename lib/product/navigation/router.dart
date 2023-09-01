@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/dialog/chat_image_dialog.dart';
+import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
 import 'package:health_tourism/view/chats/fullsecreen_image.dart';
@@ -144,7 +145,9 @@ final GoRouter router = GoRouter(
       name: RoutePath.payment,
       builder: (context, state) {
         Clinic clinic = state.extra as Clinic;
-        return PaymentView(clinic: clinic);
+        return BlocProvider(
+          create: (context) => PackageCubit(),
+            child: PaymentView(clinic: clinic));
       },
     ),
     GoRoute(
