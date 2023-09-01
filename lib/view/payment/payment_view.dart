@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/payment_field.dart';
+import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
 import 'package:health_tourism/product/utils/card_utils.dart';
@@ -42,6 +44,7 @@ class _PaymentViewState extends State<PaymentView> {
   String country = "";
   String address = "";
   String postalCode = "";
+  late String? uid;
   bool isCvvFocused = false;
   int selectedIndex = 0;
 
@@ -63,15 +66,27 @@ class _PaymentViewState extends State<PaymentView> {
   }
 
   void getCardTypeFromNumber() {
-    if(cardNumberController.text.length <= 6 && cardNumberController.text.length >= 2) {
+    if (cardNumberController.text.length <= 6 &&
+        cardNumberController.text.length >= 2) {
       String cardNum = CardUtils.getCleanedNumber(cardNumberController.text);
       CardType type = CardUtils.getCardTypeFromNumber(cardNum);
-      if(type != cardType) {
+      if (type != cardType) {
         setState(() {
           cardType = type;
         });
       }
     }
+  }
+
+  void showToastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: const Color(0xFF58A2EB),
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   @override
@@ -81,6 +96,7 @@ class _PaymentViewState extends State<PaymentView> {
       getCardTypeFromNumber();
     });
     extractPackages();
+    uid = context.read<AuthCubit>().getCurrentUserId();
     context.read<PackageCubit>().selectPackage(packages[0]);
     super.initState();
   }
@@ -202,11 +218,6 @@ class _PaymentViewState extends State<PaymentView> {
                     }
                   },
                 ),
-                const VerticalSpace(
-                  spaceAmount: 24,
-                ),
-                checkoutButton(),
-                const VerticalSpace(),
               ],
             ),
           ),
@@ -290,7 +301,7 @@ class _PaymentViewState extends State<PaymentView> {
               style: htDarkBlueNormalStyle,
               decoration: InputDecoration(
                 suffixIcon: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: CardUtils.getCardIcon(cardType)),
                 border: InputBorder.none,
                 labelText: "Card Number",
@@ -401,7 +412,8 @@ class _PaymentViewState extends State<PaymentView> {
                       });
                     },
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z\s]*$')),
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^[a-zA-Z\s]*$')),
                     ],
                     maxLines: 1,
                     controller: cityController,
@@ -435,7 +447,8 @@ class _PaymentViewState extends State<PaymentView> {
                       });
                     },
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z\s]*$')),
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^[a-zA-Z\s]*$')),
                     ],
                     maxLines: 1,
                     controller: countryController,
@@ -616,49 +629,80 @@ class _PaymentViewState extends State<PaymentView> {
     }
   }
 
-  Widget checkoutButton() {
+  Widget checkoutButton(Package selectedPackage) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
+        if (cardHolderName.isEmpty ||
+            cardNumberController.text.isEmpty ||
+            cvvCodeController.text.isEmpty ||
+            expiryDateController.text.isEmpty ||
+            addressController.text.isEmpty ||
+            postalCodeController.text.isEmpty ||
+            cityController.text.isEmpty ||
+            countryController.text.isEmpty ||
+        uid == null
+        ) {
+          showToastMessage("Please fill the empty spaces");
+          return;
+        }
+
         var expireMonth = expiryDate.split('/')[0];
         var expireYear = '20${expiryDate.split('/')[1]}';
         var firstName = cardHolderName.split(' ')[0];
         var surName = cardHolderName.split(' ')[1];
-        var cardNum = cardNumber.replaceAll(' ', '');
+        var cardNum = CardUtils.getCleanedNumber(cardNumberController.text)
+            .replaceAll(" ", "");
 
-        var buyer = {
-          'id': '1',
-          'name': firstName,
-          'surname': surName,
-          'email': '',
-          'city': '',
-          'country': '',
-          'address': '',
-        };
-
-        var package = {
-          'id': "widget.package!.id",
-          'name': "widget.package!.name",
-          'category': "widget.package!.category",
-          'price': 24.5,
-        };
-
-        if (context.read<PaymentCubit>().isAmexCard(cardNumber)) {
+        if (context.read<PaymentCubit>().isAmexCard(cardNum)) {
           if (context
               .read<PaymentCubit>()
               .isCreditCardExpireDateValid(expireMonth, expireYear)) {
-            context.read<PaymentCubit>().createPayment(firstName, surName, 1.2,
-                cardHolderName, cardNumber, expireMonth, expireYear, cvvCode);
+            context.read<PaymentCubit>().createPayment(
+                firstName,
+                surName,
+                uid!,
+                selectedPackage.price.toDouble(),
+                cardHolderName,
+                cardNum,
+                expireMonth,
+                expireYear,
+                postalCodeController.text,
+                selectedPackage.packageName,
+                countryController.text,
+                cityController.text,
+                addressController.text,
+                cvvCode);
           }
+          showToastMessage("Card expiry date is not valid");
+          return;
         } else {
           if (context
-                  .read<PaymentCubit>()
-                  .isCreditCardExpireDateValid(expireMonth, expireYear) &&
-              context
-                  .read<PaymentCubit>()
-                  .isCreditCardNumberValid(cardNumber)) {
-            context.read<PaymentCubit>().createPayment(firstName, surName, 1.2,
-                cardHolderName, cardNumber, expireMonth, expireYear, cvvCode);
+              .read<PaymentCubit>()
+              .isCreditCardExpireDateValid(expireMonth, expireYear)) {
+            if (context.read<PaymentCubit>().isCreditCardNumberValid(cardNum)) {
+              context.read<PaymentCubit>().createPayment(
+                  firstName,
+                  surName,
+                  uid!,
+                  selectedPackage.price.toDouble(),
+                  cardHolderName,
+                  cardNum,
+                  expireMonth,
+                  expireYear,
+                  postalCodeController.text,
+                  selectedPackage.packageName,
+                  countryController.text,
+                  cityController.text,
+                  addressController.text,
+                  cvvCode);
+              return;
+            }
+            showToastMessage("Card Number is not valid");
+            return;
+          } else {
+            showToastMessage("Card expiry date is not valid");
+            return;
           }
         }
       },
@@ -755,9 +799,14 @@ class _PaymentViewState extends State<PaymentView> {
             HTText(label: "Total", style: htBoldDarkLabelStyle),
             const Spacer(),
             HTText(
-                label: "\$${package!.price / 10}", style: htBoldDarkLabelStyle),
+                label: "\$${package.price / 10}", style: htBoldDarkLabelStyle),
           ],
         ),
+        const VerticalSpace(
+          spaceAmount: 24,
+        ),
+        checkoutButton(package),
+        const VerticalSpace(),
       ],
     );
   }
@@ -842,35 +891,6 @@ class _PaymentViewState extends State<PaymentView> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CardNumberInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    if (newValue.selection.baseOffset == 0) {
-      return newValue;
-    }
-
-    String inputData = newValue.text;
-    StringBuffer buffer = StringBuffer();
-
-    for (var i = 0; i < inputData.length; i++) {
-      buffer.write(inputData[i]);
-      int index = i + 1;
-
-      if (index % 4 == 0 && inputData.length != index) {
-        buffer.write("  ");
-      }
-    }
-
-    return TextEditingValue(
-      text: buffer.toString(),
-      selection: TextSelection.collapsed(
-        offset: buffer.toString().length,
       ),
     );
   }

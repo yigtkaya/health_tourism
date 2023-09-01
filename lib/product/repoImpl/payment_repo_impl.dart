@@ -7,16 +7,31 @@ class PaymentRepoImpl extends PaymentRepository {
   final dio = Dio();
 
   @override
-  Future<void> createPayment(String surName, String firstName, double price, String cardHolderName, String cardNumber, String expireMonth, String expireYear, String cvc) async {
+  Future<void> createPayment(
+      String surName,
+      String firstName,
+      String uid,
+      double price,
+      String cardHolderName,
+      String cardNumber,
+      String expireMonth,
+      String expireYear,
+      String zipcode,
+      String packageName,
+      String address,
+      String country,
+      String city,
+      String cvc) async {
     // make request to firebase function with dio package
-     final result = await dio.post(
-      'https://dgpays-case.onrender.com//api/iyzico/pay',
+    final result = await dio.post(
+      'http://10.0.2.2:3000/api/iyzico/pay',
       data: {
         'contactName': '$firstName $surName',
-        'city': 'Istanbul',
+        'uid': uid,
+        'city': city,
         'surName': surName,
-        'country': 'Turkey',
-        'address': 'İstanbul, Turkey',
+        'country': country,
+        'address': address,
         'email': "johnDoe@gmail.com",
         'price': price,
         'cardHolderName': cardHolderName,
@@ -24,6 +39,9 @@ class PaymentRepoImpl extends PaymentRepository {
         'expireMonth': expireMonth,
         'expireYear': expireYear,
         'cvc': cvc,
+        'zipcode': zipcode,
+        'packageName': packageName
+
       },
     );
     final res = json.encode(result.data);
@@ -83,5 +101,4 @@ class PaymentRepoImpl extends PaymentRepository {
     }
     return false;
   }
-
 }
