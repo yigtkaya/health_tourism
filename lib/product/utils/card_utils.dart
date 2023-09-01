@@ -19,8 +19,6 @@ class CardUtils {
       cardType = CardType.Master;
     } else if (prefix.startsWith("4")) {
       cardType = CardType.Visa;
-    } else if (prefix.startsWith("9")) {
-      cardType = CardType.Troy;
     } else if (prefix.startsWith("6")) {
       cardType = CardType.Discover;
     } else {
@@ -45,7 +43,7 @@ class CardUtils {
         icon = HTIcon(iconName: AssetConstants.icons.discover, height: 24, width: 24,);
         break;
       case CardType.Others:
-        icon = HTIcon(iconName: AssetConstants.icons.creditCard, height: 24, width: 24,);
+        icon = const SizedBox.shrink();
         break;
       default:
         icon = const SizedBox.shrink();

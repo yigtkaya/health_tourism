@@ -7,6 +7,7 @@ import 'package:health_tourism/core/components/payment_field.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
 import 'package:health_tourism/product/utils/card_utils.dart';
+import 'package:health_tourism/product/utils/input_formatters.dart';
 import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
@@ -316,12 +317,17 @@ class _PaymentViewState extends State<PaymentView> {
                         expiryDate = value;
                       });
                     },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(4),
+                      CardMonthInputFormatter(),
+                    ],
                     maxLines: 1,
                     controller: expiryDateController,
                     style: htDarkBlueNormalStyle,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      labelText: "Expiry Date",
+                      labelText: "MM/YY",
                       hintStyle: htHintTextDarkStyle,
                     ),
                   ),
@@ -347,12 +353,18 @@ class _PaymentViewState extends State<PaymentView> {
                         cvvCode = value;
                       });
                     },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(4)
+                    ],
+                    obscureText: true,
+                    keyboardType: TextInputType.number,
                     maxLines: 1,
                     controller: cvvController,
                     style: htDarkBlueNormalStyle,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      labelText: "CCV",
+                      labelText: "CVV",
                       hintStyle: htHintTextDarkStyle,
                     ),
                   ),
