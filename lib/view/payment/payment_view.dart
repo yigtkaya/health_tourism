@@ -248,6 +248,9 @@ class _PaymentViewState extends State<PaymentView> {
                   cardHolderName = value;
                 });
               },
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z\s]*$')),
+              ],
               maxLines: 1,
               controller: cardHolderNameController,
               style: htDarkBlueNormalStyle,
@@ -397,6 +400,9 @@ class _PaymentViewState extends State<PaymentView> {
                         city = value;
                       });
                     },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z\s]*$')),
+                    ],
                     maxLines: 1,
                     controller: cityController,
                     style: htDarkBlueNormalStyle,
@@ -428,6 +434,9 @@ class _PaymentViewState extends State<PaymentView> {
                         country = value;
                       });
                     },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z\s]*$')),
+                    ],
                     maxLines: 1,
                     controller: countryController,
                     style: htDarkBlueNormalStyle,
@@ -489,6 +498,9 @@ class _PaymentViewState extends State<PaymentView> {
                   postalCode = value;
                 });
               },
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               maxLines: 1,
               controller: postalCodeController,
               style: htDarkBlueNormalStyle,
