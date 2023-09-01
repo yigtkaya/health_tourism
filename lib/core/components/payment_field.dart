@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 
 import '../../product/theme/styles.dart';
+import '../../product/utils/card_utils.dart';
+import '../../view/payment/payment_view.dart';
 import '../constants/horizontal_space.dart';
 import '../constants/vertical_space.dart';
 
@@ -37,6 +40,7 @@ class _PaymentFieldState extends State<PaymentField> {
   String city = "";
   String country = "";
   String address = "";
+  String postalCode = "";
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,9 @@ class _PaymentFieldState extends State<PaymentField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HTText(label: "Card Info", style: htDarkBlueLargeStyle),
-        const VerticalSpace(spaceAmount: 2,),
+        const VerticalSpace(
+          spaceAmount: 2,
+        ),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -85,7 +91,12 @@ class _PaymentFieldState extends State<PaymentField> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0),
-            child: TextField(
+            child: TextFormField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(16),
+                CardNumberInputFormatter()
+              ],
               onChanged: (value) {
                 setState(() {
                   cardNumber = value;
@@ -168,7 +179,9 @@ class _PaymentFieldState extends State<PaymentField> {
             ),
           ],
         ),
-        const VerticalSpace(spaceAmount: 24,),
+        const VerticalSpace(
+          spaceAmount: 24,
+        ),
         HTText(label: "Billing Info", style: htDarkBlueLargeStyle),
         Row(
           children: [
@@ -279,7 +292,7 @@ class _PaymentFieldState extends State<PaymentField> {
             child: TextField(
               onChanged: (value) {
                 setState(() {
-                  address = value;
+                  postalCode = value;
                 });
               },
               maxLines: 1,

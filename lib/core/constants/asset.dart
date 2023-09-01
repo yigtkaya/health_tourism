@@ -45,4 +45,9 @@ class HTIcons {
   final String clock = AssetConstants.toIcon("clock");
   final String location = AssetConstants.toIcon("location");
   final String edit = AssetConstants.toIcon("edit");
+  final String discover = AssetConstants.toIcon("discover");
+  final String amex = AssetConstants.toIcon("amex");
+  final String visa = AssetConstants.toIcon("visa");
+  final String mastercard = AssetConstants.toIcon("mastercard");
+  final String warning = AssetConstants.toIcon("exclamation");
 }

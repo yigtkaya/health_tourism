@@ -6,12 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/payment_field.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
+import 'package:health_tourism/product/utils/card_utils.dart';
 import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../core/constants/vertical_space.dart';
+import '../../product/models/card_type.dart';
 import '../../product/models/clinic.dart';
 import '../../product/models/package.dart';
 import '../../product/theme/styles.dart';
@@ -26,6 +28,7 @@ class PaymentView extends StatefulWidget {
 }
 
 class _PaymentViewState extends State<PaymentView> {
+  CardType cardType = CardType.Invalid;
   List<bool> isSelected = [true, false];
   List<Package> packages = [];
   DateTime? date = DateTime.now();
@@ -49,7 +52,6 @@ class _PaymentViewState extends State<PaymentView> {
   final countryController = TextEditingController();
   final addressController = TextEditingController();
   final postalCodeController = TextEditingController();
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   void extractPackages() {
@@ -59,12 +61,27 @@ class _PaymentViewState extends State<PaymentView> {
     }
   }
 
+  void getCardTypeFromNumber() {
+    if(cardNumberController.text.length <= 6 && cardNumberController.text.length >= 2) {
+      String cardNum = CardUtils.getCleanedNumber(cardNumberController.text);
+      CardType type = CardUtils.getCardTypeFromNumber(cardNum);
+      if(type != cardType) {
+        setState(() {
+          cardType = type;
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
+    cardNumberController.addListener(() {
+      getCardTypeFromNumber();
+    });
     extractPackages();
     context.read<PackageCubit>().selectPackage(packages[0]);
+    super.initState();
   }
 
   @override
@@ -268,6 +285,9 @@ class _PaymentViewState extends State<PaymentView> {
               controller: cardNumberController,
               style: htDarkBlueNormalStyle,
               decoration: InputDecoration(
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: CardUtils.getCardIcon(cardType)),
                 border: InputBorder.none,
                 labelText: "Card Number",
                 hintStyle: htHintTextDarkStyle,
