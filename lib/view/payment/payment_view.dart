@@ -34,6 +34,10 @@ class _PaymentViewState extends State<PaymentView> {
   String expiryDate = '';
   String cardHolderName = '';
   String cvvCode = '';
+  String city = "";
+  String country = "";
+  String address = "";
+  String postalCode = "";
   bool isCvvFocused = false;
   int selectedIndex = 0;
 
@@ -112,20 +116,23 @@ class _PaymentViewState extends State<PaymentView> {
                     maxHeight: size.height * 0.36,
                   ),
                   child: ListView.builder(
-                    padding: EdgeInsets.zero,
+                      padding: EdgeInsets.zero,
                       itemCount: packages.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 12.0),
                           child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = index;
-                              });
-                              context.read<PackageCubit>().selectPackage(packages[index]);
-                            },
-                              child: packageCard(packages[index], selectedIndex == index)),
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                                context
+                                    .read<PackageCubit>()
+                                    .selectPackage(packages[index]);
+                              },
+                              child: packageCard(
+                                  packages[index], selectedIndex == index)),
                         );
                       }),
                 ),
@@ -134,7 +141,7 @@ class _PaymentViewState extends State<PaymentView> {
                 ),
                 HTText(label: "Choose a Date", style: htSubTitle),
                 const VerticalSpace(
-                  spaceAmount: 20,
+                  spaceAmount: 12,
                 ),
                 // create date picker
                 datePicker(),
@@ -144,17 +151,17 @@ class _PaymentViewState extends State<PaymentView> {
                   thickness: 1,
                 ),
                 const VerticalSpace(
-                  spaceAmount: 32,
+                  spaceAmount: 20,
                 ),
-                PaymentField(
-                  cardHolderNameController: cardHolderNameController,
-                  cardNumberController: cardNumberController,
-                  expiryDateController: expiryDateController,
-                  cvvController: cvvCodeController,
-                  cityController: cityController,
-                  countryController: countryController,
-                  addressController: addressController,
-                  postalCodeController: postalCodeController,
+                paymentColumn(
+                  cardHolderNameController,
+                  cardNumberController,
+                  expiryDateController,
+                  cvvCodeController,
+                  cityController,
+                  countryController,
+                  postalCodeController,
+                  addressController,
                 ),
                 const VerticalSpace(),
                 const Divider(
@@ -170,7 +177,7 @@ class _PaymentViewState extends State<PaymentView> {
                 ),
                 BlocBuilder<PackageCubit, Package?>(
                   builder: (context, selectedPackage) {
-                    if(selectedPackage is Package) {
+                    if (selectedPackage is Package) {
                       return paymentDetail(selectedPackage);
                     } else {
                       return paymentDetail(null);
@@ -190,11 +197,288 @@ class _PaymentViewState extends State<PaymentView> {
     );
   }
 
+  Widget paymentColumn(
+      TextEditingController cardHolderNameController,
+      TextEditingController cardNumberController,
+      TextEditingController expiryDateController,
+      TextEditingController cvvController,
+      TextEditingController cityController,
+      TextEditingController countryController,
+      TextEditingController postalCodeController,
+      TextEditingController addressController) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HTText(label: "Card Info", style: htDarkBlueLargeStyle),
+        const VerticalSpace(
+          spaceAmount: 2,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  cardHolderName = value;
+                });
+              },
+              maxLines: 1,
+              controller: cardHolderNameController,
+              style: htDarkBlueNormalStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: "Name on Card",
+                hintStyle: htHintTextDarkStyle,
+              ),
+            ),
+          ),
+        ),
+        const VerticalSpace(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: TextFormField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(16),
+                CardNumberInputFormatter()
+              ],
+              onChanged: (value) {
+                setState(() {
+                  cardNumber = value;
+                });
+              },
+              maxLines: 1,
+              controller: cardNumberController,
+              style: htDarkBlueNormalStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: "Card Number",
+                hintStyle: htHintTextDarkStyle,
+              ),
+            ),
+          ),
+        ),
+        const VerticalSpace(),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        expiryDate = value;
+                      });
+                    },
+                    maxLines: 1,
+                    controller: expiryDateController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Expiry Date",
+                      hintStyle: htHintTextDarkStyle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const HorizontalSpace(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        cvvCode = value;
+                      });
+                    },
+                    maxLines: 1,
+                    controller: cvvController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "CCV",
+                      hintStyle: htHintTextDarkStyle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const VerticalSpace(
+          spaceAmount: 24,
+        ),
+        HTText(label: "Billing Info", style: htDarkBlueLargeStyle),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        city = value;
+                      });
+                    },
+                    maxLines: 1,
+                    controller: cityController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "City",
+                      hintStyle: htHintTextDarkStyle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const HorizontalSpace(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: const Color(0xFFD3E3F1).withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        country = value;
+                      });
+                    },
+                    maxLines: 1,
+                    controller: countryController,
+                    style: htDarkBlueNormalStyle,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Country",
+                      hintStyle: htHintTextDarkStyle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const VerticalSpace(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  address = value;
+                });
+              },
+              maxLines: 1,
+              controller: addressController,
+              style: htDarkBlueNormalStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: "Address",
+                hintStyle: htHintTextDarkStyle,
+              ),
+            ),
+          ),
+        ),
+        const VerticalSpace(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: const Color(0xFFD3E3F1).withOpacity(0.5),
+              width: 2,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  postalCode = value;
+                });
+              },
+              maxLines: 1,
+              controller: postalCodeController,
+              style: htDarkBlueNormalStyle,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: "Postal Code",
+                hintStyle: htHintTextDarkStyle,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget packageCard(Package package, bool isSelected) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.65,
       decoration: BoxDecoration(
-        color: isSelected ? const Color(0xffc2e1ff).withOpacity(0.6) : Colors.white,
+        color: isSelected
+            ? const Color(0xffc2e1ff).withOpacity(0.6)
+            : Colors.white,
         border: Border.all(color: const Color(0xff58a2eb)),
         borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
@@ -206,15 +490,16 @@ class _PaymentViewState extends State<PaymentView> {
           children: [
             HTText(
               label: package.packageName,
-              style: htBlueLabelStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600, color: const Color(
-                  0xff58a2eb)),
+              style: htBlueLabelStyle.copyWith(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff58a2eb)),
             ),
             const VerticalSpace(
               spaceAmount: 8,
             ),
             HTText(
-                label: package.packageDescription,
-                style: htDarkBlueLargeStyle),
+                label: package.packageDescription, style: htDarkBlueLargeStyle),
             const VerticalSpace(),
             const Divider(
               height: 1,
@@ -245,8 +530,8 @@ class _PaymentViewState extends State<PaymentView> {
                           child: Text(
                             package.packageFeatures[index],
                             style: htDarkBlueLargeStyle.copyWith(
-                                fontSize: 14, fontWeight: FontWeight.w400
-                            ),),
+                                fontSize: 14, fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ],
                     );
@@ -289,8 +574,8 @@ class _PaymentViewState extends State<PaymentView> {
 
   Widget checkoutButton() {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
-
         var expireMonth = expiryDate.split('/')[0];
         var expireYear = '20${expiryDate.split('/')[1]}';
         var firstName = cardHolderName.split(' ')[0];
@@ -397,9 +682,13 @@ class _PaymentViewState extends State<PaymentView> {
       children: [
         Row(
           children: [
-            HTText(label: "Package", style: htDarkBlueNormalStyle),
+            HTText(
+                label: "${package?.packageName} Package",
+                style: htDarkBlueNormalStyle),
             const Spacer(),
-            HTText(label: "\$${package?.price}".toString(), style: htDarkBlueNormalStyle),
+            HTText(
+                label: "\$${package?.price}".toString(),
+                style: htDarkBlueNormalStyle),
           ],
         ),
         const VerticalSpace(
@@ -409,7 +698,9 @@ class _PaymentViewState extends State<PaymentView> {
           children: [
             HTText(label: "Down Payment", style: htDarkBlueNormalStyle),
             const Spacer(),
-            HTText(label: "\$${package!.price / 10}", style: htDarkBlueNormalStyle),
+            HTText(
+                label: "\$${package!.price / 10}",
+                style: htDarkBlueNormalStyle),
           ],
         ),
         const VerticalSpace(
@@ -419,196 +710,11 @@ class _PaymentViewState extends State<PaymentView> {
           children: [
             HTText(label: "Total", style: htBoldDarkLabelStyle),
             const Spacer(),
-            HTText(label: "\$${package!.price / 10}", style: htBoldDarkLabelStyle),
+            HTText(
+                label: "\$${package!.price / 10}", style: htBoldDarkLabelStyle),
           ],
         ),
       ],
-    );
-  }
-
-  Widget togglePackages(Size size) {
-    return Center(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: ToggleButtons(
-          isSelected: isSelected,
-          renderBorder: true,
-          borderColor: Colors.grey,
-          borderRadius: BorderRadius.circular(8.0),
-          selectedBorderColor: const Color(0xff08233b),
-          onPressed: (int newIndex) {
-            setState(() {
-              // looping through the list of booleans values
-              for (int index = 0; index < isSelected.length; index++) {
-                // checking for the index value
-                if (index == newIndex) {
-                  // one button is always set to true
-                  isSelected[index] = true;
-                } else {
-                  // other two will be set to false and not selected
-                  isSelected[index] = false;
-                }
-              }
-            });
-          },
-          children: [
-            Container(
-              width: size.width * 0.45,
-              decoration: const BoxDecoration(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 4.0, vertical: 6),
-                    child: Center(
-                        child: HTText(
-                            label: "PackageTitle",
-                            style: htDarkBlueLargeStyle)),
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: Colors.black,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(),
-                            Expanded(
-                              child: HTText(
-                                  label: "Maximum Graft",
-                                  style: htSmallLabelStyle),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(),
-                            Expanded(
-                              child: HTText(
-                                  label: "Gives 100% satisfaction guarantee",
-                                  style: htSmallLabelStyle),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(),
-                            Expanded(
-                              child: HTText(
-                                  label: "2 Nights stay in the Hotel",
-                                  style: htSmallLabelStyle),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(),
-                            Expanded(
-                              child: HTText(
-                                  label: "Checkup and Consultation",
-                                  style: htSmallLabelStyle),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              width: size.width * 0.45,
-              decoration: const BoxDecoration(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 4.0, vertical: 6),
-                    child: Center(
-                        child: HTText(
-                            label: "PackageTitle",
-                            style: htDarkBlueLargeStyle)),
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: Colors.black,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(),
-                            Expanded(
-                              child: HTText(
-                                  label: "Maximum Graft",
-                                  style: htSmallLabelStyle),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(),
-                            Expanded(
-                              child: HTText(
-                                  label: "Gives 100% satisfaction guarantee",
-                                  style: htSmallLabelStyle),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(),
-                            Expanded(
-                              child: HTText(
-                                  label: "2 Nights stay in the Hotel",
-                                  style: htSmallLabelStyle),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HTIcon(iconName: AssetConstants.icons.checkMark),
-                            const HorizontalSpace(),
-                            Expanded(
-                              child: HTText(
-                                  label: "Checkup and Consultation",
-                                  style: htSmallLabelStyle),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -692,6 +798,35 @@ class _PaymentViewState extends State<PaymentView> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CardNumberInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.selection.baseOffset == 0) {
+      return newValue;
+    }
+
+    String inputData = newValue.text;
+    StringBuffer buffer = StringBuffer();
+
+    for (var i = 0; i < inputData.length; i++) {
+      buffer.write(inputData[i]);
+      int index = i + 1;
+
+      if (index % 4 == 0 && inputData.length != index) {
+        buffer.write("  ");
+      }
+    }
+
+    return TextEditingValue(
+      text: buffer.toString(),
+      selection: TextSelection.collapsed(
+        offset: buffer.toString().length,
       ),
     );
   }

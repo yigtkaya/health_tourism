@@ -44,6 +44,7 @@ class _PaymentFieldState extends State<PaymentField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HTText(label: "Card Info", style: htDarkBlueLargeStyle),
+        const VerticalSpace(spaceAmount: 2,),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
