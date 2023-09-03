@@ -1,7 +1,7 @@
 class Appointment {
   final String clinicName;
   final String clinicCity;
-  final String package;
+  final String packageName;
   final String operation;
   final String profilePhoto;
   final bool reviewed;
@@ -12,7 +12,7 @@ class Appointment {
   Appointment({
     required this.clinicName,
     required this.clinicCity,
-    required this.package,
+    required this.packageName,
     required this.operation,
     required this.reviewed,
     required this.bookedDate,
@@ -25,10 +25,10 @@ class Appointment {
     return Appointment(
       clinicName: json['clinicName'],
       clinicCity: json['clinicCity'],
-      package: json['package'],
+      packageName: json['packageName'],
       operation: json['operation'],
-      reviewed: json['review'],
-      profilePhoto: json['clinicProfilePhoto'],
+      reviewed: json['reviewed'],
+      profilePhoto: json['profilePhoto'],
       date: json['date'].toDate(),
       bookedDate: json['bookedDate'].toDate(),
       price: json['price'],
@@ -39,11 +39,11 @@ class Appointment {
     return {
       'clinicName': clinicName,
       'clinicCity': clinicCity,
-      'package': package,
-      'review': reviewed,
+      'package': packageName,
+      'reviewed': reviewed,
       'operation': operation,
       'bookedDate': bookedDate,
-      'clinicProfilePhoto': profilePhoto,
+      'profilePhoto': profilePhoto,
       'date': date,
       'price': price,
     };

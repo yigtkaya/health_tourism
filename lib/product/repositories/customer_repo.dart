@@ -10,4 +10,5 @@ abstract class UserRepo {
       User customer) async {}
   Future<void> updateProfilePhoto(
       String uid, String imageUrl) async {}
+  Future<void> createAppointment(String uid, Map appointment) async {}
 }

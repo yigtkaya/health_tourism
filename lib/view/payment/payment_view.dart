@@ -678,9 +678,21 @@ class _PaymentViewState extends State<PaymentView> {
         var expireMonth = expiryDate.split('/')[0];
         var expireYear = '20${expiryDate.split('/')[1]}';
         var firstName = cardHolderName.split(' ')[0];
-        var surName = cardHolderName.split(' ')[1];
+        var surName = cardHolderName.split(' ')[1] ?? "";
         var cardNum = CardUtils.getCleanedNumber(cardNumberController.text)
             .replaceAll(" ", "");
+
+        final appointment = {
+          "clinicName": widget.clinic.name,
+          "clinicCity": widget.clinic.city,
+          "operation": "Hair Transplantation",
+          "packageName": selectedPackage.packageName,
+          "price": selectedPackage.price.toDouble(),
+          "profilePhoto": widget.clinic.profilePicture,
+          "reviewed": false,
+          "date": date,
+          "bookedDate": DateTime.now()
+        };
 
         if (context.read<PaymentCubit>().isAmexCard(cardNum)) {
           if (context
@@ -690,6 +702,7 @@ class _PaymentViewState extends State<PaymentView> {
                 firstName,
                 surName,
                 uid!,
+                appointment,
                 selectedPackage.price.toDouble(),
                 cardHolderName,
                 cardNum,
@@ -709,10 +722,13 @@ class _PaymentViewState extends State<PaymentView> {
               .read<PaymentCubit>()
               .isCreditCardExpireDateValid(expireMonth, expireYear)) {
             if (context.read<PaymentCubit>().isCreditCardNumberValid(cardNum)) {
+
+
               context.read<PaymentCubit>().createPayment(
                   firstName,
                   surName,
                   uid!,
+                  appointment,
                   selectedPackage.price.toDouble(),
                   cardHolderName,
                   cardNum,

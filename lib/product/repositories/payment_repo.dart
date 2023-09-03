@@ -1,8 +1,9 @@
 abstract class PaymentRepository {
   Future<Map<dynamic, dynamic>> createPayment(
-      String surName,
       String firstName,
+      String surName,
       String uid,
+      Map appointment,
       double price,
       String cardHolderName,
       String cardNumber,

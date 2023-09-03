@@ -64,14 +64,14 @@ class UserRepositoryImpl extends UserRepo {
   }
 
   Future<void> updateChanges(List<String> changes, String uid) async {
-
     await FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
         .set({
-
+        // liste içerisinde gelene changesların değişmesi. Profil sayfası.
     });
   }
+
   @override
   Future<void> updateProfilePhoto(String uid, String photoURL) async {
 
@@ -96,5 +96,12 @@ class UserRepositoryImpl extends UserRepo {
 
     print('URL: $fileUrl');
     return fileUrl;
+  }
+
+  @override
+  Future<void> createAppointment(String uid, Map appointment) async {
+    await FirebaseFirestore.instance.collection("users").doc(uid).update({
+      'appointments' : FieldValue.arrayUnion([appointment])
+    });
   }
 }

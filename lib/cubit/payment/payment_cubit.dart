@@ -2,18 +2,22 @@ import 'package:bloc/bloc.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
 import 'package:health_tourism/product/models/package.dart';
 import 'package:health_tourism/product/repoImpl/payment_repo_impl.dart';
+import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit() : super(const PaymentInitialState());
 
   PaymentRepoImpl paymentRepoImpl = PaymentRepoImpl();
+  UserRepositoryImpl userRepositoryImpl = UserRepositoryImpl();
 
   void setState() => emit(const PaymentInitialState());
+
   // create function to create payment
   Future<void> createPayment(
       String firstName,
       String surName,
       String uid,
+      Map appointment,
       double price,
       String cardHolderName,
       String cardNumber,
@@ -31,6 +35,7 @@ class PaymentCubit extends Cubit<PaymentState> {
           firstName,
           surName,
           uid,
+          appointment,
           price,
           cardHolderName,
           cardNumber,
@@ -42,6 +47,8 @@ class PaymentCubit extends Cubit<PaymentState> {
           city,
           address,
           cvc);
+
+      userRepositoryImpl.createAppointment(uid, appointment);
 
       if (response["status"] == "failure") {
         emit(
@@ -68,6 +75,10 @@ class PaymentCubit extends Cubit<PaymentState> {
   // create function to validate amex card
   bool isAmexCard(String cardNumber) {
     return paymentRepoImpl.isAmexCard(cardNumber);
+  }
+
+  void addAppointmentToFirebase(String uid, Map appointment) {
+      userRepositoryImpl.createAppointment(uid, appointment);
   }
 }
 
