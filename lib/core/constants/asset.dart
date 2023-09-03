@@ -52,4 +52,6 @@ class HTIcons {
   final String warning = AssetConstants.toIcon("exclamation");
   final String success = AssetConstants.toIcon("success");
   final String failure = AssetConstants.toIcon("fail");
+  final String filter = AssetConstants.toIcon("filter");
+  final String close = AssetConstants.toIcon("close");
 }

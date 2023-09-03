@@ -1,14 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:health_tourism/core/components/dialog/filter_dialog.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
-import 'package:health_tourism/cubit/chat_cubit/chat_state.dart';
 import 'package:health_tourism/cubit/clinic/clinic_cubit_state.dart';
-
 import '../../core/components/clinic_card.dart';
 import '../../core/components/ht_text.dart';
 import '../../cubit/clinic/clinic_cubit.dart';
@@ -24,6 +23,11 @@ class LandingView extends StatefulWidget {
 
 class _LandingViewState extends State<LandingView> {
   final TextEditingController searchController = TextEditingController();
+  double min = 0.0;
+  double max = 5.0;
+  String city = "";
+  bool isDescending = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +88,17 @@ class _LandingViewState extends State<LandingView> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      /// TODO: Filter
+                      showDialog(context: context, builder: (BuildContext context) {
+                        return const FilterDialog();
+                      }).then((value) {
+                        if(value != null) {
+                          setState(() {
+                            min = value['min'];
+                            max = value['max'];
+                            city = value['city'];
+                          });
+                        }
+                      });
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -113,6 +127,10 @@ class _LandingViewState extends State<LandingView> {
                   GestureDetector(
                     onTap: () {
                       /// TODO: Sort
+                      setState(() {
+                        isDescending = !isDescending;
+                      });
+                      context.read<ClinicCubit>().getClinics(isDescending, min, max, city);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -172,8 +190,8 @@ class _LandingViewState extends State<LandingView> {
         stream: state.clinicList,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(
-              child: Text('Something went wrong!'),
+            return Center(
+              child: Text("${snapshot.error}"),
             );
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
