@@ -15,21 +15,8 @@ class AuthLoading extends AuthState {
   const AuthLoading();
 }
 
-class AuthEmailUpdated extends AuthState {
-  final String email;
-
-  const AuthEmailUpdated(this.email);
-}
-
-class AuthPasswordUpdated extends AuthState {
-  final String password;
-
-  const AuthPasswordUpdated(this.password);
-}
-class AuthPasswordConfirmUpdated extends AuthState {
-  final String password;
-
-  const AuthPasswordConfirmUpdated(this.password);
+class AuthUserCreated extends AuthState {
+  const AuthUserCreated();
 }
 
 class Authenticated extends AuthState {

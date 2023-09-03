@@ -80,13 +80,13 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                     height: 38,
                     width: 38,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                      border: new Border.all(
+                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+                      border: Border.all(
                         color: AppTheme.getTheme().dividerColor,
                       ),
                     ),
                     child: InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                       onTap: () {
                         setState(() {
                           currentMonthDate = DateTime(currentMonthDate.year,
@@ -94,7 +94,7 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                           setListOfDate(currentMonthDate);
                         });
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.keyboard_arrow_left,
                         color: Colors.grey,
                       ),
@@ -120,13 +120,13 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                     height: 38,
                     width: 38,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                      border: new Border.all(
+                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+                      border: Border.all(
                         color: AppTheme.getTheme().dividerColor,
                       ),
                     ),
                     child: InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                       onTap: () {
                         setState(() {
                           currentMonthDate = DateTime(currentMonthDate.year,
@@ -134,7 +134,7 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                           setListOfDate(currentMonthDate);
                         });
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.keyboard_arrow_right,
                         color: Colors.grey,
                       ),
@@ -215,24 +215,24 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                                 : Colors.transparent,
                             borderRadius: BorderRadius.only(
                               bottomLeft: isStartDateRadius(date)
-                                  ? Radius.circular(24.0)
-                                  : Radius.circular(0.0),
+                                  ? const Radius.circular(24.0)
+                                  : const Radius.circular(0.0),
                               topLeft: isStartDateRadius(date)
-                                  ? Radius.circular(24.0)
-                                  : Radius.circular(0.0),
+                                  ? const Radius.circular(24.0)
+                                  : const Radius.circular(0.0),
                               topRight: isEndDateRadius(date)
-                                  ? Radius.circular(24.0)
-                                  : Radius.circular(0.0),
+                                  ? const Radius.circular(24.0)
+                                  : const Radius.circular(0.0),
                               bottomRight: isEndDateRadius(date)
-                                  ? Radius.circular(24.0)
-                                  : Radius.circular(0.0),
+                                  ? const Radius.circular(24.0)
+                                  : const Radius.circular(0.0),
                             ),
                           ),
                         ),
                       ),
                     ),
                     InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(32.0)),
                       onTap: () {
                         if (currentMonthDate.month == date.month) {
                           if (widget.minimumDate != null &&
@@ -271,14 +271,14 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                         }
                       },
                       child: Padding(
-                        padding: EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(2),
                         child: Container(
                           decoration: BoxDecoration(
                             color: getIsItStartAndEndDate(date)
                                 ? AppTheme.getTheme().primaryColor
                                 : Colors.transparent,
                             borderRadius:
-                            BorderRadius.all(Radius.circular(32.0)),
+                            const BorderRadius.all(Radius.circular(32.0)),
                             border: Border.all(
                               color: getIsItStartAndEndDate(date)
                                   ? Colors.white
@@ -291,7 +291,7 @@ class _CustomCalendarWidgetState extends State<CustomCalendarWidget> {
                                   color:
                                   AppTheme.getTheme().disabledColor,
                                   blurRadius: 4,
-                                  offset: Offset(0, 0)),
+                                  offset: const Offset(0, 0)),
                             ]
                                 : null,
                           ),

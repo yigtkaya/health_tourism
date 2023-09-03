@@ -2,14 +2,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
+import 'package:health_tourism/cubit/chat_cubit/chat_cubit.dart';
+import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/validation/validation_cubit.dart';
 import 'package:health_tourism/product/navigation/router.dart';
+import 'package:health_tourism/product/utils/notification_manager.dart';
+import 'cubit/clinic/clinic_cubit.dart';
 import 'cubit/profile/profile_cubit.dart';
 import 'cubit/bottom_navigation/bottom_navigation_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  PermissionsHandler().askAllPermissions();
   runApp(const MyApp());
 }
 
@@ -29,8 +34,18 @@ class MyApp extends StatelessWidget {
         BlocProvider<NavbarCubit>(
           create: (context) => NavbarCubit(),
         ),
+        BlocProvider(
+          create: (context) => ProfileCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ClinicCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ChatCubit(),
+        ),
       ],
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         routerConfig: router,
         title: 'Flutter Demo',
         theme: ThemeData(

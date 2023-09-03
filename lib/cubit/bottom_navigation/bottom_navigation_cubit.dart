@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bottom_navigation_state.dart';
+import 'bottom_navigation_state.dart';
 
 class NavbarCubit extends Cubit<NavbarState> {
   NavbarCubit() : super(NavbarInitial());

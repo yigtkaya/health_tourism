@@ -1,31 +1,34 @@
-
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
-import 'package:health_tourism/product/services/firestore_service.dart';
+import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
+
+import '../../product/models/user.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
+  final firebaseAuth = FirebaseAuth.instance;
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
   ProfileCubit() : super(const ProfileInitState()) {
-    getUserData();
+    getUserSnapshot(uid);
   }
 
   static ProfileCubit get(context) => BlocProvider.of(context);
 
-  final FirestoreService _firestoreService = FirestoreService();
+  final UserRepositoryImpl _userRepositoryImpl = UserRepositoryImpl();
 
-  // create function read user data from firestore
-  void getUserData() {
+  void getUserSnapshot(String uid) {
     try {
       emit(const ProfileLoadingState());
-      Future.value(_firestoreService.getCustomer()
-      ).then((value) => {
-        emit(ProfileLoadedState(value))
-      });
+      Future.value(_userRepositoryImpl.getUserSnapshot(uid))
+          .then((value) => {emit(ProfileLoadedState(value))});
     } on Exception catch (e) {
       emit(const ProfileErrorState('Error while loading user data'));
     }
-    // if error
-
   }
 
+  void updateUser(Map changes) {
+    Future.value(_userRepositoryImpl
+        .updateUser(changes));
+  }
 }

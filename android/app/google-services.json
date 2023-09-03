@@ -1,24 +1,25 @@
 {
   "project_info": {
     "project_number": "725006118544",
+    "firebase_url": "https://health-tourism-cc878-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "health-tourism-cc878",
     "storage_bucket": "health-tourism-cc878.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:725006118544:android:18b648aa31b9b49bc7f215",
+        "mobilesdk_app_id": "1:725006118544:android:d72509f640f5e69cc7f215",
         "android_client_info": {
-          "package_name": "com.health.health_tourism"
+          "package_name": "com.health.voyesthetic"
         }
       },
       "oauth_client": [
         {
-          "client_id": "725006118544-dnit15mcb0109h2e9du7q6195jtgl8ss.apps.googleusercontent.com",
+          "client_id": "725006118544-g8ogvub1f0oaqsocvepo2ilh6qbtkd9l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.health.health_tourism",
-            "certificate_hash": "11bde8d169f2c0e1eb76998c14aba793264f1f01"
+            "package_name": "com.health.voyesthetic",
+            "certificate_hash": "22e66249d90d5376077db25d76c822c707b334b2"
           }
         },
         {
@@ -37,6 +38,13 @@
             {
               "client_id": "725006118544-tiho3u0omn9qe8kn1lqogtd301buca20.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "725006118544-rfndbg9mu39350f5lunsiml02p334epn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.health.voyesthetic"
+              }
             }
           ]
         }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:health_tourism/product/navigation/router.dart';
 
+import '../../product/navigation/route_paths.dart';
+
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
