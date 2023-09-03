@@ -145,8 +145,11 @@ final GoRouter router = GoRouter(
       name: RoutePath.payment,
       builder: (context, state) {
         Clinic clinic = state.extra as Clinic;
-        return BlocProvider(
-          create: (context) => PackageCubit(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => PackageCubit(),),
+            BlocProvider(create: (context) => PaymentCubit(),),
+          ],
             child: PaymentView(clinic: clinic));
       },
     ),

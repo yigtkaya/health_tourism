@@ -4,12 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/core/components/loading/three_dot_loading.dart';
 import 'package:health_tourism/core/components/payment_field.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
 import 'package:health_tourism/product/utils/card_utils.dart';
 import 'package:health_tourism/product/utils/input_formatters.dart';
+import 'package:health_tourism/view/response/failure_view.dart';
+import 'package:health_tourism/view/response/succes_view.dart';
 import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
@@ -98,6 +101,7 @@ class _PaymentViewState extends State<PaymentView> {
     extractPackages();
     uid = context.read<AuthCubit>().getCurrentUserId();
     context.read<PackageCubit>().selectPackage(packages[0]);
+
     super.initState();
   }
 
@@ -119,7 +123,12 @@ class _PaymentViewState extends State<PaymentView> {
           child: HTIcon(
             iconName: AssetConstants.icons.chevronLeft,
             onPress: () {
-              context.pop();
+              if(context.read<PaymentCubit>().state is PaymentInitialState) {
+                context.pop();
+              }
+              else {
+                context.read<PaymentCubit>().setState();
+              }
             },
             width: 24,
             height: 24,
@@ -133,93 +142,113 @@ class _PaymentViewState extends State<PaymentView> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                showSelectedClinic(widget.clinic),
-                const VerticalSpace(
-                  spaceAmount: 24,
-                ),
-                HTText(label: "Packages", style: htTitleStyle),
-                const VerticalSpace(
-                  spaceAmount: 12,
-                ),
-                Container(
-                  constraints: BoxConstraints(
-                    maxHeight: size.height * 0.36,
+          child: BlocBuilder<PaymentCubit, PaymentState>(
+            builder: (context, state) {
+              if (state is PaymentInitialState) {
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      showSelectedClinic(widget.clinic),
+                      const VerticalSpace(
+                        spaceAmount: 24,
+                      ),
+                      HTText(label: "Packages", style: htTitleStyle),
+                      const VerticalSpace(
+                        spaceAmount: 12,
+                      ),
+                      Container(
+                        constraints: BoxConstraints(
+                          maxHeight: size.height * 0.36,
+                        ),
+                        child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: packages.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12.0),
+                                child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedIndex = index;
+                                      });
+                                      context
+                                          .read<PackageCubit>()
+                                          .selectPackage(packages[index]);
+                                    },
+                                    child: packageCard(packages[index],
+                                        selectedIndex == index)),
+                              );
+                            }),
+                      ),
+                      const VerticalSpace(
+                        spaceAmount: 24,
+                      ),
+                      HTText(label: "Choose a Date", style: htSubTitle),
+                      const VerticalSpace(
+                        spaceAmount: 12,
+                      ),
+                      // create date picker
+                      datePicker(),
+                      const VerticalSpace(),
+                      const Divider(
+                        color: Color(0xffD3E3F1),
+                        thickness: 1,
+                      ),
+                      const VerticalSpace(
+                        spaceAmount: 20,
+                      ),
+                      paymentColumn(
+                        cardHolderNameController,
+                        cardNumberController,
+                        expiryDateController,
+                        cvvCodeController,
+                        cityController,
+                        countryController,
+                        postalCodeController,
+                        addressController,
+                      ),
+                      const VerticalSpace(),
+                      const Divider(
+                        color: Color(0xffD3E3F1),
+                        thickness: 1,
+                      ),
+                      const VerticalSpace(
+                        spaceAmount: 24,
+                      ),
+                      HTText(label: "Payment Details", style: htSubTitle),
+                      const VerticalSpace(
+                        spaceAmount: 16,
+                      ),
+                      BlocBuilder<PackageCubit, Package?>(
+                        builder: (context, selectedPackage) {
+                          if (selectedPackage is Package) {
+                            return paymentDetail(selectedPackage);
+                          } else {
+                            return paymentDetail(null);
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                  child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: packages.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
-                          child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                });
-                                context
-                                    .read<PackageCubit>()
-                                    .selectPackage(packages[index]);
-                              },
-                              child: packageCard(
-                                  packages[index], selectedIndex == index)),
-                        );
-                      }),
-                ),
-                const VerticalSpace(
-                  spaceAmount: 24,
-                ),
-                HTText(label: "Choose a Date", style: htSubTitle),
-                const VerticalSpace(
-                  spaceAmount: 12,
-                ),
-                // create date picker
-                datePicker(),
-                const VerticalSpace(),
-                const Divider(
-                  color: Color(0xffD3E3F1),
-                  thickness: 1,
-                ),
-                const VerticalSpace(
-                  spaceAmount: 20,
-                ),
-                paymentColumn(
-                  cardHolderNameController,
-                  cardNumberController,
-                  expiryDateController,
-                  cvvCodeController,
-                  cityController,
-                  countryController,
-                  postalCodeController,
-                  addressController,
-                ),
-                const VerticalSpace(),
-                const Divider(
-                  color: Color(0xffD3E3F1),
-                  thickness: 1,
-                ),
-                const VerticalSpace(
-                  spaceAmount: 24,
-                ),
-                HTText(label: "Payment Details", style: htSubTitle),
-                const VerticalSpace(
-                  spaceAmount: 16,
-                ),
-                BlocBuilder<PackageCubit, Package?>(
-                  builder: (context, selectedPackage) {
-                    if (selectedPackage is Package) {
-                      return paymentDetail(selectedPackage);
-                    } else {
-                      return paymentDetail(null);
-                    }
-                  },
-                ),
-              ],
-            ),
+                );
+              }
+              if (state is PaymentLoadingState) {
+                return const Center(child: ThreeRotatingDots(color: Colors.lightBlue, size: 35,),);
+              }
+              if (state is PaymentSuccessState) {
+                return SuccessView(state: state);
+              }
+              if (state is PaymentErrorState) {
+                return FailureView(state: state);
+              }
+              else {
+                return const Center(
+                  child: Text("An Error occured"),
+                );
+              }
+            },
           ),
         ),
       ),
@@ -641,8 +670,7 @@ class _PaymentViewState extends State<PaymentView> {
             postalCodeController.text.isEmpty ||
             cityController.text.isEmpty ||
             countryController.text.isEmpty ||
-        uid == null
-        ) {
+            uid == null) {
           showToastMessage("Please fill the empty spaces");
           return;
         }

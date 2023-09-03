@@ -19,17 +19,14 @@ class PaymentLoadingState extends PaymentState {
 }
 
 // create loaded state
-class PaymentLoadedState extends PaymentState {
-  const PaymentLoadedState();
+class PaymentSuccessState extends PaymentState {
+  final Map response;
+  const PaymentSuccessState(this.response);
 }
 
 // create error state
 class PaymentErrorState extends PaymentState {
-  final IyzicoError iyzicoError;
-  const PaymentErrorState(this.iyzicoError);
-}
-
-class SelectedPackage extends PaymentState {
-  final Package package;
-  const SelectedPackage(this.package);
+  final String error;
+  final String errorCode;
+  const PaymentErrorState(this.error, this.errorCode);
 }

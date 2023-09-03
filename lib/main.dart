@@ -41,9 +41,6 @@ class MyApp extends StatelessWidget {
           create: (context) => ClinicCubit(),
         ),
         BlocProvider(
-          create: (context) => PaymentCubit(),
-        ),
-        BlocProvider(
           create: (context) => ChatCubit(),
         ),
       ],

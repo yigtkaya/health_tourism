@@ -8,6 +8,7 @@ class PaymentCubit extends Cubit<PaymentState> {
 
   PaymentRepoImpl paymentRepoImpl = PaymentRepoImpl();
 
+  void setState() => emit(const PaymentInitialState());
   // create function to create payment
   Future<void> createPayment(
       String firstName,
@@ -24,10 +25,34 @@ class PaymentCubit extends Cubit<PaymentState> {
       String country,
       String city,
       String cvc) async {
-    emit(const PaymentLoadingState());
-    await paymentRepoImpl.createPayment(firstName, surName, uid, price, cardHolderName,
-        cardNumber, expireMonth, expireYear, zipcode, packageName, country, city, address, cvc);
-    emit(const PaymentLoadedState());
+    try {
+      emit(const PaymentLoadingState());
+      final response = await paymentRepoImpl.createPayment(
+          firstName,
+          surName,
+          uid,
+          price,
+          cardHolderName,
+          cardNumber,
+          expireMonth,
+          expireYear,
+          zipcode,
+          packageName,
+          country,
+          city,
+          address,
+          cvc);
+
+      if (response["status"] == "failure") {
+        emit(
+            PaymentErrorState(response["errorMessage"], response["errorCode"]));
+        return;
+      }
+      emit(PaymentSuccessState(response));
+    } catch (e) {
+      emit(const PaymentErrorState(
+          "A bad request made. Please try again later.", "101"));
+    }
   }
 
   // create function to validate credit card number

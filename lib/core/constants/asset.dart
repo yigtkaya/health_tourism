@@ -50,4 +50,6 @@ class HTIcons {
   final String visa = AssetConstants.toIcon("visa");
   final String mastercard = AssetConstants.toIcon("mastercard");
   final String warning = AssetConstants.toIcon("exclamation");
+  final String success = AssetConstants.toIcon("success");
+  final String failure = AssetConstants.toIcon("fail");
 }

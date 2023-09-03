@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:health_tourism/product/repositories/payment_repo.dart';
 
@@ -7,7 +6,7 @@ class PaymentRepoImpl extends PaymentRepository {
   final dio = Dio();
 
   @override
-  Future<void> createPayment(
+  Future<Map<dynamic, dynamic>> createPayment(
       String surName,
       String firstName,
       String uid,
@@ -41,11 +40,12 @@ class PaymentRepoImpl extends PaymentRepository {
         'cvc': cvc,
         'zipcode': zipcode,
         'packageName': packageName
-
       },
     );
-    final res = json.encode(result.data);
-    print(res);
+    final jsonString = json.encode(result.data);
+    final map = jsonDecode(jsonString);
+
+    return map;
   }
 
   @override
