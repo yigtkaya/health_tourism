@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
@@ -98,6 +99,8 @@ class _SendImageViewState extends State<SendImageView> {
                             widget.receiverId,
                             _messageController.text,
                             imageUrl);
+
+                        context.pop();
                       }
                     },
                   ),

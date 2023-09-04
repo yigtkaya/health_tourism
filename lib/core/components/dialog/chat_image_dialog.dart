@@ -60,6 +60,7 @@ class _ChatImagePickerDialogState extends State<ChatImagePickerDialog> {
       });
 
       if(mounted) {
+        context.pop();
         context.pushNamed(RoutePath.sendImage, queryParameters: {
           "receiverId": widget.receiverId,
           "imageFile": xfile.path,
@@ -83,6 +84,7 @@ class _ChatImagePickerDialogState extends State<ChatImagePickerDialog> {
         imageFile = File(xfile.path);
       });
       if(mounted) {
+        context.pop();
         context.pushNamed(RoutePath.sendImage, queryParameters: {
           "receiverId": widget.receiverId,
           "imageFile": xfile.path,
