@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_tourism/core/components/dialog/permission_dialog.dart';
 import 'package:health_tourism/product/navigation/router.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
 import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
+import 'package:health_tourism/product/utils/notification_manager.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../product/navigation/route_paths.dart';
 
 class ImagePickerDialog extends StatefulWidget {
@@ -29,17 +32,27 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.camera),
-            title: Text("Camera"),
-            onTap: () {
-              _getFromCamera();
-              },
+            leading: const Icon(Icons.camera),
+            title: const Text("Camera"),
+            onTap: () async {
+              final status = await PermissionsHandler.checkCameraPermission();
+              if(status.isGranted) {
+                _getFromCamera();
+              } else {
+                showRationaleForPermanentlyDeniedCamera();
+              }
+            },
           ),
           ListTile(
-            leading: Icon(Icons.photo_library),
-            title: Text("Gallery"),
-            onTap: () {
-              _getFromGallery();
+            leading: const Icon(Icons.photo_library),
+            title: const Text("Gallery"),
+            onTap: () async {
+              final status = await PermissionsHandler.checkGalleryPermission();
+              if(status.isGranted) {
+                _getFromGallery();
+              } else {
+                showRationaleForPermanentlyDeniedStorage();
+              }
             },
           ),
         ],
@@ -93,6 +106,29 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
     } else {
       goBack();
     }
+  }
+
+
+  showRationaleForPermanentlyDeniedStorage() {
+    // create a function to show a dialog with an explanation and button to open the app settings page
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const PermissionDialog(
+              title: "Gallery Permission",
+              content: "Give permission to use gallery in this app");
+        });
+  }
+
+  showRationaleForPermanentlyDeniedCamera() {
+    // create a function to show a dialog with an explanation and button to open the app settings page
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const PermissionDialog(
+              title: "Camera Permission",
+              content: "Give permission to use camera in this app");
+        });
   }
 }
 

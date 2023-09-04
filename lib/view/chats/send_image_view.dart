@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
+import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../cubit/message/message_cubit.dart';
@@ -68,7 +69,7 @@ class _SendImageViewState extends State<SendImageView> {
             ),
           ),
           Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: const BoxDecoration(
                 color: Color(0xff9398a7),
                 borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -105,7 +106,8 @@ class _SendImageViewState extends State<SendImageView> {
                     },
                   ),
                 ],
-              ))
+              )),
+          const VerticalSpace(),
         ],
       )),
     );

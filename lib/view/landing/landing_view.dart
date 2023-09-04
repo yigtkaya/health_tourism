@@ -7,11 +7,14 @@ import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/clinic/clinic_cubit_state.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../core/components/clinic_card.dart';
+import '../../core/components/dialog/permission_dialog.dart';
 import '../../core/components/ht_text.dart';
 import '../../cubit/clinic/clinic_cubit.dart';
 import '../../product/models/clinic.dart';
 import '../../product/theme/styles.dart';
+import '../../product/utils/notification_manager.dart';
 
 class LandingView extends StatefulWidget {
   const LandingView({Key? key}) : super(key: key);
