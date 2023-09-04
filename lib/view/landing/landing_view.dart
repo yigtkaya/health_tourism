@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,10 +87,12 @@ class _LandingViewState extends State<LandingView> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      showDialog(context: context, builder: (BuildContext context) {
-                        return const FilterDialog();
-                      }).then((value) {
-                        if(value != null) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const FilterDialog();
+                          }).then((value) {
+                        if (value != null) {
                           setState(() {
                             min = value['min'];
                             max = value['max'];
@@ -130,7 +131,9 @@ class _LandingViewState extends State<LandingView> {
                       setState(() {
                         isDescending = !isDescending;
                       });
-                      context.read<ClinicCubit>().getClinics(isDescending, min, max, city);
+                      context
+                          .read<ClinicCubit>()
+                          .getClinics(isDescending, min, max, city);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -160,27 +163,31 @@ class _LandingViewState extends State<LandingView> {
                 ],
               ),
             ),
-            BlocBuilder<ClinicCubit, ClinicState>(
-                builder: (context, state) {
-                  if(state is ClinicsError) {
-                    return Center(
-                      child: HTText(label: state.message, style: htHintTextStyle,),
-                    );
-                  }
-                  if (state is ClinicLoadingState) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (state is ClinicsLoaded2) {
-                    return Expanded(child: buildClinicList(state));
-                  }
-                  else {
-                    return const Center(
-                      child: HTText(label: 'Something went wrong!', style: htLabelBlackStyle,),
-                    );
-                  }
-                }),
+            BlocBuilder<ClinicCubit, ClinicState>(builder: (context, state) {
+              if (state is ClinicsError) {
+                return Center(
+                  child: HTText(
+                    label: state.message,
+                    style: htHintTextStyle,
+                  ),
+                );
+              }
+              if (state is ClinicLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is ClinicsLoaded2) {
+                return Expanded(child: buildClinicList(state));
+              } else {
+                return const Center(
+                  child: HTText(
+                    label: 'Something went wrong!',
+                    style: htLabelBlackStyle,
+                  ),
+                );
+              }
+            }),
           ],
         )));
   }
@@ -203,16 +210,18 @@ class _LandingViewState extends State<LandingView> {
             return ListView.builder(
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
-                  Map<dynamic, dynamic> data =
-                      snapshot.data!.docs[index].data() as Map<dynamic, dynamic>;
+                  Map<dynamic, dynamic> data = snapshot.data!.docs[index].data()
+                      as Map<dynamic, dynamic>;
                   final clinic = Clinic.fromData(data);
 
                   return ClinicCard(clinic: clinic);
                 });
-          }
-          else {
+          } else {
             return const Center(
-              child: HTText(label: 'Something went wrong!', style: htLabelBlackStyle,),
+              child: HTText(
+                label: 'Something went wrong!',
+                style: htLabelBlackStyle,
+              ),
             );
           }
         });

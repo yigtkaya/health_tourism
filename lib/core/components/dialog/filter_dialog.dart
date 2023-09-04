@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +6,6 @@ import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/product/theme/styles.dart';
-
 import '../../../cubit/clinic/clinic_cubit.dart';
 
 class FilterDialog extends StatefulWidget {
@@ -164,7 +162,9 @@ class _FilterDialogState extends State<FilterDialog> {
                       // When the text in the TextField changes, filter the list
                       setState(() {
                         filteredCities = turkishCities
-                            .where((city) => city.toLowerCase().contains(value.toLowerCase()))
+                            .where((city) => city
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
                             .toList();
                       });
                     },
@@ -178,58 +178,58 @@ class _FilterDialogState extends State<FilterDialog> {
                   ),
                 ),
               ),
-              filteredCities.isEmpty ? const SizedBox.shrink() : Container(
-                constraints: BoxConstraints(
-                  maxHeight: size.height * 0.15,
-                ),
-                child: Expanded(
-                  child: ListView.builder(
-                    itemCount: filteredCities.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(filteredCities[index]),
-                        onTap: () {
-                          // Call the selectSuggestion method when a suggestion is tapped
-                          selectSuggestion(filteredCities[index]);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
+              filteredCities.isEmpty
+                  ? const SizedBox.shrink()
+                  : Container(
+                      constraints: BoxConstraints(
+                        maxHeight: size.height * 0.15,
+                      ),
+                      child: Expanded(
+                        child: ListView.builder(
+                          itemCount: filteredCities.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              title: Text(filteredCities[index]),
+                              onTap: () {
+                                // Call the selectSuggestion method when a suggestion is tapped
+                                selectSuggestion(filteredCities[index]);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
               const VerticalSpace(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   GestureDetector(
                     onTap: () {
-                        controller.clear();
-                        setState(() {
-                          values = const RangeValues(0.0, 5.0);
-                        });
+                      controller.clear();
+                      setState(() {
+                        values = const RangeValues(0.0, 5.0);
+                      });
                     },
                     child: Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white),
+                        decoration: const BoxDecoration(color: Colors.white),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: HTText(
                                 label: 'clear all filters',
-                                style: htBlueLabelStyle.copyWith(
-                                  fontSize: 16
-                                )),
+                                style: htBlueLabelStyle.copyWith(fontSize: 16)),
                           ),
                         )),
                   ),
                   GestureDetector(
                     onTap: () {
-                        context.read<ClinicCubit>().getClinics(false, values.start, values.end, controller.text);
-                        context.pop({
-                          'min': values.start,
-                          'max': values.end,
-                          'city': controller.text
-                        });
+                      context.read<ClinicCubit>().getClinics(
+                          false, values.start, values.end, controller.text);
+                      context.pop({
+                        'min': values.start,
+                        'max': values.end,
+                        'city': controller.text
+                      });
                     },
                     child: Container(
                         width: size.width * 0.2,
@@ -240,8 +240,7 @@ class _FilterDialogState extends State<FilterDialog> {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: HTText(
-                                label: 'search',
-                                style: htBoldLabelStyle),
+                                label: 'search', style: htBoldLabelStyle),
                           ),
                         )),
                   ),
@@ -342,44 +341,31 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-
     return [
-      HTIcon(iconName: AssetConstants.icons.close, onPress: () {
-        query = '';
-      },)
+      HTIcon(
+        iconName: AssetConstants.icons.close,
+        onPress: () {
+          query = '';
+        },
+      )
     ];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return HTIcon(iconName: AssetConstants.icons.search, onPress: () {
-      close(context, null);
-    },);
+    return HTIcon(
+      iconName: AssetConstants.icons.search,
+      onPress: () {
+        close(context, null);
+      },
+    );
   }
 
   @override
   Widget buildResults(BuildContext context) {
     List<String> matchQuery = [];
-    for(var city in turkishCities) {
-      if(city.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(city);
-      }
-    }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-        itemBuilder: (context, index) {
-      var result = matchQuery[index];
-      return ListTile(
-        title: HTText(label: result, style: htLabelBlackStyle,),
-      );
-    });
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for(var city in turkishCities) {
-      if(city.toLowerCase().contains(query.toLowerCase())) {
+    for (var city in turkishCities) {
+      if (city.toLowerCase().contains(query.toLowerCase())) {
         matchQuery.add(city);
       }
     }
@@ -388,10 +374,32 @@ class CustomSearchDelegate extends SearchDelegate {
         itemBuilder: (context, index) {
           var result = matchQuery[index];
           return ListTile(
-            title: HTText(label: result, style: htLabelBlackStyle,),
+            title: HTText(
+              label: result,
+              style: htLabelBlackStyle,
+            ),
           );
         });
   }
 
-
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var city in turkishCities) {
+      if (city.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(city);
+      }
+    }
+    return ListView.builder(
+        itemCount: matchQuery.length,
+        itemBuilder: (context, index) {
+          var result = matchQuery[index];
+          return ListTile(
+            title: HTText(
+              label: result,
+              style: htLabelBlackStyle,
+            ),
+          );
+        });
+  }
 }
