@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -675,6 +676,11 @@ class _PaymentViewState extends State<PaymentView> {
           return;
         }
 
+        if (date == null) {
+          showToastMessage("Please choose a date to reserve");
+          return;
+        }
+
         var expireMonth = expiryDate.split('/')[0];
         var expireYear = '20${expiryDate.split('/')[1]}';
         var firstName = cardHolderName.split(' ')[0];
@@ -690,7 +696,7 @@ class _PaymentViewState extends State<PaymentView> {
           "price": selectedPackage.price.toDouble(),
           "profilePhoto": widget.clinic.profilePicture,
           "reviewed": false,
-          "date": date,
+          "date": Timestamp.fromDate(date!),
           "bookedDate": DateTime.now()
         };
 

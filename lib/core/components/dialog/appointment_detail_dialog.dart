@@ -78,7 +78,7 @@ class AppointmentDetailDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0),
                   child: HTText(
-                      label: appointment.date.toString(),
+                      label: "${appointment.date.day}/${appointment.date.month}/${appointment.date.year} ",
                       style: htSmallLabelStyle),
                 ),
                 const VerticalSpace(),

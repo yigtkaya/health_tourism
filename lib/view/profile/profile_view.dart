@@ -64,15 +64,15 @@ class _ProfileViewState extends State<ProfileView> {
                   if (state is ProfileLoadingState) {
                     return Column(
                       children: [
-                        CircleSkeleton(
+                        const CircleSkeleton(
                           size: 100,
                         ),
-                        VerticalSpace(),
+                        const VerticalSpace(),
                         Skeleton(
                           height: 12,
                           width: size.width * 0.5,
                         ),
-                        VerticalSpace(),
+                        const VerticalSpace(),
                         Skeleton(
                           height: 12,
                           width: size.width * 0.5,
@@ -153,15 +153,15 @@ class _ProfileViewState extends State<ProfileView> {
               snapshot.connectionState == ConnectionState.waiting) {
             return Column(
               children: [
-                CircleSkeleton(
+                const CircleSkeleton(
                   size: 100,
                 ),
-                VerticalSpace(),
+                const VerticalSpace(),
                 Skeleton(
                   height: 12,
                   width: size.width * 0.5,
                 ),
-                VerticalSpace(),
+                const VerticalSpace(),
                 Skeleton(
                   height: 12,
                   width: size.width * 0.5,
@@ -196,15 +196,15 @@ class _ProfileViewState extends State<ProfileView> {
 
           return Column(
             children: [
-              CircleSkeleton(
+              const CircleSkeleton(
                 size: 100,
               ),
-              VerticalSpace(),
+              const VerticalSpace(),
               Skeleton(
                 height: 12,
                 width: size.width * 0.5,
               ),
-              VerticalSpace(),
+              const VerticalSpace(),
               Skeleton(
                 height: 12,
                 width: size.width * 0.5,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit.dart';
 import 'package:health_tourism/cubit/profile/profile_cubit_state.dart';
 import 'package:health_tourism/product/utils/skelton.dart';
+import 'package:health_tourism/view/sign_up/sign_up_view.dart';
 import '../../core/components/dialog/image_picker.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
@@ -48,19 +50,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   @override
   void initState() {
     super.initState();
-    nameController.text = widget.user.name;
-    surnameController.text = widget.user.surname;
-    emailController.text = widget.user.email;
-    medications.text = widget.user.medications;
-    chronic.text = widget.user.chronicConditions;
-    allergies.text = widget.user.allergies;
-    surgeries.text = widget.user.surgeryHistory;
-    diseases.text = widget.user.skinDiseases;
-    hairTransplantation.text = widget.user.hairTransplantOperations;
-    alcoholOrSmoking.text = widget.user.alcoholOrSmoke;
-    supplements.text = widget.user.supplements;
-    selectedGender = widget.user.gender;
-    selectedIndex = gender.indexOf(selectedGender);
+    initTextFields();
   }
 
   @override
@@ -86,12 +76,16 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               padding: const EdgeInsets.only(right: 16.0),
               child: GestureDetector(
                 onTap: () {
-                  changes["uid"] = widget.user.uid;
-                  context.read<ProfileCubit>().updateUser(changes);
-                  setState(() {
-                    isChanged = false;
-                    changes.clear();
-                  });
+                  try {
+                    changes["uid"] = widget.user.uid;
+                    context.read<ProfileCubit>().updateUser(changes);
+                    setState(() {
+                      isChanged = false;
+                      changes.clear();
+                    });
+                  } catch (e) {
+                    showToastMessage("An error happened during the update please try again");
+                  }
                 },
                 child: Center(
                   child: HTText(
@@ -276,9 +270,9 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                     onTap: () async {
                       date = await showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(),
+                        initialDate: widget.user.birthday.toDate(),
                         firstDate: DateTime(1945),
-                        lastDate: DateTime(2025),
+                        lastDate: DateTime.now(),
                       );
                       if (date == null) {
                         setState(() {
@@ -289,7 +283,8 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                           dateText =
                               '${monthFromInt(date!.month.toInt())} ${date!.day}, ${date!.year}';
                         });
-                        changes["birthday"] = date;
+                        changed();
+                        changes["birthday"] = Timestamp.fromDate(date!);
                       }
                     },
                     child: Container(
@@ -557,5 +552,23 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
     setState(() {
       isChanged = true;
     });
+  }
+
+  void initTextFields() {
+    nameController.text = widget.user.name;
+    surnameController.text = widget.user.surname;
+    emailController.text = widget.user.email;
+    medications.text = widget.user.medications;
+    chronic.text = widget.user.chronicConditions;
+    allergies.text = widget.user.allergies;
+    surgeries.text = widget.user.surgeryHistory;
+    diseases.text = widget.user.skinDiseases;
+    hairTransplantation.text = widget.user.hairTransplantOperations;
+    alcoholOrSmoking.text = widget.user.alcoholOrSmoke;
+    supplements.text = widget.user.supplements;
+    selectedGender = widget.user.gender;
+    selectedIndex = gender.indexOf(selectedGender);
+    date = widget.user.birthday.toDate();
+    dateText = "${date?.day} ${monthFromInt(date!.month)}, ${date?.year}";
   }
 }

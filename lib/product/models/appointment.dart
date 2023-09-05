@@ -31,7 +31,7 @@ class Appointment {
       profilePhoto: json['profilePhoto'],
       date: json['date'].toDate(),
       bookedDate: json['bookedDate'].toDate(),
-      price: json['price'],
+      price: json['price'].toDouble(),
     );
   }
 
