@@ -7,14 +7,11 @@ import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/clinic/clinic_cubit_state.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../core/components/clinic_card.dart';
-import '../../core/components/dialog/permission_dialog.dart';
 import '../../core/components/ht_text.dart';
 import '../../cubit/clinic/clinic_cubit.dart';
 import '../../product/models/clinic.dart';
 import '../../product/theme/styles.dart';
-import '../../product/utils/notification_manager.dart';
 
 class LandingView extends StatefulWidget {
   const LandingView({Key? key}) : super(key: key);
@@ -29,6 +26,29 @@ class _LandingViewState extends State<LandingView> {
   double max = 5.0;
   String city = "";
   bool isDescending = false;
+
+  _onSearchChanged() {
+    print(searchController.text);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    searchController.addListener(() {
+      _onSearchChanged();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    searchController.removeListener(() {
+      _onSearchChanged();
+    });
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +73,7 @@ class _LandingViewState extends State<LandingView> {
               padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xffe8f3f1).withOpacity(0.6),
+                  color: const Color(0xffe8eff3).withOpacity(0.6),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
@@ -180,7 +200,7 @@ class _LandingViewState extends State<LandingView> {
                   child: CircularProgressIndicator(),
                 );
               }
-              if (state is ClinicsLoaded2) {
+              if (state is ClinicsLoaded) {
                 return Expanded(child: buildClinicList(state));
               } else {
                 return const Center(
@@ -195,7 +215,7 @@ class _LandingViewState extends State<LandingView> {
         )));
   }
 
-  Widget buildClinicList(ClinicsLoaded2 state) {
+  Widget buildClinicList(ClinicsLoaded state) {
     return StreamBuilder(
         stream: state.clinicList,
         builder: (context, snapshot) {

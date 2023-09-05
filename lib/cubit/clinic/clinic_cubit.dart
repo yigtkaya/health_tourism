@@ -15,7 +15,7 @@ class ClinicCubit extends Cubit<ClinicState> {
     emit(const ClinicLoadingState());
     Future.value(_clinicRepositoryImpl.getAllClinics(isDescending, min, max, city))
         .then((value) {
-      emit(ClinicsLoaded2(value));
+      emit(ClinicsLoaded(value));
     }).onError((error, stackTrace) {
       emit(ClinicsError(error.toString()));
     });
