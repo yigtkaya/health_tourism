@@ -41,6 +41,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16)),
         color: Colors.white,
         border: Border.all(
           color: const Color(0xFFD3E3F1),
@@ -102,7 +103,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                     .instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
                 onPress: () {
                   context.read<MessageCubit>().sendMessage(
-                      widget.receiverId, _messageController.text, '');
+                      widget.receiverId, _messageController.text, '', "1<123", "w123");
                   _messageController.clear();
                 },
               ),

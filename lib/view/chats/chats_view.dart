@@ -83,22 +83,31 @@ class _ChatsViewState extends State<ChatsView> {
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (context, index) {
-              Map<String, dynamic> data =
-                  snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              Map<String, dynamic> data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              List messages = data["messages"];
               String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-              String lastMessage = data['lastMessage']['message'];
+
               List id = data['ids'];
+              Map<String, dynamic> lastMessage = messages.lastOrNull;
               String chatRoomId = id.join("_");
               id.remove(currentUserId);
               String receiverId = id[0];
 
-              if (data['lastMessage']['senderId'] != currentUserId) {
-                lastMessage =
-                    "${data['lastMessage']['senderId']}: $lastMessage";
+              Widget lastMessageWidget = const SizedBox.shrink();
+
+              if (lastMessage["senderId"] != currentUserId) {
+                lastMessageWidget = HTText(label: "${lastMessage["senderName"]}: ${lastMessage["messages"]}", style: htBlueLabelStyle);
+                if (lastMessage["imageUrl"] != "") {
+                  lastMessageWidget = HTIcon(iconName: AssetConstants.icons.image);
+                }
               } else {
-                lastMessage = "You: $lastMessage";
+                lastMessageWidget = HTText(label: "You: ${lastMessage["messages"]}", style:htBlueLabelStyle);
+                if (lastMessage["imageUrl"] != "") {
+                  lastMessageWidget = HTIcon(iconName: AssetConstants.icons.image);
+                }
               }
-              DateTime t = data['lastMessage']['lastMessageTime'].toDate();
+
+              DateTime t = lastMessage['messageTime'].toDate();
               // check if the message is sent today or yesterday or before
               String formattedDate = context.read<ChatCubit>().formatDate(t);
               return GestureDetector(
@@ -125,7 +134,7 @@ class _ChatsViewState extends State<ChatsView> {
                           ),
                         ]),
                     child: _buildLineItem(
-                        lastMessage, receiverId, chatRoomId, formattedDate),
+                        lastMessageWidget, receiverId, chatRoomId, formattedDate),
                   ));
             },
           );
@@ -138,7 +147,7 @@ class _ChatsViewState extends State<ChatsView> {
     );
   }
 
-  Widget _buildLineItem(String lastMessage, String receiverId,
+  Widget _buildLineItem(Widget lastMessageWidget, String receiverId,
       String chatRoomId, String formattedDate) {
     return Padding(
       padding: const EdgeInsets.only(left: 18.0, right: 18),
@@ -171,10 +180,7 @@ class _ChatsViewState extends State<ChatsView> {
                   const VerticalSpace(
                     spaceAmount: 6,
                   ),
-                  HTText(
-                    label: lastMessage,
-                    style: htBlueLabelStyle,
-                  ),
+                  lastMessageWidget
                 ],
               ),
               const Spacer(),

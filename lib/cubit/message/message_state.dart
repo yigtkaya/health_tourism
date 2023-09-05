@@ -19,9 +19,9 @@ class MessageLoading extends MessageState {
 }
 
 class MessageLoaded extends MessageState {
-  final Stream<QuerySnapshot> messages;
+  final Stream<DocumentSnapshot> chatDocument;
 
-  MessageLoaded(this.messages,);
+  MessageLoaded(this.chatDocument,);
 }
 
 class MessageSentError extends MessageState {

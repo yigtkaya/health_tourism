@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
+import 'package:health_tourism/product/navigation/router.dart';
+import 'package:health_tourism/product/repoImpl/auth_repo_impl.dart';
+import 'package:health_tourism/product/repoImpl/chat_repo_impl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:video_player/video_player.dart';
@@ -32,7 +35,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
   int activeIndex = 0;
   final controller = CarouselController();
   List<Package> packages = [];
-
+  final repo = ChatRepositoryImpl();
+  String? uid = "";
   final reviews = [
     ReviewCard(),
     ReviewCard(),
@@ -168,8 +172,15 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                         style: htBlueLabelStyle),
                     const Spacer(),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                         final chatId = await repo.addChatRoom(widget.clinic.cid);
+
                         // route to contact create chat room and start chatting
+                        context.pushNamed(RoutePath.chatRoom, queryParameters: {
+                          'receiverId': widget.clinic.cid,
+                          'receiverName': widget.clinic.name,
+                          'chatRoomId': chatId
+                        });
                       },
                       child: Container(
                         decoration: const BoxDecoration(

@@ -54,4 +54,5 @@ class HTIcons {
   final String failure = AssetConstants.toIcon("fail");
   final String filter = AssetConstants.toIcon("filter");
   final String close = AssetConstants.toIcon("close");
+  final String image = AssetConstants.toIcon("image");
 }

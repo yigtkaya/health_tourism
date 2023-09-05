@@ -99,7 +99,9 @@ class _SendImageViewState extends State<SendImageView> {
                         BlocProvider.of<MessageCubit>(context).sendMessage(
                             widget.receiverId,
                             _messageController.text,
-                            imageUrl);
+                            imageUrl,
+                            "1<123", "w123"
+                        );
 
                         context.pop();
                       }

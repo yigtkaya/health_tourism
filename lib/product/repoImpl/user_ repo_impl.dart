@@ -10,7 +10,6 @@ class UserRepositoryImpl extends UserRepo {
   CollectionReference users =
   FirebaseFirestore.instance.collection("users");
 
-
   @override
   Future<void> createUser(
       User user) async {

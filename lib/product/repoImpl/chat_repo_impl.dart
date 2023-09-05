@@ -18,20 +18,22 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<void> addChatRoom(receiverId) async {
+  Future<String> addChatRoom(receiverId) async {
     final chatRoomId = listJoiner(receiverId);
 
-    await _firestore.collection("chatRooms")
+    await _firestore.collection("chats")
         .doc(chatRoomId)
     .set({
       "ids": [currentUserId, receiverId],
-      "chatRoomId": chatRoomId,
+      "messages": [],
     });
+
+    return chatRoomId;
   }
 
   @override
   Stream<QuerySnapshot> getAllChats() {
-    return _firestore.collection("chatRooms")
+    return _firestore.collection("chats")
         .where("ids", arrayContains: currentUserId).snapshots();
   }
 
