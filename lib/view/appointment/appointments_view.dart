@@ -184,7 +184,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
           context: context,
           builder: (BuildContext context) {
             return AppointmentDetailDialog(
-              appointment: appointment, cancellable: cancellable
+              appointment: appointment, cancellable: cancellable, isPast: false,
             );
           },
         );
@@ -372,7 +372,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                   context: context,
                   builder: (BuildContext context) {
                     return AppointmentDetailDialog(
-                      appointment: appointment, cancellable: false
+                      appointment: appointment, cancellable: false, isPast: true,
                     );
                   },
                 );
