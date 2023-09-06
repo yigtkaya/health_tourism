@@ -45,7 +45,7 @@ final GoRouter router = GoRouter(
       path: RoutePath.personalInfo,
       name: RoutePath.personalInfo,
       builder: (context, state) {
-        User user = state.extra as User;
+        IUser user = state.extra as IUser;
         return PersonalInfoView(user: user,);
       },
     ),
@@ -60,7 +60,7 @@ final GoRouter router = GoRouter(
       path: RoutePath.appointment,
       name: RoutePath.appointment,
       builder: (context, state) {
-        User user = state.extra as User;
+        IUser user = state.extra as IUser;
         return AppointmentsView(user: user);
       },
     ),
@@ -95,6 +95,8 @@ final GoRouter router = GoRouter(
           child: SendImageView(
             imagePath: state.queryParameters['imageFile'] ?? '',
             receiverId: state.queryParameters['receiverId'] ?? '',
+            senderName: state.queryParameters['senderName'] ?? '',
+            receiverName: state.queryParameters['receiverName'] ?? '',
           ),
         );
       },
@@ -159,6 +161,8 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         return ChatImagePickerDialog(
           receiverId: state.queryParameters['receiverId'] ?? '',
+          senderName: state.queryParameters['senderName'] ?? '',
+          receiverName: state.queryParameters['receiverName'] ?? '',
         );
       },
     ),
@@ -173,6 +177,7 @@ final GoRouter router = GoRouter(
             receiverId: state.queryParameters['receiverId']!,
             chatRoomId: state.queryParameters['chatRoomId']!,
             receiverName: state.queryParameters['receiverName']!,
+            senderName: state.queryParameters['senderName']!,
           ),
         );
       },

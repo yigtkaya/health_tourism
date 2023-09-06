@@ -57,7 +57,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                   },
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                        maxWidth: width - 150, maxHeight: height * 0.3),
+                        maxWidth: width - 150, maxHeight: height * 0.35),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -75,12 +75,12 @@ class _ChatBubbleState extends State<ChatBubble> {
                   ),
                 )
               : const SizedBox.shrink(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 6),
+          widget.message == "" ? const SizedBox.shrink() : Padding(
+            padding: const EdgeInsets.only(top: 6,  bottom: 6, left: 6, right: 6),
             child: HTText(
               label: widget.message,
               color: widget.messageColor,
-              style: htDarkBlueNormalStyle,
+              style: htDarkBlueBoldLargeStyle.copyWith(fontSize: 16),
             ),
           ),
         ],

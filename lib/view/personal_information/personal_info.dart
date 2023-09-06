@@ -18,7 +18,7 @@ import '../../product/theme/styles.dart';
 import 'package:recase/recase.dart';
 
 class PersonalInfoView extends StatefulWidget {
-  final User user;
+  final IUser user;
   const PersonalInfoView({super.key, required this.user});
 
   @override
@@ -43,7 +43,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   List gender = ["Male", "Female", "Other"];
   late String selectedGender;
   late int selectedIndex;
-  late User forImg;
+  late IUser forImg;
   bool isChanged = false;
 
   final changes = <dynamic, dynamic>{};
@@ -399,7 +399,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           }
           Map<String, dynamic> data =
               snapshot.data?.data() as Map<String, dynamic>;
-          forImg = User.fromData(data);
+          forImg = IUser.fromData(data);
 
           return Center(
             child: Stack(

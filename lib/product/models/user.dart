@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
+class IUser extends Equatable {
   final String uid;
   final String email;
   final Timestamp birthday;
@@ -19,7 +19,7 @@ class User extends Equatable {
   final String gender;
   final List<dynamic> appointments;
 
-  const User(
+  const IUser(
       {required this.supplements,
       required this.alcoholOrSmoke,
       required this.surname,
@@ -61,7 +61,7 @@ class User extends Equatable {
   bool get stringify => true;
 
   // create functions to read data from/to firestore document
-  User.fromData(Map<dynamic, dynamic> data)
+  IUser.fromData(Map<dynamic, dynamic> data)
       : uid = data['uid'],
         email = data['email'],
         name = data['name'],

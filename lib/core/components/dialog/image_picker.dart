@@ -75,7 +75,7 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
       String imageUrl = await repo.uploadImageToFirebase(
           imageFile, widget.uid);
 
-      repo.updateProfilePhoto(widget.uid, imageUrl);
+      repo.updateProfilePhoto(imageUrl);
 
       goBack();
 
@@ -100,7 +100,7 @@ class _ImagePickerDialogState extends State<ImagePickerDialog> {
       String imageUrl = await repo.uploadImageToFirebase(
           imageFile, widget.uid);
 
-      repo.updateProfilePhoto(widget.uid, imageUrl);
+      repo.updateProfilePhoto(imageUrl);
 
       goBack();
     } else {

@@ -10,10 +10,12 @@ import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/cubit/chat_cubit/chat_cubit.dart';
+import 'package:health_tourism/product/models/user.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 import '../../core/constants/vertical_space.dart';
 import '../../cubit/chat_cubit/chat_state.dart';
+import '../../product/theme/theme_manager.dart';
 
 class ChatsView extends StatefulWidget {
   const ChatsView({super.key});
@@ -46,32 +48,33 @@ class _ChatsViewState extends State<ChatsView> {
       backgroundColor: Colors.white,
       body: SafeArea(
         top: false,
-          child: Column(
-        children: [
-          const VerticalSpace(),
-          Expanded(
-            flex: 3,
-            child: BlocBuilder<ChatCubit, ChatState>(
-              builder: (context, state) {
-                if (state is ChatLoaded) {
-                  return _buildChatListView(state);
-                }
-                if (state is ChatError) {
-                  return Center(
-                    child: HTText(
-                      label: "Something went wrong",
-                      style: htDarkBlueNormalStyle,
-                    ),
+        child: Column(
+          children: [
+            const VerticalSpace(),
+            Expanded(
+              flex: 4,
+              child: BlocBuilder<ChatCubit, ChatState>(
+                builder: (context, state) {
+                  if (state is ChatLoaded) {
+                    return _buildChatListView(state);
+                  }
+                  if (state is ChatError) {
+                    return Center(
+                      child: HTText(
+                        label: "Something went wrong",
+                        style: htDarkBlueNormalStyle,
+                      ),
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+                },
+              ),
             ),
-          ),
-        ],
-      )),
+          ],
+        ),
+      ),
     );
   }
 
@@ -83,27 +86,48 @@ class _ChatsViewState extends State<ChatsView> {
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (context, index) {
-              Map<String, dynamic> data = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              Map<String, dynamic> data =
+                  snapshot.data!.docs[index].data() as Map<String, dynamic>;
               List messages = data["messages"];
               String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+              Map<String, dynamic> lastMessage = messages.lastOrNull;
 
               List id = data['ids'];
-              Map<String, dynamic> lastMessage = messages.lastOrNull;
               String chatRoomId = id.join("_");
               id.remove(currentUserId);
               String receiverId = id[0];
 
+              List names = data["names"];
+              String receiverName = names.first;
+              String senderName = names.last;
               Widget lastMessageWidget = const SizedBox.shrink();
 
-              if (lastMessage["senderId"] != currentUserId) {
-                lastMessageWidget = HTText(label: "${lastMessage["senderName"]}: ${lastMessage["messages"]}", style: htBlueLabelStyle);
+              if (lastMessage["senderId"] == currentUserId) {
+                lastMessageWidget = HTText(
+                    label: "You: ${lastMessage["message"]}",
+                    style: htBlueLabelStyle);
                 if (lastMessage["imageUrl"] != "") {
-                  lastMessageWidget = HTIcon(iconName: AssetConstants.icons.image);
+                  lastMessageWidget =
+                      Row(
+                        children: [
+                          HTText(label: "${lastMessage["senderName"]}: ", style: htBlueLabelStyle),
+                          HTIcon(iconName: AssetConstants.icons.image, height: 24, width: 24, color:ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,),
+                        ],
+                      );
                 }
               } else {
-                lastMessageWidget = HTText(label: "You: ${lastMessage["messages"]}", style:htBlueLabelStyle);
+                lastMessageWidget = HTText(
+                    label:
+                    "${lastMessage["senderName"]}: ${lastMessage["message"]}",
+                    style: htBlueLabelStyle);
                 if (lastMessage["imageUrl"] != "") {
-                  lastMessageWidget = HTIcon(iconName: AssetConstants.icons.image);
+                  lastMessageWidget =
+                      Row(
+                        children: [
+                          HTText(label: "${lastMessage["senderName"]}: ", style: htBlueLabelStyle),
+                          HTIcon(iconName: AssetConstants.icons.image, height: 24, width: 24, color:ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,),
+                        ],
+                      );
                 }
               }
 
@@ -116,7 +140,8 @@ class _ChatsViewState extends State<ChatsView> {
                     context.pushNamed(RoutePath.chatRoom, queryParameters: {
                       "receiverId": receiverId,
                       "chatRoomId": chatRoomId,
-                      "receiverName": receiverId,
+                      "receiverName": receiverName,
+                      "senderName": senderName
                     });
                   },
                   child: Slidable(
@@ -133,8 +158,8 @@ class _ChatsViewState extends State<ChatsView> {
                             icon: Icons.delete_sharp,
                           ),
                         ]),
-                    child: _buildLineItem(
-                        lastMessageWidget, receiverId, chatRoomId, formattedDate),
+                    child: _buildLineItem(lastMessageWidget, receiverName,
+                        chatRoomId, formattedDate),
                   ));
             },
           );
@@ -147,7 +172,7 @@ class _ChatsViewState extends State<ChatsView> {
     );
   }
 
-  Widget _buildLineItem(Widget lastMessageWidget, String receiverId,
+  Widget _buildLineItem(Widget lastMessageWidget, String receiverName,
       String chatRoomId, String formattedDate) {
     return Padding(
       padding: const EdgeInsets.only(left: 18.0, right: 18),
@@ -174,7 +199,7 @@ class _ChatsViewState extends State<ChatsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HTText(
-                    label: receiverId,
+                    label: receiverName,
                     style: htSubTitle,
                   ),
                   const VerticalSpace(

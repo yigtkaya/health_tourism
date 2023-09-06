@@ -13,8 +13,14 @@ import '../../../product/utils/notification_manager.dart';
 
 class ChatImagePickerDialog extends StatefulWidget {
   final String receiverId;
+  final String receiverName;
+  final String senderName;
 
-  const ChatImagePickerDialog({super.key, required this.receiverId});
+  const ChatImagePickerDialog(
+      {super.key,
+      required this.receiverId,
+      required this.senderName,
+      required this.receiverName});
 
   @override
   State<ChatImagePickerDialog> createState() => _ChatImagePickerDialogState();
@@ -32,11 +38,11 @@ class _ChatImagePickerDialogState extends State<ChatImagePickerDialog> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.camera),
-            title: Text("Camera"),
+            leading: const Icon(Icons.camera),
+            title: const Text("Camera"),
             onTap: () async {
               final status = await PermissionsHandler.checkCameraPermission();
-              if(status.isGranted) {
+              if (status.isGranted) {
                 _getFromCamera();
               } else {
                 showRationaleForPermanentlyDeniedCamera();
@@ -44,11 +50,11 @@ class _ChatImagePickerDialogState extends State<ChatImagePickerDialog> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.photo_library),
-            title: Text("Gallery"),
+            leading: const Icon(Icons.photo_library),
+            title: const Text("Gallery"),
             onTap: () async {
               final status = await PermissionsHandler.checkGalleryPermission();
-              if(status.isGranted) {
+              if (status.isGranted) {
                 _getFromGallery();
               } else {
                 showRationaleForPermanentlyDeniedStorage();
@@ -72,11 +78,13 @@ class _ChatImagePickerDialogState extends State<ChatImagePickerDialog> {
         imageFile = File(xfile.path);
       });
 
-      if(mounted) {
+      if (mounted) {
         context.pop();
         context.pushNamed(RoutePath.sendImage, queryParameters: {
           "receiverId": widget.receiverId,
           "imageFile": xfile.path,
+          "senderName": widget.senderName,
+          "receiverName": widget.receiverName
         });
       }
     } else {
@@ -96,11 +104,13 @@ class _ChatImagePickerDialogState extends State<ChatImagePickerDialog> {
       setState(() {
         imageFile = File(xfile.path);
       });
-      if(mounted) {
+      if (mounted) {
         context.pop();
         context.pushNamed(RoutePath.sendImage, queryParameters: {
           "receiverId": widget.receiverId,
           "imageFile": xfile.path,
+          "senderName": widget.senderName,
+          "receiverName": widget.receiverName
         });
       }
     } else {
@@ -130,4 +140,3 @@ class _ChatImagePickerDialogState extends State<ChatImagePickerDialog> {
         });
   }
 }
-

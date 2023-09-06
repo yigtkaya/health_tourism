@@ -15,8 +15,15 @@ import '../../cubit/message/message_cubit.dart';
 class SendImageView extends StatefulWidget {
   String imagePath;
   String receiverId;
+  String senderName;
+  String receiverName;
 
-  SendImageView({super.key, required this.imagePath, required this.receiverId});
+  SendImageView(
+      {super.key,
+      required this.imagePath,
+      required this.receiverId,
+      required this.senderName,
+      required this.receiverName});
 
   @override
   State<SendImageView> createState() => _SendImageViewState();
@@ -100,8 +107,8 @@ class _SendImageViewState extends State<SendImageView> {
                             widget.receiverId,
                             _messageController.text,
                             imageUrl,
-                            "1<123", "w123"
-                        );
+                            widget.senderName,
+                            widget.receiverName);
 
                         context.pop();
                       }

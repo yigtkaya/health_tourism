@@ -22,15 +22,15 @@ class MessageRepositoryImpl extends MessageRepository {
   Future<void> sendMessage(
       {required String receiverId, required String message, String? imageUrl, required String senderName, required String receiverName}) async {
     try {
-        ChatMessage msg = ChatMessage(
-          senderId: currentUserId,
-          receiverId: receiverId,
-          message: message,
-          imageUrl: imageUrl ?? '',
-          messageTime: Timestamp.now(),
-          senderName: senderName,
-          receiverName: receiverName,
-        );
+         final msg = {
+          "senderId": currentUserId,
+          "receiverId": receiverId,
+          "message": message,
+          "imageUrl": imageUrl ?? '',
+          "messageTime": Timestamp.now(),
+          "senderName": senderName,
+          "receiverName": receiverName,
+         };
 
         final chatRoomId = listJoiner(receiverId);
 
@@ -41,6 +41,7 @@ class MessageRepositoryImpl extends MessageRepository {
         });
     } catch (e) {
       showToastMessage(message: e.toString());
+      print(e.toString());
     }
   }
 

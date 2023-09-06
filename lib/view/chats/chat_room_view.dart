@@ -22,10 +22,12 @@ class ChatRoomView extends StatefulWidget {
   String receiverId;
   String receiverName;
   String chatRoomId;
+  String senderName;
 
   ChatRoomView({
     super.key,
     required this.receiverId,
+    required this.senderName,
     required this.receiverName,
     required this.chatRoomId,
   });
@@ -35,6 +37,8 @@ class ChatRoomView extends StatefulWidget {
 }
 
 class _ChatRoomViewState extends State<ChatRoomView> {
+  late ChatMessage chatMessage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +87,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 },
               ),
             ),
-            ChatInputField(receiverId: widget.receiverId),
+            ChatInputField(receiverId: widget.receiverId, receiverName: widget.receiverName, senderName: widget.senderName,),
           ],
         ),
       ),
@@ -114,7 +118,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         return ListView.builder(
           itemCount: messages.length,
             itemBuilder: (context, index) {
-            return _buildMessageBubble(messages["index"]);
+            return _buildMessageBubble(messages[index]);
         });
       },
     );
@@ -166,7 +170,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     String formattedTime = '${t.hour}:${t.minute}';
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
       child: Container(
         color: Colors.transparent,
         alignment: alignment,
@@ -175,8 +179,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               ? CrossAxisAlignment.start
               : CrossAxisAlignment.end,
           children: [
-            HTText(label: message.senderId, style: htSmallLabelStyle),
-            const VerticalSpace(spaceAmount: 4),
             ChatBubble(
               message: text,
               boxDecoration: boxDecoration,

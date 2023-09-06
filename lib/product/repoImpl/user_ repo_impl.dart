@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../models/user.dart';
 import '../repositories/customer_repo.dart';
@@ -9,12 +10,12 @@ import 'package:path/path.dart' as Path;
 class UserRepositoryImpl extends UserRepo {
   CollectionReference users =
   FirebaseFirestore.instance.collection("users");
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Future<void> createUser(
-      User user) async {
-    final data = await FirebaseFirestore.instance
-        .collection("users")
+      IUser user) async {
+    final data = await users
         .doc(user.uid)
         .get();
 
@@ -42,12 +43,17 @@ class UserRepositoryImpl extends UserRepo {
   }
 
   @override
-  Future<void> deleteUser(String uid) async {
+  Future<void> deleteUser() async {
     users.doc(uid).delete();
   }
 
+  Future<String> getUserName() async {
+    final data = await users.doc(uid).get();
+    Map<String, dynamic> user = data.data() as Map<String , dynamic>;
+    return user["name"];
+  }
   @override
-  Stream<DocumentSnapshot> getUserSnapshot(String uid) {
+  Stream<DocumentSnapshot> getUserSnapshot() {
     return users.doc(uid).snapshots();
   }
 
@@ -63,8 +69,7 @@ class UserRepositoryImpl extends UserRepo {
   }
 
   @override
-  Future<void> updateProfilePhoto(String uid, String photoURL) async {
-
+  Future<void> updateProfilePhoto(String photoURL) async {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
@@ -89,7 +94,7 @@ class UserRepositoryImpl extends UserRepo {
   }
 
   @override
-  Future<void> createAppointment(String uid, Map appointment) async {
+  Future<void> createAppointment(Map appointment) async {
     await FirebaseFirestore.instance.collection("users").doc(uid).update({
       'appointments' : FieldValue.arrayUnion([appointment])
     });

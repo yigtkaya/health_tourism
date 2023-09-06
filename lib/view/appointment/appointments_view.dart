@@ -16,7 +16,7 @@ import '../../product/models/user.dart';
 import '../../product/theme/styles.dart';
 
 class AppointmentsView extends StatefulWidget {
-  final User user;
+  final IUser user;
   const AppointmentsView({super.key, required this.user});
 
   @override
@@ -27,7 +27,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   List pastAppointmentsList = [];
   List upcomingAppointmentsList = [];
   late bool anyAppointment;
-  late User secUser;
+  late IUser secUser;
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         }
         Map<String, dynamic> data =
         snapshot.data?.data() as Map<String, dynamic>;
-        secUser = User.fromData(data);
+        secUser = IUser.fromData(data);
         extractAppointments(secUser);
 
         if (upcomingAppointmentsList.isEmpty && pastAppointmentsList.isEmpty) {
@@ -412,7 +412,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
     }
   }
 
-  void extractAppointments(User user) {
+  void extractAppointments(IUser user) {
     upcomingAppointmentsList.clear();
     pastAppointmentsList.clear();
     for (final i in user.appointments) {
