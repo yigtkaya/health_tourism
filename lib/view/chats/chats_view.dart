@@ -89,10 +89,14 @@ class _ChatsViewState extends State<ChatsView> {
               Map<String, dynamic> data =
                   snapshot.data!.docs[index].data() as Map<String, dynamic>;
               List messages = data["messages"];
+              if (messages.isEmpty) {
+                return const SizedBox.shrink();
+              }
               String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-              Map<String, dynamic> lastMessage = messages.lastOrNull;
+              Map<String, dynamic>? lastMessage = messages.lastOrNull;
 
               List id = data['ids'];
+              id.sort();
               String chatRoomId = id.join("_");
               id.remove(currentUserId);
               String receiverId = id[0];
@@ -102,36 +106,39 @@ class _ChatsViewState extends State<ChatsView> {
               String senderName = names.last;
               Widget lastMessageWidget = const SizedBox.shrink();
 
-              if (lastMessage["senderId"] == currentUserId) {
-                lastMessageWidget = HTText(
-                    label: "You: ${lastMessage["message"]}",
-                    style: htBlueLabelStyle);
-                if (lastMessage["imageUrl"] != "") {
-                  lastMessageWidget =
-                      Row(
-                        children: [
-                          HTText(label: "${lastMessage["senderName"]}: ", style: htBlueLabelStyle),
-                          HTIcon(iconName: AssetConstants.icons.image, height: 24, width: 24, color:ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,),
-                        ],
-                      );
-                }
-              } else {
-                lastMessageWidget = HTText(
-                    label:
-                    "${lastMessage["senderName"]}: ${lastMessage["message"]}",
-                    style: htBlueLabelStyle);
-                if (lastMessage["imageUrl"] != "") {
-                  lastMessageWidget =
-                      Row(
-                        children: [
-                          HTText(label: "${lastMessage["senderName"]}: ", style: htBlueLabelStyle),
-                          HTIcon(iconName: AssetConstants.icons.image, height: 24, width: 24, color:ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,),
-                        ],
-                      );
+              if(lastMessage != null) {
+                if (lastMessage["senderId"] == currentUserId) {
+                  lastMessageWidget = HTText(
+                      label: "You: ${lastMessage["message"]}",
+                      style: htBlueLabelStyle);
+                  if (lastMessage["imageUrl"] != "") {
+                    lastMessageWidget =
+                        Row(
+                          children: [
+                            HTText(label: "${lastMessage["senderName"]}: ", style: htBlueLabelStyle),
+                            HTIcon(iconName: AssetConstants.icons.image, height: 24, width: 24, color:ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,),
+                          ],
+                        );
+                  }
+                } else {
+                  lastMessageWidget = HTText(
+                      label:
+                      "${lastMessage["senderName"]}: ${lastMessage["message"]}",
+                      style: htBlueLabelStyle);
+                  if (lastMessage["imageUrl"] != "") {
+                    lastMessageWidget =
+                        Row(
+                          children: [
+                            HTText(label: "${lastMessage["senderName"]}: ", style: htBlueLabelStyle),
+                            HTIcon(iconName: AssetConstants.icons.image, height: 24, width: 24, color:ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor,),
+                          ],
+                        );
+                  }
                 }
               }
 
-              DateTime t = lastMessage['messageTime'].toDate();
+
+              DateTime t = lastMessage?['messageTime'].toDate();
               // check if the message is sent today or yesterday or before
               String formattedDate = context.read<ChatCubit>().formatDate(t);
               return GestureDetector(

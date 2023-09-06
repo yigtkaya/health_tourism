@@ -174,9 +174,9 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                     const Spacer(),
                     GestureDetector(
                       onTap: () async {
-                        final senderName = UserRepositoryImpl().getUserName();
+                        final String senderName = await UserRepositoryImpl().getUserName();
                         final chatId =
-                            await repo.addChatRoom(widget.clinic.cid);
+                            await repo.addChatRoom(widget.clinic.cid, widget.clinic.name, senderName);
 
                         // route to contact create chat room and start chatting
                         context.pushNamed(RoutePath.chatRoom, queryParameters: {

@@ -8,9 +8,9 @@ class ChatCubit extends Cubit<ChatState> {
     getAllChats();
   }
 
-  void addChatRoom(receiverId) async {
+  void addChatRoom(receiverId, clinicName, senderName) async {
     try {
-      await repository.addChatRoom(receiverId);
+      await repository.addChatRoom(receiverId, clinicName, senderName);
     } catch (e) {
       emit(ChatError(e.toString()));
     }

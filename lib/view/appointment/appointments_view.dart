@@ -13,6 +13,9 @@ import '../../core/constants/horizontal_space.dart';
 import '../../cubit/profile/profile_cubit.dart';
 import '../../product/models/appointment.dart';
 import '../../product/models/user.dart';
+import '../../product/navigation/route_paths.dart';
+import '../../product/repoImpl/chat_repo_impl.dart';
+import '../../product/repoImpl/user_ repo_impl.dart';
 import '../../product/theme/styles.dart';
 
 class AppointmentsView extends StatefulWidget {
@@ -28,6 +31,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   List upcomingAppointmentsList = [];
   late bool anyAppointment;
   late IUser secUser;
+  final repo = ChatRepositoryImpl();
 
   @override
   void initState() {
@@ -267,7 +271,19 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       HTIcon(iconName: AssetConstants.icons.checkMark),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          final String senderName = await UserRepositoryImpl().getUserName();
+                          final chatId =
+                              await repo.addChatRoom(appointment.cid, appointment.clinicName, senderName);
+
+                          // route to contact create chat room and start chatting
+                          context.pushNamed(RoutePath.chatRoom, queryParameters: {
+                            'receiverId': appointment.cid,
+                            'receiverName': appointment.clinicName,
+                            'chatRoomId': chatId,
+                            "senderName": senderName
+                          });
+                        },
                         child: Container(
                           decoration: const BoxDecoration(
                             color: Color(0xFF123258),

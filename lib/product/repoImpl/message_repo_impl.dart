@@ -14,6 +14,7 @@ class MessageRepositoryImpl extends MessageRepository {
 
   String listJoiner(String receiverId) {
     List<String> ids = [currentUserId, receiverId];
+    ids.sort();
     String chatRoomId = ids.join('_');
     return chatRoomId;
   }

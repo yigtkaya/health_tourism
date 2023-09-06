@@ -52,6 +52,7 @@ class UserRepositoryImpl extends UserRepo {
     Map<String, dynamic> user = data.data() as Map<String , dynamic>;
     return user["name"];
   }
+
   @override
   Stream<DocumentSnapshot> getUserSnapshot() {
     return users.doc(uid).snapshots();

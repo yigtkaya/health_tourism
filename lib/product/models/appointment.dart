@@ -1,4 +1,5 @@
 class Appointment {
+  final String cid;
   final String clinicName;
   final String clinicCity;
   final String packageName;
@@ -10,6 +11,7 @@ class Appointment {
   final double price;
 
   Appointment({
+    required this.cid,
     required this.clinicName,
     required this.clinicCity,
     required this.packageName,
@@ -23,6 +25,7 @@ class Appointment {
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
+      cid: json["cid"],
       clinicName: json['clinicName'],
       clinicCity: json['clinicCity'],
       packageName: json['packageName'],
@@ -37,6 +40,7 @@ class Appointment {
 
   Map<String, dynamic> toJson() {
     return {
+      'cid': cid,
       'clinicName': clinicName,
       'clinicCity': clinicCity,
       'package': packageName,
