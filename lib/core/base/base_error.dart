@@ -1,5 +1,3 @@
-
-
 import 'package:health_tourism/core/base/response.dart';
 
 class BaseErrorModel extends HTErrorModel {

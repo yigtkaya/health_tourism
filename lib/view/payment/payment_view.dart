@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/loading/three_dot_loading.dart';
-import 'package:health_tourism/core/components/payment_field.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
@@ -14,7 +13,6 @@ import 'package:health_tourism/product/utils/card_utils.dart';
 import 'package:health_tourism/product/utils/input_formatters.dart';
 import 'package:health_tourism/view/response/failure_view.dart';
 import 'package:health_tourism/view/response/succes_view.dart';
-import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
@@ -106,6 +104,18 @@ class _PaymentViewState extends State<PaymentView> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    cardHolderNameController.dispose();
+    cardNumberController.dispose();
+    cvvCodeController.dispose();
+    postalCodeController.dispose();
+    addressController.dispose();
+    countryController.dispose();
+    cityController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -798,7 +808,7 @@ class _PaymentViewState extends State<PaymentView> {
           borderRadius: BorderRadius.circular(40.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 14.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
           child: Row(
             children: [
               HTText(label: dateText, style: htBlueLabelStyle),

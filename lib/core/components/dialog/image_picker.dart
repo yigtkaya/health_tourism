@@ -1,16 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/dialog/permission_dialog.dart';
 import 'package:health_tourism/product/navigation/router.dart';
-import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
 import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
 import 'package:health_tourism/product/utils/notification_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../../product/navigation/route_paths.dart';
 
 class ImagePickerDialog extends StatefulWidget {
   final String uid;

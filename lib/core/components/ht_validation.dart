@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../product/theme/styles.dart';
 import '../constants/horizontal_space.dart';
 import '../constants/vertical_space.dart';

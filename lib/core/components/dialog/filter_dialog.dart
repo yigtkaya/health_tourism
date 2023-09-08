@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
-import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/product/theme/styles.dart';
 import '../../../cubit/clinic/clinic_cubit.dart';
