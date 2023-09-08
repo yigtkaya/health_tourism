@@ -10,7 +10,7 @@ import 'package:path/path.dart' as Path;
 class UserRepositoryImpl extends UserRepo {
   CollectionReference users =
   FirebaseFirestore.instance.collection("users");
-  String uid = FirebaseAuth.instance.currentUser!.uid;
+  String? uid = FirebaseAuth.instance.currentUser?.uid;
 
   @override
   Future<void> createUser(

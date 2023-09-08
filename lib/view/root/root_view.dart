@@ -21,11 +21,11 @@ class _RootViewState extends State<RootView> {
   @override
   void initState() {
     // TODO: implement initState
-    requestPermissions();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
+    requestPermissions();
     return BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is Authenticated) {

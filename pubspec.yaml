@@ -81,7 +81,6 @@ dependencies:
   #navigation
   go_router:
 
-  webview_flutter:
   dio:
   flutter_dotenv:
   flutter_credit_card:

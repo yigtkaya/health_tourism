@@ -104,6 +104,9 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoading());
       await _authRepository.logout();
       emit(const NotAuthenticated());
+      Future.delayed(const Duration(seconds: 2), () {
+        goTo(path: RoutePath.signIn);
+      });
     } catch (e) {
       emit(AuthError(e.toString()));
     }
