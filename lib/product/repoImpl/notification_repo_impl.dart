@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
@@ -20,6 +21,15 @@ class NotificationRepoImpl extends NotificationRepository {
     final map = {"fcmToken": FCMToken};
 
     userRepository.updateUser(map);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      log('Got a message whilist in the foreground!');
+      log('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        log('Message also contained a notification: ${message.notification}');
+      }
+    });
   }
 
   @override
@@ -32,6 +42,10 @@ class NotificationRepoImpl extends NotificationRepository {
         "notification": {
           "title": name,
           "body": message,
+          "android_channel_id": "chats"
+        },
+        "data" : {
+          "some_data": "Clinic ID: ${clinic.cid}",
         }
       };
 
