@@ -63,7 +63,7 @@ class UserRepositoryImpl extends UserRepo {
     try {
       print(changes.keys);
       Map<String, dynamic> map = Map<String, dynamic>.from(changes);
-      await users.doc(changes["uid"]).update(map);
+      await users.doc(uid).update(map);
     } on FirebaseException catch (e) {
       print(e);
     }
