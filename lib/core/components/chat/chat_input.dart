@@ -9,6 +9,9 @@ import 'package:health_tourism/product/models/message.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/product/theme/theme_manager.dart';
 import '../../../cubit/message/message_cubit.dart';
+import '../../../product/models/clinic.dart';
+import '../../../product/repoImpl/clinic_repo_impl.dart';
+import '../../../product/repoImpl/notification_repo_impl.dart';
 import '../../../product/theme/styles.dart';
 import '../../constants/asset.dart';
 import '../../constants/horizontal_space.dart';
@@ -33,11 +36,18 @@ class ChatInputField extends StatefulWidget {
 
 class _ChatInputFieldState extends State<ChatInputField> {
   final TextEditingController _messageController = TextEditingController();
+  late Clinic clinic;
+
   @override
   void initState() {
+    // TODO: implement initState
+    initClinic();
     super.initState();
   }
 
+  void initClinic() async {
+    clinic  = await ClinicRepositoryImpl().getClinic(widget.receiverId);
+  }
   @override
   void dispose() {
     _messageController.dispose();
@@ -124,6 +134,14 @@ class _ChatInputFieldState extends State<ChatInputField> {
                         "",
                         widget.senderName,
                         widget.receiverName);
+
+                    NotificationRepoImpl()
+                        .sendPushNotificationToClinic(
+                        widget.senderName,
+                        _messageController.text,
+                        clinic,
+                    );
+
                     _messageController.clear();
                   },
                 ),

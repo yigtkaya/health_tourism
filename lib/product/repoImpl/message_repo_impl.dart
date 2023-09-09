@@ -5,7 +5,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:health_tourism/product/repositories/message_repo.dart';
-import '../models/message.dart';
 import 'package:path/path.dart' as Path;
 
 class MessageRepositoryImpl extends MessageRepository {
@@ -66,11 +65,6 @@ class MessageRepositoryImpl extends MessageRepository {
 
     print('URL: $fileUrl');
     return fileUrl;
-  }
-
-  @override
-  Future<void> sendImageMessage(File file, String message) async {
-
   }
 
   showToastMessage({required String message}) {

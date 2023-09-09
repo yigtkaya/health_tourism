@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/chat/chat_bubble.dart';
 import 'package:health_tourism/core/components/chat/chat_input.dart';
@@ -15,7 +13,6 @@ import 'package:health_tourism/product/theme/theme_manager.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
-import '../../core/constants/vertical_space.dart';
 import '../../product/theme/styles.dart';
 
 class ChatRoomView extends StatefulWidget {
@@ -38,6 +35,12 @@ class ChatRoomView extends StatefulWidget {
 
 class _ChatRoomViewState extends State<ChatRoomView> {
   late ChatMessage chatMessage;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
