@@ -13,6 +13,8 @@ import 'package:health_tourism/product/theme/theme_manager.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
+import '../../product/models/clinic.dart';
+import '../../product/repoImpl/clinic_repo_impl.dart';
 import '../../product/theme/styles.dart';
 
 class ChatRoomView extends StatefulWidget {
@@ -35,11 +37,17 @@ class ChatRoomView extends StatefulWidget {
 
 class _ChatRoomViewState extends State<ChatRoomView> {
   late ChatMessage chatMessage;
+  late Clinic clinic;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initClinic();
+  }
+
+  void initClinic() async {
+    clinic = await ClinicRepositoryImpl().getClinic(widget.receiverId);
   }
 
   @override
@@ -56,9 +64,12 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         leadingWidth: 42,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: HTIcon(iconName: AssetConstants.icons.chevronLeft, onPress: () {
-            context.pop();
-          },),
+          child: HTIcon(
+            iconName: AssetConstants.icons.chevronLeft,
+            onPress: () {
+              context.pop();
+            },
+          ),
         ),
         title: HTText(
           label: widget.receiverName,
@@ -90,7 +101,12 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 },
               ),
             ),
-            ChatInputField(receiverId: widget.receiverId, receiverName: widget.receiverName, senderName: widget.senderName,),
+            ChatInputField(
+              clinic: clinic,
+              receiverId: widget.receiverId,
+              receiverName: widget.receiverName,
+              senderName: widget.senderName,
+            ),
           ],
         ),
       ),
@@ -116,40 +132,39 @@ class _ChatRoomViewState extends State<ChatRoomView> {
           );
         }
 
-        Map<String, dynamic> data = snapshot.data?.data() as Map<String, dynamic>;
+        Map<String, dynamic> data =
+            snapshot.data?.data() as Map<String, dynamic>;
         final messages = data["messages"];
         return ListView.builder(
-          itemCount: messages.length,
+            itemCount: messages.length,
             itemBuilder: (context, index) {
-            return _buildMessageBubble(messages[index]);
-        });
+              return _buildMessageBubble(messages[index]);
+            });
       },
     );
   }
 
   Widget _buildMessageBubble(Map<String, dynamic> messageMap) {
-
     ChatMessage message = ChatMessage(
         senderId: messageMap["senderId"],
-      receiverId: messageMap["receiverId"],
-      message: messageMap["message"],
-      messageTime: messageMap["messageTime"],
-      imageUrl: messageMap["imageUrl"],
+        receiverId: messageMap["receiverId"],
+        message: messageMap["message"],
+        messageTime: messageMap["messageTime"],
+        imageUrl: messageMap["imageUrl"],
         senderName: messageMap["senderName"],
-        receiverName: messageMap["receiverName"]
-    );
+        receiverName: messageMap["receiverName"]);
 
     var alignment = message.senderId == FirebaseAuth.instance.currentUser!.uid
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    var messageColor =
-    message.senderId == FirebaseAuth.instance.currentUser!.uid
-            ? ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor
-            : Colors.white;
+    var messageColor = message.senderId ==
+            FirebaseAuth.instance.currentUser!.uid
+        ? ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor
+        : Colors.white;
 
     var boxDecoration =
-    message.senderId == FirebaseAuth.instance.currentUser!.uid
+        message.senderId == FirebaseAuth.instance.currentUser!.uid
             ? const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12),

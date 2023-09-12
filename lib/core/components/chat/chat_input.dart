@@ -18,6 +18,7 @@ import '../../constants/horizontal_space.dart';
 import '../ht_icon.dart';
 
 class ChatInputField extends StatefulWidget {
+  final Clinic clinic;
   final String senderName;
   final String receiverName;
   final String receiverId;
@@ -25,6 +26,7 @@ class ChatInputField extends StatefulWidget {
 
   const ChatInputField(
       {super.key,
+      required this.clinic,
       required this.senderName,
       required this.receiverId,
       this.imageFile,
@@ -36,18 +38,13 @@ class ChatInputField extends StatefulWidget {
 
 class _ChatInputFieldState extends State<ChatInputField> {
   final TextEditingController _messageController = TextEditingController();
-  late Clinic clinic;
 
   @override
   void initState() {
     // TODO: implement initState
-    initClinic();
     super.initState();
   }
 
-  void initClinic() async {
-    clinic  = await ClinicRepositoryImpl().getClinic(widget.receiverId);
-  }
   @override
   void dispose() {
     _messageController.dispose();
@@ -139,7 +136,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                         .sendPushNotificationToClinic(
                         widget.senderName,
                         _messageController.text,
-                        clinic,
+                        widget.clinic,
                     );
 
                     _messageController.clear();
