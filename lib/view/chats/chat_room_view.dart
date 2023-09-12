@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,21 +8,25 @@ import 'package:health_tourism/core/components/chat/chat_bubble.dart';
 import 'package:health_tourism/core/components/chat/chat_input.dart';
 import 'package:health_tourism/cubit/message/message_cubit.dart';
 import 'package:health_tourism/cubit/message/message_state.dart';
+import 'package:health_tourism/product/models/message.dart';
 import 'package:health_tourism/product/theme/theme_manager.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
 import '../../core/constants/asset.dart';
-import '../../core/constants/vertical_space.dart';
+import '../../product/models/clinic.dart';
+import '../../product/repoImpl/clinic_repo_impl.dart';
 import '../../product/theme/styles.dart';
 
 class ChatRoomView extends StatefulWidget {
   String receiverId;
   String receiverName;
   String chatRoomId;
+  String senderName;
 
   ChatRoomView({
     super.key,
     required this.receiverId,
+    required this.senderName,
     required this.receiverName,
     required this.chatRoomId,
   });
@@ -33,6 +36,20 @@ class ChatRoomView extends StatefulWidget {
 }
 
 class _ChatRoomViewState extends State<ChatRoomView> {
+  late ChatMessage chatMessage;
+  late Clinic clinic;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initClinic();
+  }
+
+  void initClinic() async {
+    clinic = await ClinicRepositoryImpl().getClinic(widget.receiverId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,9 +64,12 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         leadingWidth: 42,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: HTIcon(iconName: AssetConstants.icons.chevronLeft, onPress: () {
-            context.pop();
-          },),
+          child: HTIcon(
+            iconName: AssetConstants.icons.chevronLeft,
+            onPress: () {
+              context.pop();
+            },
+          ),
         ),
         title: HTText(
           label: widget.receiverName,
@@ -81,7 +101,12 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 },
               ),
             ),
-            ChatInputField(receiverId: widget.receiverId),
+            ChatInputField(
+              clinic: clinic,
+              receiverId: widget.receiverId,
+              receiverName: widget.receiverName,
+              senderName: widget.senderName,
+            ),
           ],
         ),
       ),
@@ -90,7 +115,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   Widget _buildMessageListView(MessageLoaded state) {
     return StreamBuilder(
-      stream: state.messages,
+      stream: state.chatDocument,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -107,29 +132,39 @@ class _ChatRoomViewState extends State<ChatRoomView> {
           );
         }
 
-        return ListView(
-          children: snapshot.data!.docs
-              .map((document) => _buildMessageBubble(document))
-              .toList(),
-        );
+        Map<String, dynamic> data =
+            snapshot.data?.data() as Map<String, dynamic>;
+        final messages = data["messages"];
+        return ListView.builder(
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              return _buildMessageBubble(messages[index]);
+            });
       },
     );
   }
 
-  Widget _buildMessageBubble(DocumentSnapshot snapshot) {
-    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+  Widget _buildMessageBubble(Map<String, dynamic> messageMap) {
+    ChatMessage message = ChatMessage(
+        senderId: messageMap["senderId"],
+        receiverId: messageMap["receiverId"],
+        message: messageMap["message"],
+        messageTime: messageMap["messageTime"],
+        imageUrl: messageMap["imageUrl"],
+        senderName: messageMap["senderName"],
+        receiverName: messageMap["receiverName"]);
 
-    var alignment = data['senderId'] == FirebaseAuth.instance.currentUser!.uid
+    var alignment = message.senderId == FirebaseAuth.instance.currentUser!.uid
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    var messageColor =
-        data['senderId'] == FirebaseAuth.instance.currentUser!.uid
-            ? ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor
-            : Colors.white;
+    var messageColor = message.senderId ==
+            FirebaseAuth.instance.currentUser!.uid
+        ? ThemeManager.instance?.getCurrentTheme.colorTheme.openBlueTextColor
+        : Colors.white;
 
     var boxDecoration =
-        data['senderId'] == FirebaseAuth.instance.currentUser!.uid
+        message.senderId == FirebaseAuth.instance.currentUser!.uid
             ? const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12),
@@ -147,12 +182,13 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 color: Color(0xff1587f8),
               );
 
-    String imageUrl = data['imageUrl'];
-    String message = data['message'];
-    DateTime t = data['messageTime'].toDate();
+    String? imageUrl = message.imageUrl;
+    String text = message.message;
+    DateTime t = message.messageTime.toDate();
     String formattedTime = '${t.hour}:${t.minute}';
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
       child: Container(
         color: Colors.transparent,
         alignment: alignment,
@@ -161,12 +197,10 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               ? CrossAxisAlignment.start
               : CrossAxisAlignment.end,
           children: [
-            HTText(label: data['senderId'], style: htSmallLabelStyle),
-            const VerticalSpace(spaceAmount: 4),
             ChatBubble(
-              message: message,
+              message: text,
               boxDecoration: boxDecoration,
-              imageUrl: imageUrl,
+              imageUrl: imageUrl ?? "",
               time: formattedTime,
               messageColor: messageColor,
             ),

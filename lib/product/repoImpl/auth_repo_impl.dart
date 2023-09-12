@@ -148,11 +148,11 @@ class AuthRepositoryImpl extends AuthRepository {
   void showToastMessage(String message) {
     Fluttertoast.showToast(
         msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 2,
         backgroundColor: const Color(0xFF58A2EB),
         textColor: Colors.white,
-        fontSize: 16.0);
+        fontSize: 25.0);
   }
 }

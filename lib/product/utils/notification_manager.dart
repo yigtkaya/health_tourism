@@ -1,48 +1,43 @@
+import 'dart:io' show Platform;
 import 'package:permission_handler/permission_handler.dart';
+
+import '../../main.dart';
 
 class PermissionsHandler {
 
-  void askAllPermissions() {
-    checkCameraPermission();
-    checkNotificationPermission();
-    checkGalleryPermission();
-  }
-  Future<void> checkNotificationPermission() async {
+  static Future<PermissionStatus> checkNotificationPermission() async {
     final status = await Permission.notification.status;
-    if(status.isDenied) {
+    if (status.isDenied) {
       // Request permission
       await Permission.notification.request();
     }
-    else if (status.isPermanentlyDenied) {
-      showRationaleForPermanentlyDeniedNotification();
+    return status;
+  }
+
+  static Future<PermissionStatus> checkGalleryPermission() async {
+    if (Platform.isIOS) {
+      final status = await Permission.photos.status;
+      if (status.isDenied) {
+        // Request permission
+        await Permission.photos.request();
+      }
+      return status;
+    } else {
+      final status = await Permission.storage.status;
+      if (status.isDenied) {
+        // Request permission
+        await Permission.storage.request();
+      }
+      return status;
     }
   }
 
-  Future<void> checkGalleryPermission() async {
-    final status = await Permission.storage.status;
-    if(status.isDenied) {
-      // Request permission
-      await Permission.camera.request();
-    }
-    else if (status.isPermanentlyDenied) {
-      showRationaleForPermanentlyDeniedStorage();
-    }
-  }
-
-  Future<void> checkCameraPermission() async {
+  static Future<PermissionStatus> checkCameraPermission() async {
     final status = await Permission.camera.status;
-    if(status.isDenied) {
+    if (status.isDenied) {
       // Request permission
       await Permission.camera.request();
     }
-    else if (status.isPermanentlyDenied) {
-      showRationaleForPermanentlyDeniedStorage();
-    }
-  }
-  void showRationaleForPermanentlyDeniedNotification() {
-    // create a function to show a dialog with an explanation and button to open the app settings page
-  }
-  void showRationaleForPermanentlyDeniedStorage (){
-    // create a function to show a dialog with an explanation and button to open the app settings page
+    return status;
   }
 }

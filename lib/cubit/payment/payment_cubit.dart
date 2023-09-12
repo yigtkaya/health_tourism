@@ -48,7 +48,7 @@ class PaymentCubit extends Cubit<PaymentState> {
           address,
           cvc);
 
-      userRepositoryImpl.createAppointment(uid, appointment);
+      userRepositoryImpl.createAppointment(appointment);
 
       if (response["status"] == "failure") {
         emit(
@@ -78,7 +78,7 @@ class PaymentCubit extends Cubit<PaymentState> {
   }
 
   void addAppointmentToFirebase(String uid, Map appointment) {
-      userRepositoryImpl.createAppointment(uid, appointment);
+      userRepositoryImpl.createAppointment(appointment);
   }
 }
 

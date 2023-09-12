@@ -11,7 +11,8 @@ import '../ht_text.dart';
 class AppointmentDetailDialog extends StatelessWidget {
   final Appointment appointment;
   final bool cancellable;
-  const AppointmentDetailDialog({super.key, required this.appointment, required this.cancellable});
+  final bool isPast;
+  const AppointmentDetailDialog({super.key, required this.appointment, required this.cancellable, required this.isPast});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,7 @@ class AppointmentDetailDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0),
                   child: HTText(
-                      label: appointment.date.toString(),
+                      label: "${appointment.date.day}/${appointment.date.month}/${appointment.date.year} ",
                       style: htSmallLabelStyle),
                 ),
                 const VerticalSpace(),
@@ -149,7 +150,7 @@ class AppointmentDetailDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
+                isPast ? const SizedBox.shrink() : Expanded(
                   child: GestureDetector(
                     onTap: () {
                       // reschedule appointment.

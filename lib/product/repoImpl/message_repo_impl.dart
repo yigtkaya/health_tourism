@@ -5,7 +5,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:health_tourism/product/repositories/message_repo.dart';
-import '../models/message.dart';
 import 'package:path/path.dart' as Path;
 
 class MessageRepositoryImpl extends MessageRepository {
@@ -14,54 +13,43 @@ class MessageRepositoryImpl extends MessageRepository {
 
   String listJoiner(String receiverId) {
     List<String> ids = [currentUserId, receiverId];
+    ids.sort();
     String chatRoomId = ids.join('_');
     return chatRoomId;
   }
 
   @override
   Future<void> sendMessage(
-      {required String receiverId, required String message, String? imageUrl}) async {
+      {required String receiverId, required String message, String? imageUrl, required String senderName, required String receiverName}) async {
     try {
-        Message msg = Message(
-          senderId: currentUserId,
-          receiverId: receiverId,
-          message: message,
-          imageUrl: imageUrl ?? '',
-          messageTime: Timestamp.now(),
-        );
-
-        final lastmsg = {
-          "lastMessageTime": msg.messageTime,
-          "message": msg.message,
-          "senderId": msg.senderId
-        };
+         final msg = {
+          "senderId": currentUserId,
+          "receiverId": receiverId,
+          "message": message,
+          "imageUrl": imageUrl ?? '',
+          "messageTime": Timestamp.now(),
+          "senderName": senderName,
+          "receiverName": receiverName,
+         };
 
         final chatRoomId = listJoiner(receiverId);
 
         await _firestore
-            .collection('chatRooms')
-            .doc(chatRoomId)
-            .collection('messages')
-            .add(msg.toMap());
-
-        // update last message
-        await _firestore.collection('chatRooms').doc(chatRoomId).set({
-          "lastMessage": lastmsg,
-          'ids': [currentUserId, receiverId]
+            .collection('chats')
+            .doc(chatRoomId).update({
+          "messages": FieldValue.arrayUnion([msg])
         });
     } catch (e) {
       showToastMessage(message: e.toString());
+      print(e.toString());
     }
   }
 
   @override
-  Stream<QuerySnapshot> getChat({required String chatRoomId}) {
+  Stream<DocumentSnapshot> getChat({required String chatRoomId}) {
     return _firestore
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('messages')
-        .orderBy('messageTime', descending: false)
-        .snapshots();
+        .collection('chats')
+        .doc(chatRoomId).snapshots();
   }
 
   Future<String> uploadImageToFirebase(File file, String chatRoomId) async {
@@ -77,11 +65,6 @@ class MessageRepositoryImpl extends MessageRepository {
 
     print('URL: $fileUrl');
     return fileUrl;
-  }
-
-  @override
-  Future<void> sendImageMessage(File file, String message) async {
-
   }
 
   showToastMessage({required String message}) {

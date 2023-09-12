@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
-
 import '../../product/theme/styles.dart';
-import '../../product/utils/card_utils.dart';
 import '../../product/utils/input_formatters.dart';
-import '../../view/payment/payment_view.dart';
 import '../constants/horizontal_space.dart';
 import '../constants/vertical_space.dart';
 

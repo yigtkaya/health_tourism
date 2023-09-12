@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
+import 'package:health_tourism/product/navigation/router.dart';
+import 'package:health_tourism/product/repoImpl/auth_repo_impl.dart';
+import 'package:health_tourism/product/repoImpl/chat_repo_impl.dart';
+import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:video_player/video_player.dart';
@@ -32,7 +36,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
   int activeIndex = 0;
   final controller = CarouselController();
   List<Package> packages = [];
-
+  final repo = ChatRepositoryImpl();
+  String? uid = "";
   final reviews = [
     ReviewCard(),
     ReviewCard(),
@@ -164,12 +169,22 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   children: [
                     HTText(
                         label:
-                        "${widget.clinic.city}, ${widget.clinic.country}",
+                            "${widget.clinic.city}, ${widget.clinic.country}",
                         style: htBlueLabelStyle),
                     const Spacer(),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        final String senderName = await UserRepositoryImpl().getUserName();
+                        final chatId =
+                            await repo.addChatRoom(widget.clinic.cid, widget.clinic.name, senderName);
+
                         // route to contact create chat room and start chatting
+                        context.pushNamed(RoutePath.chatRoom, queryParameters: {
+                          'receiverId': widget.clinic.cid,
+                          'receiverName': widget.clinic.name,
+                          'chatRoomId': chatId,
+                          "senderName": senderName
+                        });
                       },
                       child: Container(
                         decoration: const BoxDecoration(
@@ -180,14 +195,11 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                               horizontal: 12.0, vertical: 2),
                           child: Row(
                             children: [
-                              HTIcon(
-                                  iconName:
-                                  AssetConstants.icons.chatBubble),
+                              HTIcon(iconName: AssetConstants.icons.chatBubble),
                               const HorizontalSpace(
                                 spaceAmount: 4,
                               ),
-                              HTText(
-                                  label: "Chat", style: htWhiteLabelStyle),
+                              HTText(label: "Chat", style: htWhiteLabelStyle),
                             ],
                           ),
                         ),
@@ -269,8 +281,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   context.push(RoutePath.reviews);
                 },
                 child: SizedBox(
-                  child: HTText(
-                      label: "View All", style: htDarkBlueNormalStyle),
+                  child:
+                      HTText(label: "View All", style: htDarkBlueNormalStyle),
                 ),
               ),
               const HorizontalSpace(),
@@ -328,8 +340,10 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             children: [
               HTText(
                 label: package.packageName,
-                style: htBlueLabelStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600, color: const Color(
-                    0xff58a2eb)),
+                style: htBlueLabelStyle.copyWith(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xff58a2eb)),
               ),
               const VerticalSpace(
                 spaceAmount: 8,
@@ -346,33 +360,33 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
               const VerticalSpace(),
               Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: package.packageFeatures.length,
-                  shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: package.packageFeatures.length,
+                    shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      HTIcon(
-                        iconName: AssetConstants.icons.checkMark,
-                        color: const Color(0xff58a2eb),
-                        width: 14,
-                        height: 14,
-                      ),
-                      const HorizontalSpace(
-                        spaceAmount: 4,
-                      ),
-                      Expanded(
-                        child: Text(
-                            package.packageFeatures[index],
-                          style: htDarkBlueLargeStyle.copyWith(
-                                fontSize: 14, fontWeight: FontWeight.w400
-                            ),),
-                      ),
-                    ],
-                  );
-                }),
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          HTIcon(
+                            iconName: AssetConstants.icons.checkMark,
+                            color: const Color(0xff58a2eb),
+                            width: 14,
+                            height: 14,
+                          ),
+                          const HorizontalSpace(
+                            spaceAmount: 4,
+                          ),
+                          Expanded(
+                            child: Text(
+                              package.packageFeatures[index],
+                              style: htDarkBlueLargeStyle.copyWith(
+                                  fontSize: 14, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
               )
             ],
           ),
@@ -476,21 +490,21 @@ class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
             _customVideoPlayerController = CustomVideoPlayerController(
               context: context,
               customVideoPlayerSettings: const CustomVideoPlayerSettings(
-                customAspectRatio: 4 / 3,
-                showPlayButton: true,
-                autoFadeOutControls: true,
-                durationAfterControlsFadeOut: Duration(milliseconds: 800),
-                settingsButtonAvailable: false,
-                durationRemainingTextStyle:
-                    TextStyle(color: Colors.transparent),
-                enterFullscreenButton: SizedBox.shrink(),
-                controlBarAvailable: true,
-                  customVideoPlayerProgressBarSettings: CustomVideoPlayerProgressBarSettings(
+                  customAspectRatio: 4 / 3,
+                  showPlayButton: true,
+                  autoFadeOutControls: true,
+                  durationAfterControlsFadeOut: Duration(milliseconds: 800),
+                  settingsButtonAvailable: false,
+                  durationRemainingTextStyle:
+                      TextStyle(color: Colors.transparent),
+                  enterFullscreenButton: SizedBox.shrink(),
+                  controlBarAvailable: true,
+                  customVideoPlayerProgressBarSettings:
+                      CustomVideoPlayerProgressBarSettings(
                     bufferedColor: Colors.grey,
                     progressBarHeight: 5,
                     backgroundColor: Colors.grey,
-                  )
-              ),
+                  )),
               videoPlayerController: controller,
             );
           }));

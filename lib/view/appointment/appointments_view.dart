@@ -13,10 +13,13 @@ import '../../core/constants/horizontal_space.dart';
 import '../../cubit/profile/profile_cubit.dart';
 import '../../product/models/appointment.dart';
 import '../../product/models/user.dart';
+import '../../product/navigation/route_paths.dart';
+import '../../product/repoImpl/chat_repo_impl.dart';
+import '../../product/repoImpl/user_ repo_impl.dart';
 import '../../product/theme/styles.dart';
 
 class AppointmentsView extends StatefulWidget {
-  final User user;
+  final IUser user;
   const AppointmentsView({super.key, required this.user});
 
   @override
@@ -27,7 +30,8 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   List pastAppointmentsList = [];
   List upcomingAppointmentsList = [];
   late bool anyAppointment;
-  late User secUser;
+  late IUser secUser;
+  final repo = ChatRepositoryImpl();
 
   @override
   void initState() {
@@ -97,7 +101,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
         }
         Map<String, dynamic> data =
         snapshot.data?.data() as Map<String, dynamic>;
-        secUser = User.fromData(data);
+        secUser = IUser.fromData(data);
         extractAppointments(secUser);
 
         if (upcomingAppointmentsList.isEmpty && pastAppointmentsList.isEmpty) {
@@ -180,7 +184,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
           context: context,
           builder: (BuildContext context) {
             return AppointmentDetailDialog(
-              appointment: appointment, cancellable: cancellable
+              appointment: appointment, cancellable: cancellable, isPast: false,
             );
           },
         );
@@ -267,7 +271,19 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       HTIcon(iconName: AssetConstants.icons.checkMark),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          final String senderName = await UserRepositoryImpl().getUserName();
+                          final chatId =
+                              await repo.addChatRoom(appointment.cid, appointment.clinicName, senderName);
+
+                          // route to contact create chat room and start chatting
+                          context.pushNamed(RoutePath.chatRoom, queryParameters: {
+                            'receiverId': appointment.cid,
+                            'receiverName': appointment.clinicName,
+                            'chatRoomId': chatId,
+                            "senderName": senderName
+                          });
+                        },
                         child: Container(
                           decoration: const BoxDecoration(
                             color: Color(0xFF123258),
@@ -356,7 +372,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                   context: context,
                   builder: (BuildContext context) {
                     return AppointmentDetailDialog(
-                      appointment: appointment, cancellable: false
+                      appointment: appointment, cancellable: false, isPast: true,
                     );
                   },
                 );
@@ -412,7 +428,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
     }
   }
 
-  void extractAppointments(User user) {
+  void extractAppointments(IUser user) {
     upcomingAppointmentsList.clear();
     pastAppointmentsList.clear();
     for (final i in user.appointments) {

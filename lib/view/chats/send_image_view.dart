@@ -1,20 +1,30 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/constants/asset.dart';
+import 'package:health_tourism/core/constants/vertical_space.dart';
+import 'package:health_tourism/product/repoImpl/clinic_repo_impl.dart';
 import 'package:health_tourism/product/repoImpl/message_repo_impl.dart';
+import 'package:health_tourism/product/repoImpl/notification_repo_impl.dart';
 import '../../core/constants/horizontal_space.dart';
 import '../../cubit/message/message_cubit.dart';
+import '../../product/models/clinic.dart';
 
 class SendImageView extends StatefulWidget {
   String imagePath;
   String receiverId;
+  String senderName;
+  String receiverName;
 
-  SendImageView({super.key, required this.imagePath, required this.receiverId});
+  SendImageView(
+      {super.key,
+      required this.imagePath,
+      required this.receiverId,
+      required this.senderName,
+      required this.receiverName});
 
   @override
   State<SendImageView> createState() => _SendImageViewState();
@@ -25,13 +35,19 @@ class _SendImageViewState extends State<SendImageView> {
   final repo = MessageRepositoryImpl();
   late File imageFile;
   late String chatRoomId;
+  late Clinic clinic;
 
   @override
   void initState() {
     imageFile = File(widget.imagePath);
     chatRoomId =
         [FirebaseAuth.instance.currentUser!.uid, widget.receiverId].join("_");
+    initClinic();
     super.initState();
+  }
+
+  void initClinic() async {
+    clinic = await ClinicRepositoryImpl().getClinic(widget.receiverId);
   }
 
   @override
@@ -67,7 +83,7 @@ class _SendImageViewState extends State<SendImageView> {
             ),
           ),
           Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: const BoxDecoration(
                 color: Color(0xff9398a7),
                 borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -97,12 +113,23 @@ class _SendImageViewState extends State<SendImageView> {
                         BlocProvider.of<MessageCubit>(context).sendMessage(
                             widget.receiverId,
                             _messageController.text,
-                            imageUrl);
+                            imageUrl,
+                            widget.senderName,
+                            widget.receiverName);
+
+                        NotificationRepoImpl()
+                            .sendPushNotificationToClinic(
+                            widget.senderName,
+                            _messageController.text,
+                            clinic
+                        );
+                        context.pop();
                       }
                     },
                   ),
                 ],
-              ))
+              )),
+          const VerticalSpace(),
         ],
       )),
     );

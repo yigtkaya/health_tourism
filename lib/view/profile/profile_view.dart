@@ -26,7 +26,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  late User user;
+  late IUser user;
   @override
   void initState() {
     // TODO: implement initState
@@ -64,15 +64,15 @@ class _ProfileViewState extends State<ProfileView> {
                   if (state is ProfileLoadingState) {
                     return Column(
                       children: [
-                        CircleSkeleton(
+                        const CircleSkeleton(
                           size: 100,
                         ),
-                        VerticalSpace(),
+                        const VerticalSpace(),
                         Skeleton(
                           height: 12,
                           width: size.width * 0.5,
                         ),
-                        VerticalSpace(),
+                        const VerticalSpace(),
                         Skeleton(
                           height: 12,
                           width: size.width * 0.5,
@@ -153,15 +153,15 @@ class _ProfileViewState extends State<ProfileView> {
               snapshot.connectionState == ConnectionState.waiting) {
             return Column(
               children: [
-                CircleSkeleton(
+                const CircleSkeleton(
                   size: 100,
                 ),
-                VerticalSpace(),
+                const VerticalSpace(),
                 Skeleton(
                   height: 12,
                   width: size.width * 0.5,
                 ),
-                VerticalSpace(),
+                const VerticalSpace(),
                 Skeleton(
                   height: 12,
                   width: size.width * 0.5,
@@ -172,7 +172,7 @@ class _ProfileViewState extends State<ProfileView> {
           if (snapshot.hasData) {
             Map<String, dynamic> data =
             snapshot.data?.data() as Map<String, dynamic>;
-            user = User.fromData(data);
+            user = IUser.fromData(data);
             return Column(
               children: [
                 Container(
@@ -196,15 +196,15 @@ class _ProfileViewState extends State<ProfileView> {
 
           return Column(
             children: [
-              CircleSkeleton(
+              const CircleSkeleton(
                 size: 100,
               ),
-              VerticalSpace(),
+              const VerticalSpace(),
               Skeleton(
                 height: 12,
                 width: size.width * 0.5,
               ),
-              VerticalSpace(),
+              const VerticalSpace(),
               Skeleton(
                 height: 12,
                 width: size.width * 0.5,

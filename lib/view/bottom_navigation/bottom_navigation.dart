@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:health_tourism/product/repoImpl/notification_repo_impl.dart';
 import 'package:health_tourism/view/bottom_navigation/nav_bar_dot.dart';
 import 'package:health_tourism/view/chats/chats_view.dart';
 import 'package:health_tourism/view/landing/landing_view.dart';
@@ -15,6 +16,8 @@ class HTBottomNav extends StatefulWidget {
 class _HTBottomNavState extends State<HTBottomNav> {
   @override
   Widget build(BuildContext context) {
+    NotificationRepoImpl().initNotifications();
+
     return BlocBuilder<NavbarCubit, NavbarState>(
       builder: (context, state) {
         var cubit = NavbarCubit.get(context);

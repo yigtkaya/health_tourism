@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
 import 'package:health_tourism/core/components/ht_text.dart';
 import 'package:health_tourism/core/constants/asset.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:readmore/readmore.dart';
-
 import '../../product/theme/styles.dart';
 import '../constants/horizontal_space.dart';
 

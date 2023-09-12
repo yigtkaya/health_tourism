@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/dialog/chat_image_dialog.dart';
+import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
@@ -45,7 +46,7 @@ final GoRouter router = GoRouter(
       path: RoutePath.personalInfo,
       name: RoutePath.personalInfo,
       builder: (context, state) {
-        User user = state.extra as User;
+        IUser user = state.extra as IUser;
         return PersonalInfoView(user: user,);
       },
     ),
@@ -60,7 +61,7 @@ final GoRouter router = GoRouter(
       path: RoutePath.appointment,
       name: RoutePath.appointment,
       builder: (context, state) {
-        User user = state.extra as User;
+        IUser user = state.extra as IUser;
         return AppointmentsView(user: user);
       },
     ),
@@ -95,6 +96,8 @@ final GoRouter router = GoRouter(
           child: SendImageView(
             imagePath: state.queryParameters['imageFile'] ?? '',
             receiverId: state.queryParameters['receiverId'] ?? '',
+            senderName: state.queryParameters['senderName'] ?? '',
+            receiverName: state.queryParameters['receiverName'] ?? '',
           ),
         );
       },
@@ -159,6 +162,8 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         return ChatImagePickerDialog(
           receiverId: state.queryParameters['receiverId'] ?? '',
+          senderName: state.queryParameters['senderName'] ?? '',
+          receiverName: state.queryParameters['receiverName'] ?? '',
         );
       },
     ),
@@ -173,6 +178,7 @@ final GoRouter router = GoRouter(
             receiverId: state.queryParameters['receiverId']!,
             chatRoomId: state.queryParameters['chatRoomId']!,
             receiverName: state.queryParameters['receiverName']!,
+            senderName: state.queryParameters['senderName']!,
           ),
         );
       },

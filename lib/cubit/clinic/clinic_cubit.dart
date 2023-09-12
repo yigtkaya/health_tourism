@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:health_tourism/cubit/clinic/clinic_cubit_state.dart';
 import 'package:health_tourism/product/repoImpl/clinic_repo_impl.dart';
-
 import '../../product/models/clinic.dart';
 
 class ClinicCubit extends Cubit<ClinicState> {
@@ -9,13 +8,16 @@ class ClinicCubit extends Cubit<ClinicState> {
   late var clinicList = List<Clinic>;
 
   ClinicCubit() : super(const ClinicInitState()) {
-    getClinics();
+    getClinics(false, 0.0, 5.0, "");
   }
 
-  void getClinics() {
+  void getClinics(bool isDescending, double min, double max, String city) {
     emit(const ClinicLoadingState());
-    Future.value(_clinicRepositoryImpl.getAllClinics())
-        .then((value) => emit(ClinicsLoaded2(value)))
-        .onError((error, stackTrace) => emit(ClinicsError(error.toString())));
+    Future.value(_clinicRepositoryImpl.getAllClinics(isDescending, min, max, city))
+        .then((value) {
+      emit(ClinicsLoaded(value));
+    }).onError((error, stackTrace) {
+      emit(ClinicsError(error.toString()));
+    });
   }
 }
