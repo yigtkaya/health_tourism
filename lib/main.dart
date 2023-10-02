@@ -16,7 +16,7 @@ import 'cubit/bottom_navigation/bottom_navigation_cubit.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FlutterNotificationChannel.registerNotificationChannel (
+  await FlutterNotificationChannel.registerNotificationChannel(
       description: 'For showing message notification',
       id: 'chats',
       importance: NotificationImportance.IMPORTANCE_HIGH,
@@ -25,8 +25,7 @@ Future<void> main() async {
       allowBubbles: true,
       enableSound: true,
       enableVibration: true,
-      showBadge: true
-  );
+      showBadge: true);
   runApp(const MyApp());
 }
 
@@ -35,7 +34,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [ SystemUiOverlay.top ]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top]);
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
