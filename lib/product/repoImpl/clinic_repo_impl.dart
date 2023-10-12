@@ -27,7 +27,6 @@ class ClinicRepositoryImpl extends ClinicRepo {
       }
     } else {
       searchKey = capitalize(searchKey);
-
       return clinics
             .orderBy("name", descending: isDescending)
             .startAt([searchKey])

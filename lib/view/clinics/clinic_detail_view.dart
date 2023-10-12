@@ -109,8 +109,8 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                   left: 32,
                   child: HTIcon(
                     iconName: AssetConstants.icons.chevronLeft,
-                    width: 32,
-                    height: 32,
+                    width: 24,
+                    height: 24,
                     color: const Color(0xff123258),
                     onPress: () {
                       context.pop();
