@@ -1,8 +1,10 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_tourism/core/components/ht_checkbox.dart';
 import 'package:health_tourism/core/components/textfields/ht_password_field.dart';
@@ -11,10 +13,12 @@ import 'package:health_tourism/core/components/textfields/ht_email_field.dart';
 import 'package:health_tourism/core/constants/horizontal_space.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
+import 'package:health_tourism/main.dart';
 import 'package:health_tourism/product/theme/theme_manager.dart';
 import 'package:health_tourism/product/utils/notification_manager.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../core/components/dialog/permission_dialog.dart';
+import '../../cubit/auth/auth_exception_handler.dart';
 import '../../product/navigation/route_paths.dart';
 import '../../product/navigation/router.dart';
 import '../../core/components/ht_icon.dart';
@@ -34,12 +38,13 @@ class _LoginViewState extends State<LoginView> {
   bool isChecked = false;
   String email = '';
   String password = '';
-
+  FToast fToast = FToast();
   final authCubit = AuthCubit();
 
   @override
   void initState() {
     super.initState();
+    fToast.init(context);
   }
 
   @override
@@ -169,6 +174,30 @@ class _LoginViewState extends State<LoginView> {
         ),
       )),
     );
+  }
+
+  _showToast(String message) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.0),
+        color: Colors.blueAccent,
+      ),
+      child: Text(message),
+    );
+
+    // Custom Toast Position
+    fToast.showToast(
+        child: toast,
+        toastDuration: const Duration(seconds: 2),
+        positionedToastBuilder: (context, child) {
+          return Positioned(
+            bottom: 50,
+            left: 0,
+            right: 0,
+            child: child,
+          );
+        });
   }
 }
 

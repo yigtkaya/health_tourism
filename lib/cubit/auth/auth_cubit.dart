@@ -10,7 +10,6 @@ import 'AuthState.dart';
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepositoryImpl _authRepository = AuthRepositoryImpl();
   final firebaseAuth = FirebaseAuth.instance;
-
   AuthCubit() : super(const AuthInitial());
 
   @override
