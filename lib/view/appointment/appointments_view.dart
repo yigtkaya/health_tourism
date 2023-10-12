@@ -60,8 +60,8 @@ class _AppointmentsViewState extends State<AppointmentsView> {
             onPress: () {
               context.pop();
             },
-            width: 24,
-            height: 24,
+            width: 32,
+            height: 32,
           ),
         ),
         title: HTText(

@@ -223,8 +223,8 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               HTIcon(
                 iconName: iconName,
-                width: 24,
-                height: 24,
+                width: 32,
+                height: 32,
                 color: const Color(0xff123258),
               ),
               const HorizontalSpace(spaceAmount: 16),
