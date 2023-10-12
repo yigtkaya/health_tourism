@@ -222,7 +222,7 @@ class _FilterDialogState extends State<FilterDialog> {
                   GestureDetector(
                     onTap: () {
                       context.read<ClinicCubit>().getClinics(
-                          false, values.start, values.end, controller.text);
+                          false, values.start, values.end, controller.text, "");
                       context.pop({
                         'min': values.start,
                         'max': values.end,

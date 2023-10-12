@@ -38,13 +38,11 @@ class _LoginViewState extends State<LoginView> {
   bool isChecked = false;
   String email = '';
   String password = '';
-  FToast fToast = FToast();
   final authCubit = AuthCubit();
 
   @override
   void initState() {
     super.initState();
-    fToast.init(context);
   }
 
   @override
@@ -174,30 +172,6 @@ class _LoginViewState extends State<LoginView> {
         ),
       )),
     );
-  }
-
-  _showToast(String message) {
-    Widget toast = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.0),
-        color: Colors.blueAccent,
-      ),
-      child: Text(message),
-    );
-
-    // Custom Toast Position
-    fToast.showToast(
-        child: toast,
-        toastDuration: const Duration(seconds: 2),
-        positionedToastBuilder: (context, child) {
-          return Positioned(
-            bottom: 50,
-            left: 0,
-            right: 0,
-            child: child,
-          );
-        });
   }
 }
 

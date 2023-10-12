@@ -83,6 +83,9 @@ class _LandingViewState extends State<LandingView> {
                     children: [
                       HTIcon(
                           iconName: AssetConstants.icons.search,
+                          onPress: () {
+                            BlocProvider.of<ClinicCubit>(context).getClinics(isDescending, min, max, city, searchController.text);
+                          },
                           width: 24,
                           height: 24),
                       const HorizontalSpace(),
@@ -156,7 +159,7 @@ class _LandingViewState extends State<LandingView> {
                       });
                       context
                           .read<ClinicCubit>()
-                          .getClinics(isDescending, min, max, city);
+                          .getClinics(isDescending, min, max, city, "");
                     },
                     child: Container(
                       decoration: BoxDecoration(

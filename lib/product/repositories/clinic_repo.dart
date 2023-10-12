@@ -4,7 +4,7 @@ import '../models/clinic.dart';
 
 abstract class ClinicRepo {
 
-  Stream<QuerySnapshot> getAllClinics(bool isDescending, double min, double max, String city);
+  Stream<QuerySnapshot> getAllClinics(bool isDescending, double min, double max, String city, String searchKey);
   Future<Clinic> getClinic(String cid) async {
     throw Exception();
   }

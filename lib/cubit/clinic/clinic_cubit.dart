@@ -8,12 +8,12 @@ class ClinicCubit extends Cubit<ClinicState> {
   late var clinicList = List<Clinic>;
 
   ClinicCubit() : super(const ClinicInitState()) {
-    getClinics(false, 0.0, 5.0, "");
+    getClinics(false, 0.0, 5.0, "", "");
   }
 
-  void getClinics(bool isDescending, double min, double max, String city) {
+  void getClinics(bool isDescending, double min, double max, String city, String searchKey) {
     emit(const ClinicLoadingState());
-    Future.value(_clinicRepositoryImpl.getAllClinics(isDescending, min, max, city))
+    Future.value(_clinicRepositoryImpl.getAllClinics(isDescending, min, max, city, searchKey))
         .then((value) {
       emit(ClinicsLoaded(value));
     }).onError((error, stackTrace) {
