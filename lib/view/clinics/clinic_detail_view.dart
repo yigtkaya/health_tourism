@@ -1,18 +1,13 @@
-import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
-import 'package:health_tourism/product/navigation/router.dart';
-import 'package:health_tourism/product/repoImpl/auth_repo_impl.dart';
 import 'package:health_tourism/product/repoImpl/chat_repo_impl.dart';
 import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:video_player/video_player.dart';
 import '../../core/components/dialog/package_detail_dialog.dart';
 import '../../core/components/ht_icon.dart';
 import '../../core/components/ht_text.dart';
@@ -424,17 +419,6 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
       );
 
   Widget buildImage(String urlImage, int index, BuildContext context) {
-    if (urlImage.contains(".mp4")) {
-      return SafeArea(
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(22),
-            bottomLeft: Radius.circular(22),
-          ),
-          child: VideoPlayerDemo(url: urlImage, corousel: controller),
-        ),
-      );
-    }
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         bottomRight: Radius.circular(22),
@@ -448,96 +432,5 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
           },
           child: Image.network(urlImage, fit: BoxFit.cover)),
     );
-  }
-}
-
-class VideoPlayerDemo extends StatefulWidget {
-  final String url;
-  final CarouselController corousel;
-
-  const VideoPlayerDemo({super.key, required this.url, required this.corousel});
-
-  @override
-  State<VideoPlayerDemo> createState() => _VideoPlayerDemoState();
-}
-
-class _VideoPlayerDemoState extends State<VideoPlayerDemo> {
-  late VideoPlayerController controller;
-  late CustomVideoPlayerController _customVideoPlayerController;
-  late ChewieController _chewieController;
-  bool isVideoPlaying = false;
-  // crete a decider function or widget to show loading indicator or play button
-  Widget overlay(bool isInitialized) {
-    if (!isInitialized) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    return const Center(
-      child: Icon(
-        Icons.play_arrow,
-        color: Colors.white,
-        size: 50,
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    controller = VideoPlayerController.networkUrl(Uri.parse(widget.url))
-      ..initialize().then((value) => setState(() {
-            _customVideoPlayerController = CustomVideoPlayerController(
-              context: context,
-              customVideoPlayerSettings: const CustomVideoPlayerSettings(
-                  customAspectRatio: 4 / 3,
-                  showPlayButton: true,
-                  autoFadeOutControls: true,
-                  durationAfterControlsFadeOut: Duration(milliseconds: 800),
-                  settingsButtonAvailable: false,
-                  durationRemainingTextStyle:
-                      TextStyle(color: Colors.transparent),
-                  enterFullscreenButton: SizedBox.shrink(),
-                  controlBarAvailable: true,
-                  customVideoPlayerProgressBarSettings:
-                      CustomVideoPlayerProgressBarSettings(
-                    bufferedColor: Colors.grey,
-                    progressBarHeight: 5,
-                    backgroundColor: Colors.grey,
-                  )),
-              videoPlayerController: controller,
-            );
-          }));
-
-    listener();
-  }
-
-  void listener() {
-    controller.addListener(() {
-      if (controller.value.position ==
-          const Duration(seconds: 0, minutes: 0, hours: 0)) {
-        print('video Started');
-      }
-
-      if (!controller.value.isPlaying &&
-          controller.value.isInitialized &&
-          (controller.value.duration == controller.value.position)) {
-        print('video Ended');
-        widget.corousel.nextPage();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    _customVideoPlayerController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomVideoPlayer(
-        customVideoPlayerController: _customVideoPlayerController);
   }
 }
