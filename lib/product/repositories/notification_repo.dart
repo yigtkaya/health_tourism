@@ -1,9 +1,8 @@
-import '../models/clinic.dart';
 
 abstract class NotificationRepository {
   Future<void> initNotifications() async {}
 
   Future<void> sendPushNotificationToClinic(
-      String name, String message, Clinic clinic) async {}
+      String name, String message, String cid) async {}
 }
 //

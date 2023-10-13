@@ -34,7 +34,7 @@ class NotificationRepoImpl extends NotificationRepository {
 
   @override
   Future<void> sendPushNotificationToClinic(
-      String name, String message, Clinic clinic) async {
+      String name, String message, String cid) async {
     try {
       final body = {
         "to":
@@ -45,7 +45,7 @@ class NotificationRepoImpl extends NotificationRepository {
           "android_channel_id": "chats"
         },
         "data" : {
-          "some_data": "Clinic ID: ${clinic.cid}",
+          "some_data": "Clinic ID: $cid",
         }
       };
 

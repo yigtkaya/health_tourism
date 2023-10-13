@@ -37,17 +37,11 @@ class ChatRoomView extends StatefulWidget {
 
 class _ChatRoomViewState extends State<ChatRoomView> {
   late ChatMessage chatMessage;
-  late Clinic clinic;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    initClinic();
-  }
-
-  void initClinic() async {
-    clinic = await ClinicRepositoryImpl().getClinic(widget.receiverId);
   }
 
   @override
@@ -102,7 +96,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               ),
             ),
             ChatInputField(
-              clinic: clinic,
               receiverId: widget.receiverId,
               receiverName: widget.receiverName,
               senderName: widget.senderName,

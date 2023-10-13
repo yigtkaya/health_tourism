@@ -42,12 +42,7 @@ class _SendImageViewState extends State<SendImageView> {
     imageFile = File(widget.imagePath);
     chatRoomId =
         [FirebaseAuth.instance.currentUser!.uid, widget.receiverId].join("_");
-    initClinic();
     super.initState();
-  }
-
-  void initClinic() async {
-    clinic = await ClinicRepositoryImpl().getClinic(widget.receiverId);
   }
 
   @override
@@ -83,52 +78,51 @@ class _SendImageViewState extends State<SendImageView> {
             ),
           ),
           Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: const BoxDecoration(
-                color: Color(0xff9398a7),
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _messageController,
-                      decoration: const InputDecoration(
-                        hintText: "Type a message",
-                        border: InputBorder.none,
-                      ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: const BoxDecoration(
+              color: Color(0xff9398a7),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: const InputDecoration(
+                      hintText: "Type a message",
+                      border: InputBorder.none,
                     ),
                   ),
-                  const HorizontalSpace(spaceAmount: 8),
-                  HTIcon(
-                    iconName: AssetConstants.icons.sendIcon,
-                    width: 24,
-                    height: 24,
-                    color: Colors.black,
-                    onPress: () async {
-                      String imageUrl = await repo.uploadImageToFirebase(
-                          imageFile, chatRoomId);
+                ),
+                const HorizontalSpace(spaceAmount: 8),
+                HTIcon(
+                  iconName: AssetConstants.icons.sendIcon,
+                  width: 24,
+                  height: 24,
+                  color: Colors.black,
+                  onPress: () async {
+                    String imageUrl =
+                        await repo.uploadImageToFirebase(imageFile, chatRoomId);
 
-                      if (mounted) {
-                        BlocProvider.of<MessageCubit>(context).sendMessage(
-                            widget.receiverId,
-                            _messageController.text,
-                            imageUrl,
-                            widget.senderName,
-                            widget.receiverName);
+                    if (mounted) {
+                      BlocProvider.of<MessageCubit>(context).sendMessage(
+                          widget.receiverId,
+                          _messageController.text,
+                          imageUrl,
+                          widget.senderName,
+                          widget.receiverName);
 
-                        NotificationRepoImpl()
-                            .sendPushNotificationToClinic(
-                            widget.senderName,
-                            _messageController.text,
-                            clinic
-                        );
-                        context.pop();
-                      }
-                    },
-                  ),
-                ],
-              )),
+                      NotificationRepoImpl().sendPushNotificationToClinic(
+                          widget.senderName,
+                          _messageController.text,
+                          widget.receiverId);
+                      context.pop();
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
           const VerticalSpace(),
         ],
       )),
