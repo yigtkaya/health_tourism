@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/dialog/chat_image_dialog.dart';
-import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
 import 'package:health_tourism/view/bottom_navigation/bottom_navigation.dart';
@@ -45,24 +44,26 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePath.personalInfo,
       name: RoutePath.personalInfo,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         IUser user = state.extra as IUser;
-        return PersonalInfoView(user: user,);
-      },
-    ),
-    GoRoute(
-      path: RoutePath.help,
-      name: RoutePath.help,
-      builder: (context, state) {
-        return const HelpView();
+        return buildPageWithSlideTransition<void>(
+          context: context,
+          state: state,
+          child: PersonalInfoView(
+            user: user,
+          ),
+        );
       },
     ),
     GoRoute(
       path: RoutePath.appointment,
       name: RoutePath.appointment,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         IUser user = state.extra as IUser;
-        return AppointmentsView(user: user);
+        return buildPageWithSlideTransition<void>(
+            context: context,
+            state: state,
+            child: AppointmentsView(user: user));
       },
     ),
     GoRoute(
@@ -75,29 +76,40 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePath.clinicDetail,
       name: RoutePath.clinicDetail,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         Clinic clinic = state.extra as Clinic;
-        return ClinicDetailView(clinic: clinic);
+        return buildPageWithSlideTransition<void>(
+            context: context,
+            state: state,
+            child: ClinicDetailView(clinic: clinic));
       },
     ),
     GoRoute(
       path: RoutePath.reviews,
       name: RoutePath.reviews,
-      builder: (context, state) {
-        return const ReviewsView();
+      pageBuilder: (context, state) {
+        return buildPageWithSlideTransition<void>(
+          context: context,
+          state: state,
+          child: const ReviewsView(),
+        );
       },
     ),
     GoRoute(
       path: RoutePath.sendImage,
       name: RoutePath.sendImage,
-      builder: (context, state) {
-        return BlocProvider(
-          create: (context) => MessageCubit(),
-          child: SendImageView(
-            imagePath: state.queryParameters['imageFile'] ?? '',
-            receiverId: state.queryParameters['receiverId'] ?? '',
-            senderName: state.queryParameters['senderName'] ?? '',
-            receiverName: state.queryParameters['receiverName'] ?? '',
+      pageBuilder: (context, state) {
+        return buildPageWithSlideTransition<void>(
+          context: context,
+          state: state,
+          child: BlocProvider(
+            create: (context) => MessageCubit(),
+            child: SendImageView(
+              imagePath: state.queryParameters['imageFile'] ?? '',
+              receiverId: state.queryParameters['receiverId'] ?? '',
+              senderName: state.queryParameters['senderName'] ?? '',
+              receiverName: state.queryParameters['receiverName'] ?? '',
+            ),
           ),
         );
       },
@@ -140,20 +152,31 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
         path: RoutePath.forgotPassword,
-        builder: (context, state) {
-          return const ForgotPasswordView();
-        }),
+      pageBuilder: (context, state) {
+        return buildPageWithSlideTransition<void>(
+          context: context,
+          state: state,
+          child: const ForgotPasswordView(),
+        );
+      },
+    ),
     GoRoute(
       path: RoutePath.payment,
       name: RoutePath.payment,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         Clinic clinic = state.extra as Clinic;
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => PackageCubit(),),
-            BlocProvider(create: (context) => PaymentCubit(),),
-          ],
-            child: PaymentView(clinic: clinic));
+        return buildPageWithSlideTransition<void>(
+          context: context,
+          state: state,
+          child: MultiBlocProvider(providers: [
+            BlocProvider(
+              create: (context) => PackageCubit(),
+            ),
+            BlocProvider(
+              create: (context) => PaymentCubit(),
+            ),
+          ], child: PaymentView(clinic: clinic)),
+        );
       },
     ),
     GoRoute(
@@ -170,19 +193,28 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePath.chatRoom,
       name: RoutePath.chatRoom,
-      builder: (context, state) {
-        return BlocProvider(
-          create: (context) => MessageCubit()
-            ..getChat(chatRoomId: state.queryParameters['chatRoomId']!),
-          child: ChatRoomView(
-            receiverId: state.queryParameters['receiverId']!,
-            chatRoomId: state.queryParameters['chatRoomId']!,
-            receiverName: state.queryParameters['receiverName']!,
-            senderName: state.queryParameters['senderName']!,
+      pageBuilder: (context, state) {
+        return buildPageWithSlideTransition<void>(
+          context: context,
+          state: state,
+          child: BlocProvider(
+            create: (context) => MessageCubit()
+              ..getChat(chatRoomId: state.queryParameters['chatRoomId']!),
+            child: ChatRoomView(
+              receiverId: state.queryParameters['receiverId']!,
+              chatRoomId: state.queryParameters['chatRoomId']!,
+              receiverName: state.queryParameters['receiverName']!,
+              senderName: state.queryParameters['senderName']!,
+            ),
           ),
         );
       },
     ),
+    GoRoute(
+        path: RoutePath.help,
+        name: RoutePath.help,
+        pageBuilder: (context, state) => buildPageWithSlideTransition<void>(
+            context: context, state: state, child: const HelpView())),
   ],
 );
 
@@ -204,6 +236,25 @@ void goBack() {
   router.pop();
 }
 
+CustomTransitionPage buildPageWithSlideTransition<T>({
+  required BuildContext context,
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage<T>(
+      key: state.pageKey,
+      child: child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.ease));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      });
+}
 
 CustomTransitionPage buildPageWithDefaultTransition<T>({
   required BuildContext context,
