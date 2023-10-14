@@ -35,6 +35,7 @@ class _SendImageViewState extends State<SendImageView> {
   late File imageFile;
   late String chatRoomId;
   late Clinic clinic;
+  bool singleTap = true;
 
   @override
   void initState() {
@@ -104,23 +105,28 @@ class _SendImageViewState extends State<SendImageView> {
                     height: 32,
                     color: Colors.black,
                     onPress: () async {
-                      String imageUrl =
+                      if (singleTap) {
+                          String imageUrl =
                           await repo.uploadImageToFirebase(imageFile, chatRoomId);
+                          if (mounted) {
+                            BlocProvider.of<MessageCubit>(context).sendMessage(
+                                widget.receiverId,
+                                _messageController.text,
+                                imageUrl,
+                                widget.senderName,
+                                widget.receiverName);
 
-                      if (mounted) {
-                        BlocProvider.of<MessageCubit>(context).sendMessage(
-                            widget.receiverId,
-                            _messageController.text,
-                            imageUrl,
-                            widget.senderName,
-                            widget.receiverName);
 
-                        NotificationRepoImpl().sendPushNotificationToClinic(
-                            widget.senderName,
-                            _messageController.text,
-                            widget.receiverId);
-                        context.pop();
+                            NotificationRepoImpl().sendPushNotificationToClinic(
+                                widget.senderName,
+                                _messageController.text,
+                                widget.receiverId);
+                          }
                       }
+                      setState(() {
+                        singleTap = false; // update bool
+                      });
+                      context.pop();
                     },
                   ),
                 ),
