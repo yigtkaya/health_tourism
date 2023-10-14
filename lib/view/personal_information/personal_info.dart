@@ -99,7 +99,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               ),
             ),
           ],
-          leadingWidth: 42,
+          leadingWidth: 46,
           leading: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: HTIcon(
@@ -107,8 +107,6 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               onPress: () {
                 context.pop();
               },
-              width: 24,
-              height: 24,
             ),
           ),
         ),
@@ -405,23 +403,22 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           return Center(
             child: Stack(
               children: [
-                Container(
+                SizedBox(
                   width: size.width * 0.35,
                   height: size.width * 0.35,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: forImg.profilePhoto,
-                    imageBuilder: (context, imageProvider) => Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl: forImg.profilePhoto,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
+                      errorWidget: (context, url, error) => const Text("Unable to load this image"),
                     ),
-                    errorWidget: (context, url, error) => const Text("Unable to load this image"),
                   ),
                 ),
                 Positioned(

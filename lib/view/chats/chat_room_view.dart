@@ -55,7 +55,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         backgroundColor: const Color(0xff2D9CDB),
         elevation: 0,
         centerTitle: true,
-        leadingWidth: 42,
+        leadingWidth: 46,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: HTIcon(

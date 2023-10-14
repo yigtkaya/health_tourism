@@ -52,19 +52,21 @@ class _SendImageViewState extends State<SendImageView> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, top: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                HTIcon(
+                  iconName: AssetConstants.icons.chevronLeft,
+                  onPress: () {
+                    context.pop();
+                  },
+                  height: 28,
+                  width: 28,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Expanded(
             child: Container(
@@ -77,7 +79,7 @@ class _SendImageViewState extends State<SendImageView> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
             decoration: const BoxDecoration(
               color: Color(0xff9398a7),
               borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -94,30 +96,33 @@ class _SendImageViewState extends State<SendImageView> {
                   ),
                 ),
                 const HorizontalSpace(spaceAmount: 8),
-                HTIcon(
-                  iconName: AssetConstants.icons.sendIcon,
-                  width: 24,
-                  height: 24,
-                  color: Colors.black,
-                  onPress: () async {
-                    String imageUrl =
-                        await repo.uploadImageToFirebase(imageFile, chatRoomId);
+                Padding(
+                  padding: const EdgeInsets.only(right: 4.0),
+                  child: HTIcon(
+                    iconName: AssetConstants.icons.sendIcon,
+                    width: 32,
+                    height: 32,
+                    color: Colors.black,
+                    onPress: () async {
+                      String imageUrl =
+                          await repo.uploadImageToFirebase(imageFile, chatRoomId);
 
-                    if (mounted) {
-                      BlocProvider.of<MessageCubit>(context).sendMessage(
-                          widget.receiverId,
-                          _messageController.text,
-                          imageUrl,
-                          widget.senderName,
-                          widget.receiverName);
+                      if (mounted) {
+                        BlocProvider.of<MessageCubit>(context).sendMessage(
+                            widget.receiverId,
+                            _messageController.text,
+                            imageUrl,
+                            widget.senderName,
+                            widget.receiverName);
 
-                      NotificationRepoImpl().sendPushNotificationToClinic(
-                          widget.senderName,
-                          _messageController.text,
-                          widget.receiverId);
-                      context.pop();
-                    }
-                  },
+                        NotificationRepoImpl().sendPushNotificationToClinic(
+                            widget.senderName,
+                            _messageController.text,
+                            widget.receiverId);
+                        context.pop();
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

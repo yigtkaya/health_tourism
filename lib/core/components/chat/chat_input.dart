@@ -116,13 +116,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                child: HTIcon(
-                  iconName: AssetConstants.icons.sendIcon,
-                  width: 26,
-                  height: 26,
-                  color: ThemeManager
-                      .instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
-                  onPress: () {
+                child: GestureDetector(
+                  onTap: () {
                     context.read<MessageCubit>().sendMessage(
                         widget.receiverId,
                         _messageController.text,
@@ -132,12 +127,19 @@ class _ChatInputFieldState extends State<ChatInputField> {
 
                     NotificationRepoImpl()
                         .sendPushNotificationToClinic(
-                        widget.senderName,
-                        _messageController.text,
-                        widget.receiverId,
+                      widget.senderName,
+                      _messageController.text,
+                      widget.receiverId,
                     );
                     _messageController.clear();
                   },
+                  child: HTIcon(
+                    iconName: AssetConstants.icons.sendIcon,
+                    width: 26,
+                    height: 26,
+                    color: ThemeManager
+                        .instance?.getCurrentTheme.colorTheme.darkBlueTextColor,
+                  ),
                 ),
               )
             ],

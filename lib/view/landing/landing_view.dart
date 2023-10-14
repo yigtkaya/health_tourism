@@ -78,9 +78,20 @@ class _LandingViewState extends State<LandingView> {
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                      const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
                   child: Row(
                     children: [
+                      Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: "Search by Name",
+                          hintStyle: htHintTextStyle,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                      const HorizontalSpace(),
                       HTIcon(
                           iconName: AssetConstants.icons.search,
                           onPress: () {
@@ -88,17 +99,6 @@ class _LandingViewState extends State<LandingView> {
                           },
                           width: 24,
                           height: 24),
-                      const HorizontalSpace(),
-                      Expanded(
-                        child: TextField(
-                          controller: searchController,
-                          decoration: InputDecoration(
-                            hintText: "Search by Name",
-                            hintStyle: htHintTextStyle,
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
