@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../../main.dart';
 
 class PermissionsHandler {
 
@@ -23,12 +22,25 @@ class PermissionsHandler {
       }
       return status;
     } else {
-      final status = await Permission.storage.status;
-      if (status.isDenied) {
-        // Request permission
-        await Permission.storage.request();
+      final deviceInfo = DeviceInfoPlugin();
+      final androidDeviceInfo = await deviceInfo.androidInfo;
+      if (androidDeviceInfo.version.sdkInt >= 33) {
+        final photoStatus = await Permission.photos.status;
+        if(photoStatus.isGranted) {
+            return photoStatus;
+        } else {
+          await Permission.photos.request();
+
+          return photoStatus;
+        }
+      } else {
+        final status = await Permission.storage.status;
+        if (status.isDenied) {
+          // Request permission
+          await Permission.storage.request();
+        }
+        return status;
       }
-      return status;
     }
   }
 
