@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -169,9 +170,10 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                     const Spacer(),
                     GestureDetector(
                       onTap: () async {
-                        final String senderName = await UserRepositoryImpl().getUserName();
-                        final chatId =
-                            await repo.addChatRoom(widget.clinic.cid, widget.clinic.name, senderName);
+                        final String senderName =
+                            await UserRepositoryImpl().getUserName();
+                        final chatId = await repo.addChatRoom(
+                            widget.clinic.cid, widget.clinic.name, senderName);
 
                         // route to contact create chat room and start chatting
                         context.pushNamed(RoutePath.chatRoom, queryParameters: {
@@ -396,12 +398,24 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
             "imageUrl": url,
           });
         },
-        child: Container(
+        child: SizedBox(
           height: size.height * 0.12,
           width: size.width * 0.28,
-          decoration: BoxDecoration(
+          child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
-            image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+            child: CachedNetworkImage(
+              imageUrl: url,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              errorWidget: (context, url, error) =>
+                  const Center(child: Text("Unable to load this image")),
+            ),
           ),
         ),
       );
@@ -425,12 +439,25 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
         bottomLeft: Radius.circular(22),
       ),
       child: GestureDetector(
-          onTap: () {
-            context.pushNamed(RoutePath.fullscreenImage, queryParameters: {
-              "imageUrl": urlImage,
-            });
-          },
-          child: Image.network(urlImage, fit: BoxFit.cover)),
+        onTap: () {
+          context.pushNamed(RoutePath.fullscreenImage, queryParameters: {
+            "imageUrl": urlImage,
+          });
+        },
+        child: CachedNetworkImage(
+          imageUrl: urlImage,
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          errorWidget: (context, url, error) =>
+              const Center(child: Text("Unable to load this image")),
+        ),
+      ),
     );
   }
 }

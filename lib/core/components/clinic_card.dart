@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/components/ht_icon.dart';
@@ -54,11 +55,20 @@ class _ClinicCardState extends State<ClinicCard> {
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12),
                       ),
-                      child: Image.network(
-                        widget.clinic.profilePicture,
-                        width: size.width * 1,
-                        height: size.height * 0.22,
-                        fit: BoxFit.cover,
+                      child: CachedNetworkImage(
+                        imageUrl: widget.clinic.profilePicture,
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: size.width * 1,
+                          height: size.height * 0.22,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Text("Unable to load this image"),
                       ),
                     ),
                     Padding(

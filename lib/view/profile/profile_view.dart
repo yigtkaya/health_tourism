@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -178,13 +179,23 @@ class _ProfileViewState extends State<ProfileView> {
                 Container(
                   height: size.height * 0.16,
                   width: size.height * 0.16,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(user.profilePhoto),
-                      fit: BoxFit.cover,
-                    ),
                   ),
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: user.profilePhoto,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => const Text("Unable to load this image"),
+                      ),
+                    ),
                 ),
                 const VerticalSpace(),
                 HTText(

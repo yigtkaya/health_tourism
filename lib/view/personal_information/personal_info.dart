@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -407,12 +408,20 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 Container(
                   width: size.width * 0.35,
                   height: size.width * 0.35,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(forImg.profilePhoto),
-                      fit: BoxFit.cover,
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: forImg.profilePhoto,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
+                    errorWidget: (context, url, error) => const Text("Unable to load this image"),
                   ),
                 ),
                 Positioned(

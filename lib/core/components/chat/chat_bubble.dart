@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/product/navigation/route_paths.dart';
@@ -63,26 +64,39 @@ class _ChatBubbleState extends State<ChatBubble> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.imageUrl,
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                          child: Image.network(
-                            widget.imageUrl,
-                            fit: BoxFit.cover,
-                          )),
+                          errorWidget: (context, url, error) =>
+                              const SizedBox.shrink(),
+                        ),
+                      ),
                     ),
                   ),
                 )
               : const SizedBox.shrink(),
-          widget.message == "" ? const SizedBox.shrink() : Padding(
-            padding: const EdgeInsets.only(top: 6,  bottom: 6, left: 6, right: 6),
-            child: HTText(
-              label: widget.message,
-              color: widget.messageColor,
-              style: htDarkBlueBoldLargeStyle.copyWith(fontSize: 16),
-            ),
-          ),
+          widget.message == ""
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.only(
+                      top: 6, bottom: 6, left: 6, right: 6),
+                  child: HTText(
+                    label: widget.message,
+                    color: widget.messageColor,
+                    style: htDarkBlueBoldLargeStyle.copyWith(fontSize: 16),
+                  ),
+                ),
         ],
       ),
     );

@@ -58,8 +58,8 @@ dependencies:
   #auth
   flutter_facebook_auth: ^6.0.0
   google_sign_in:
-  twitter_login:
 
+  cached_network_image:
   google_fonts:
   email_validator:
   flutter_pw_validator:

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -137,7 +138,6 @@ class _ChatsViewState extends State<ChatsView> {
                 }
               }
 
-
               DateTime t = lastMessage?['messageTime'].toDate();
               // check if the message is sent today or yesterday or before
               String formattedDate = context.read<ChatCubit>().formatDate(t);
@@ -187,15 +187,21 @@ class _ChatsViewState extends State<ChatsView> {
         children: [
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: 46,
                 height: 46,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg"),
-                    fit: BoxFit.cover,
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: "https://image.shutterstock.com/image-photo/hospital-interior-operating-surgery-table-260nw-1407429638.jpg",
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => const SizedBox.shrink(),
                   ),
                 ),
               ),

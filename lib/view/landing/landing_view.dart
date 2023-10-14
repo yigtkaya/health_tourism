@@ -153,7 +153,6 @@ class _LandingViewState extends State<LandingView> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      /// TODO: Sort
                       setState(() {
                         isDescending = !isDescending;
                       });
