@@ -47,10 +47,11 @@ class UserRepositoryImpl extends UserRepo {
     users.doc(uid).delete();
   }
 
-  Future<String> getUserName() async {
+  Future<IUser> getUser() async {
     final data = await users.doc(uid).get();
-    Map<String, dynamic> user = data.data() as Map<String , dynamic>;
-    return user["name"];
+    Map<String, dynamic> map = data.data() as Map<String , dynamic>;
+    IUser user = IUser.fromData(map);
+    return user;
   }
 
   @override

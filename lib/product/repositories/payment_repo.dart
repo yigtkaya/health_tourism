@@ -3,6 +3,7 @@ abstract class PaymentRepository {
       String firstName,
       String surName,
       String uid,
+      String email,
       Map appointment,
       double price,
       String cardHolderName,

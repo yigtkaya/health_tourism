@@ -270,16 +270,16 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () async {
-                          final String senderName = await UserRepositoryImpl().getUserName();
+                          final IUser sender = await UserRepositoryImpl().getUser();
                           final chatId =
-                              await repo.addChatRoom(appointment.cid, appointment.clinicName, senderName);
+                              await repo.addChatRoom(appointment.cid, appointment.clinicName, sender.name);
 
                           // route to contact create chat room and start chatting
                           context.pushNamed(RoutePath.chatRoom, queryParameters: {
                             'receiverId': appointment.cid,
                             'receiverName': appointment.clinicName,
                             'chatRoomId': chatId,
-                            "senderName": senderName
+                            "senderName": sender.name
                           });
                         },
                         child: Container(

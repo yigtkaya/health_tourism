@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_tourism/core/constants/vertical_space.dart';
+import 'package:health_tourism/product/models/user.dart';
 import 'package:health_tourism/product/repoImpl/chat_repo_impl.dart';
 import 'package:health_tourism/product/repoImpl/user_%20repo_impl.dart';
 import 'package:readmore/readmore.dart';
@@ -170,17 +171,17 @@ class _ClinicDetailViewState extends State<ClinicDetailView> {
                     const Spacer(),
                     GestureDetector(
                       onTap: () async {
-                        final String senderName =
-                            await UserRepositoryImpl().getUserName();
+                        final IUser sender =
+                            await UserRepositoryImpl().getUser();
                         final chatId = await repo.addChatRoom(
-                            widget.clinic.cid, widget.clinic.name, senderName);
+                            widget.clinic.cid, widget.clinic.name, sender.name);
 
                         // route to contact create chat room and start chatting
                         context.pushNamed(RoutePath.chatRoom, queryParameters: {
                           'receiverId': widget.clinic.cid,
                           'receiverName': widget.clinic.name,
                           'chatRoomId': chatId,
-                          "senderName": senderName
+                          "senderName": sender.name
                         });
                       },
                       child: Container(

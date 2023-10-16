@@ -10,6 +10,7 @@ class PaymentRepoImpl extends PaymentRepository {
       String firstName,
       String surName,
       String uid,
+      String email,
       Map appointment,
       double price,
       String cardHolderName,
@@ -22,6 +23,7 @@ class PaymentRepoImpl extends PaymentRepository {
       String country,
       String city,
       String cvc) async {
+
     // make request to firebase function with dio package
     final result = await dio.post(
       'http://10.0.2.2:3000/api/iyzico/pay',
@@ -32,7 +34,7 @@ class PaymentRepoImpl extends PaymentRepository {
         'surName': surName,
         'country': country,
         'address': address,
-        'email': "johnDoe@gmail.com",
+        'email': email,
         'price': price,
         'cardHolderName': cardHolderName,
         'cardNumber': cardNumber,

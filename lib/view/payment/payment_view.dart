@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,8 @@ import 'package:health_tourism/core/components/loading/three_dot_loading.dart';
 import 'package:health_tourism/cubit/auth/auth_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_cubit.dart';
 import 'package:health_tourism/cubit/payment/payment_state.dart';
+import 'package:health_tourism/cubit/profile/profile_cubit.dart';
+import 'package:health_tourism/product/models/user.dart';
 import 'package:health_tourism/product/utils/card_utils.dart';
 import 'package:health_tourism/product/utils/input_formatters.dart';
 import 'package:health_tourism/view/response/failure_view.dart';
@@ -20,6 +23,7 @@ import '../../core/constants/vertical_space.dart';
 import '../../product/models/card_type.dart';
 import '../../product/models/clinic.dart';
 import '../../product/models/package.dart';
+import '../../product/repoImpl/user_ repo_impl.dart';
 import '../../product/theme/styles.dart';
 
 class PaymentView extends StatefulWidget {
@@ -48,6 +52,7 @@ class _PaymentViewState extends State<PaymentView> {
   late String? uid;
   bool isCvvFocused = false;
   int selectedIndex = 0;
+  late IUser user;
 
   final cardHolderNameController = TextEditingController();
   final cardNumberController = TextEditingController();
@@ -97,10 +102,15 @@ class _PaymentViewState extends State<PaymentView> {
       getCardTypeFromNumber();
     });
     extractPackages();
+    initUser();
     uid = context.read<AuthCubit>().getCurrentUserId();
     context.read<PackageCubit>().selectPackage(packages[0]);
 
     super.initState();
+  }
+
+  initUser() async {
+    user = await UserRepositoryImpl().getUser();
   }
 
   @override
@@ -717,7 +727,8 @@ class _PaymentViewState extends State<PaymentView> {
             context.read<PaymentCubit>().createPayment(
                 firstName,
                 surName,
-                uid!,
+                user.uid,
+                user.email,
                 appointment,
                 selectedPackage.price.toDouble(),
                 cardHolderName,
@@ -743,7 +754,8 @@ class _PaymentViewState extends State<PaymentView> {
               context.read<PaymentCubit>().createPayment(
                   firstName,
                   surName,
-                  uid!,
+                  user.uid,
+                  user.email,
                   appointment,
                   selectedPackage.price.toDouble(),
                   cardHolderName,
